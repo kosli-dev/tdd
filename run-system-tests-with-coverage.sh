@@ -2,7 +2,7 @@
 set -Eeu
 
 export APP_CONTAINER=tdd
-export APP_DIR=/tdd-app
+export APP_DIR=tdd-app
 export APP_IMAGE=tdd
 export APP_PORT=8001
 export APP_USER=tdd

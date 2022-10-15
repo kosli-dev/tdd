@@ -10,4 +10,4 @@ pytest \
     --tb=short \
     --quiet \
     --random-order-bucket=global \
-        /${APP_DIR}/test/system/
+        ${APP_DIR}/test/system/

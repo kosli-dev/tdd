@@ -3,7 +3,7 @@
 # set in env_vars/test_system.env
 
 [run]
-source=/app/server
+source=${APP_DIR}/server
 branch=True
 omit =
     **/__init__.py
