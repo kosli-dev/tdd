@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
 set -Eeu
 
-# exec replaces current process with the gunicorn instead of starting it as
-# a separate process. This makes gunicorn the process with PID=1
-# We need gunicorn to run with PID=1 so that the SIGINT signal sent when stopping
-# the system tests is sent to gunicorn and it stops gracefully.
-
-exec gunicorn \
+gunicorn \
   --bind "0.0.0.0:${XY_PORT}" \
   --log-level info \
   --threads=4 \
