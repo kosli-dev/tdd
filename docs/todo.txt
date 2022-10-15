@@ -1,2 +1,4 @@
 
 Get coverage stats from test run when there are some failing tests.
+Write slides
+Write blog posts
