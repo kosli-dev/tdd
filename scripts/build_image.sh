@@ -2,9 +2,9 @@
 set -Eeu
 
 docker build \
-  --file Dockerfile \
   --build-arg XY_DIR \
   --build-arg XY_PORT \
   --build-arg XY_USER \
+  --file Dockerfile \
   --tag "${XY_IMAGE}" \
     .

@@ -1,6 +1,6 @@
 
 tid:
-	./scripts/generate_test_id.sh
+	./scripts/print_test_id.sh
 
 test_unit:
 	./scripts/run_unit_tests_with_coverage.sh

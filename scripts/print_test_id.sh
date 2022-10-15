@@ -8,9 +8,9 @@ export $(echo_env_vars)
 "${MY_DIR}/build_image.sh"
 
 docker run \
-  --rm \
   --entrypoint="" \
-  --tty \
   --interactive \
+  --rm \
+  --tty \
   "${XY_IMAGE}" \
-    "/${XY_DIR}/test/generate_id.py"
+    "/${XY_DIR}/test/print_id.py"
