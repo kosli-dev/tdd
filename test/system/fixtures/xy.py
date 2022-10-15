@@ -1,7 +1,4 @@
-import json
-import os
-import pytest
-import requests
+import json, os, pytest, requests
 
 
 @pytest.fixture
@@ -18,7 +15,8 @@ class XY:
 
 
 def score_url():
-    return "/api/v1/score/"
+    # TODO: fix this
+    return "/api/v1/score/score"
 
 
 def http_get(url, payload):

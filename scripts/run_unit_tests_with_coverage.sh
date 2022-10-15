@@ -2,6 +2,7 @@
 set -Eeu
 
 export MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly ROOT_DIR="$(cd "${MY_DIR}/.." && pwd)"
 source "${MY_DIR}/echo_env_vars.sh"
 export $(echo_env_vars)
 
@@ -15,7 +16,6 @@ docker run \
   --tty \
   --volume="${MY_DIR}/../test:/${XY_DIR}/test" \
   "${XY_IMAGE}" \
-    /${XY_DIR}/test/unit/run.sh
+    "/${XY_DIR}/test/unit/run.sh"
 
-readonly ROOT_DIR="$(cd "${MY_DIR}/.." && pwd)"
-echo "open ${ROOT_DIR}/test/unit/coverage/index.html"
+open "${ROOT_DIR}/test/unit/coverage/index.html"

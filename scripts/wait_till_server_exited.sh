@@ -5,7 +5,7 @@ set -Eeu
 # in the containers exit handler. Without this wait loop
 # we get inconsistent coverage reporting.
 SUCCEEDED=0
-for x in $(seq 10); do
+for x in $(seq 5); do
     if docker ps --filter status=exited | grep -q "${XY_CONTAINER}" ; then
         SUCCEEDED=1
         break

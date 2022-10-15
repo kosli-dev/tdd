@@ -2,9 +2,6 @@
 set -Eeu
 
 readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-#readonly BASE_DIR="$(cd "${MY_DIR}/../.." && pwd)/tmp/test/unit"
-#rm -rf "${BASE_DIR}" || true
-#mkdir -p "${BASE_DIR}" || true
 
 run_tests()
 {
@@ -27,8 +24,10 @@ run_tests()
 gather_coverage()
 {
   # See https://coverage.readthedocs.io for coverage docs
-  coverage report --skip-empty --show-missing --precision=2
-  coverage html --precision=2 --directory "${MY_DIR}/coverage"
+  coverage html \
+    --directory "${MY_DIR}/coverage" \
+    --precision=2 \
+    --skip-empty > /dev/null
 }
 
 run_tests "$@"

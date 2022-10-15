@@ -10,8 +10,8 @@ docker run \
   --net "${XY_NETWORK}" \
   --rm \
   --tty \
-  --volume="${ROOT_DIR}/test:/${XY_DIR}/test" \
-  "${XY_IMAGE}" \
+  --volume="/${ROOT_DIR}:/${XY_DIR}" \
+ "${XY_IMAGE}" \
     /${XY_DIR}/test/system/gather_coverage.sh
 
-echo "open ${ROOT_DIR}/test/system/coverage/index.html"
+open "${ROOT_DIR}/test/system/coverage/index.html"

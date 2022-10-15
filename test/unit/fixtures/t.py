@@ -1,5 +1,4 @@
-import pytest
-import re
+import pytest, re
 
 
 @pytest.fixture

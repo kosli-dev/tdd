@@ -6,13 +6,15 @@ networks:
 
 services:
   xy:
-    container_name: ${XY_CONTAINER}
+    container_name: "${XY_CONTAINER}"
     env_file: [ "${ENV_FILE}" ]
-    image: ${XY_IMAGE}
+    image: "${XY_IMAGE}"
     networks: [ xy_net ]
-    ports: ["80:${XY_PORT}"]
+    ports: [ "80:${XY_PORT}" ]
     stop_signal: SIGINT
     tmpfs: [ /tmp ]
-    volumes: [ "./test/system/.coveragerc:/${XY_DIR}/test/system/.coveragerc" ]
+    volumes: [ ".:/${XY_DIR}" ]
 
-
+# The volume-mount is required so that
+# html coverage reports written inside a container
+# are available after the container has exited.

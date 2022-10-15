@@ -15,11 +15,11 @@ def init_api_v1_blueprint(xy):
     from apis.v1 import get_api_v1_blueprint
     api_blueprint = get_api_v1_blueprint()
 
-    @property
-    def specs_url(self):
-        return url_for(self.endpoint('specs'), _external=True, _scheme='https')
-
-    RestXApi.specs_url = specs_url
+    # @property
+    # def specs_url(self):
+    #     return url_for(self.endpoint('specs'), _external=True, _scheme='https')
+    #
+    # RestXApi.specs_url = specs_url
 
     api = RestXApi(
         app=api_blueprint,

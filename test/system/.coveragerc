@@ -6,7 +6,5 @@
 source=/${XY_DIR}/server
 parallel=True
 branch=True
-
-# omit =
-#    **/__init__.py
-#    sitecustomize.py
+omit =
+  server/sitecustomize.py
