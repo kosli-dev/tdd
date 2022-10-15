@@ -1,4 +1,8 @@
 
-Get coverage stats from test run when there are some failing tests.
+Open coverage stats in browser when there are some failing tests.
+Make t fixture so its available to system and unit tests
+Fix /score/score API path
+Implement XY scoring
+Add html template pages
 Write slides
 Write blog posts
