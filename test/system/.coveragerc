@@ -9,5 +9,4 @@ branch=True
 
 # omit =
 #    **/__init__.py
-#    test/**
 #    sitecustomize.py

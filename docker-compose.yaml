@@ -6,10 +6,10 @@ networks:
 
 services:
   xy:
-    networks: [ xy_net ]
-    image: ${XY_IMAGE}
     container_name: ${XY_CONTAINER}
     env_file: [ "${ENV_FILE}" ]
+    image: ${XY_IMAGE}
+    networks: [ xy_net ]
     ports: ["80:${XY_PORT}"]
     stop_signal: SIGINT
     tmpfs: [ /tmp ]
