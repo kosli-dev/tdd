@@ -14,7 +14,7 @@ docker run \
   --interactive \
   --rm \
   --tty \
-  --volume="${MY_DIR}/../test:/${XY_DIR}/test" \
+  --volume="${ROOT_DIR}/test:/${XY_DIR}/test" \
   "${XY_IMAGE}" \
     "/${XY_DIR}/test/unit/run.sh"
 
