@@ -8,3 +8,5 @@ docker run \
   --tty \
   "${XY_IMAGE}" \
     /${XY_DIR}/test/system/gather_coverage.sh
+
+echo "${MY_DIR}/../test/system/coverage/index.html"

@@ -14,5 +14,5 @@ for try in $(seq 1 ${MAX_TRIES}); do
   fi
 done
 echo "Failed ${IP_ADDRESS} readiness"
-docker container logs "${APP_CONTAINER}" || true
+docker container logs "${XY_CONTAINER}" || true
 exit 1
