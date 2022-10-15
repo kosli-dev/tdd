@@ -10,4 +10,4 @@ pytest \
   --tb=short \
   --quiet \
   --random-order-bucket=global \
-      "${XY_DIR}/test/system/"
+    "${TIDS}"

@@ -3,6 +3,7 @@ set -Eeu
 
 docker run \
   --entrypoint="" \
+  --env TIDS="${TIDS}" \
   --interactive \
   --rm \
   --tty \

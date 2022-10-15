@@ -1,11 +1,18 @@
 from model import score
 
 
-def test_a2189656(t):
+def test_a2189600(t):
     """
     Score all Xs and Ys
     """
-    assert t.id == "a2189656"
+    points = score()
+    assert points == {"A": 23, "B": 1245, "C": 78}
+
+
+def test_a2189601(t):
+    """
+    Score all Xs and Ys
+    """
     points = score()
     assert points == {"A": 23, "B": 1245, "C": 78}
 

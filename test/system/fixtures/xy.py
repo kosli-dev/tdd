@@ -7,4 +7,6 @@ def xy():
 
 
 class XY:
-    pass
+    def score(self):
+        # TODO: call score through API
+        return {"A": 23, "B": 1245, "C": 78}

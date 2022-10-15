@@ -21,7 +21,7 @@ run_tests()
     --pythonwarnings=error \
     --quiet \
     --random-order-bucket=global \
-      "${XY_DIR}/test/unit/"
+      "${TIDS}"
 }
 
 gather_coverage()

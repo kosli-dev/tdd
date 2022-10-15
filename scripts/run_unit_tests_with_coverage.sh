@@ -9,6 +9,7 @@ export $(echo_env_vars)
 
 docker run \
   --entrypoint="" \
+  --env TIDS="${TIDS}" \
   --interactive \
   --rm \
   --tty \
