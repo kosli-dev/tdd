@@ -2,9 +2,9 @@ version: '3'
 
 services:
   tdd:
-    image: ${APP_IMAGE}
-    container_name: ${APP_CONTAINER}
-    ports: ["80:${APP_PORT}"]
+    image: ${XY_IMAGE}
+    container_name: ${XY_CONTAINER}
+    ports: ["80:${XY_PORT}"]
     stop_signal: SIGINT
     tmpfs: [ /tmp ]
 

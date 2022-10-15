@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -Eeu
 
-export APP_CONTAINER=tdd
-export APP_DIR=tdd-app
-export APP_IMAGE=tdd
-export APP_PORT=8001
-export APP_USER=tdd
+export XY_CONTAINER=tdd
+export XY_DIR=tdd-app
+export XY_IMAGE=tdd
+export XY_PORT=8001
+export XY_USER=tdd
 
 export ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 "${ROOT_DIR}/scripts/build_server.sh"

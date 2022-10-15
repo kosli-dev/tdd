@@ -3,8 +3,8 @@ set -Eeu
 
 docker build \
   --file Dockerfile \
-  --build-arg APP_DIR \
-  --build-arg APP_PORT \
-  --build-arg APP_USER \
-  --tag "${APP_IMAGE}" \
+  --build-arg XY_DIR \
+  --build-arg XY_PORT \
+  --build-arg XY_USER \
+  --tag "${XY_IMAGE}" \
     .

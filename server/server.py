@@ -4,7 +4,7 @@ from flask import Flask, url_for
 from flask_restx import Api as RestXApi
 
 
-def create_app():
+def create_xy():
     app = Flask(__name__)
     init_api_v1_blueprint(app)
     init_app_blueprint(app)

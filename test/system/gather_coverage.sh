@@ -10,4 +10,4 @@
 # See https://coverage.readthedocs.io for coverage docs
 coverage combine
 coverage report --skip-empty --show-missing --precision=2
-coverage html --precision=2 --directory "/${APP_DIR}/test/system/coverage"
+coverage html --precision=2 --directory "/${XY_DIR}/test/system/coverage"

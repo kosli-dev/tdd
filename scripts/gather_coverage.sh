@@ -6,5 +6,5 @@ docker run \
   --interactive \
   --rm \
   --tty \
-  "${APP_IMAGE}" \
-    /${APP_DIR}/test/system/gather_coverage.sh
+  "${XY_IMAGE}" \
+    /${XY_DIR}/test/system/gather_coverage.sh

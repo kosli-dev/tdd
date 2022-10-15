@@ -6,15 +6,15 @@ set -Eeu
 # we get inconsistent coverage reporting.
 SUCCEEDED=0
 for x in $(seq 10); do
-    if docker ps --filter status=exited | grep -q "${APP_CONTAINER}" ; then
+    if docker ps --filter status=exited | grep -q "${XY_CONTAINER}" ; then
         SUCCEEDED=1
         break
     fi
-    echo "Waiting for ${APP_CONTAINER} container to exit"
+    echo "Waiting for ${XY_CONTAINER} container to exit"
     sleep 1
 done
 
 if [ $SUCCEEDED -eq 0 ]; then
-    echo "Failed to stop container ${APP_CONTAINER}"
+    echo "Failed to stop container ${XY_CONTAINER}"
     exit 1
 fi

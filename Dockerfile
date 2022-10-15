@@ -1,27 +1,27 @@
 FROM python:3.10-alpine3.15
 LABEL maintainer=jon@kosli.com
 
-ARG APP_DIR
-ARG APP_PORT
-ARG APP_USER
+ARG XY_DIR
+ARG XY_PORT
+ARG XY_USER
 
-ENV APP_DIR=/${APP_DIR}
-ENV APP_PORT=${APP_PORT}
-ENV PYTHONPATH=${APP_DIR}/server
+ENV XY_DIR=/${XY_DIR}
+ENV XY_PORT=${XY_PORT}
+ENV PYTHONPATH=${XY_DIR}/server
 ENV TERM=xterm-256color
 
 RUN apk --update --upgrade add bash tini \
  && apk --no-cache upgrade musl \
  && apk update \
- && adduser -D ${APP_USER}
+ && adduser -D ${XY_USER}
 
 COPY server/requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 
-WORKDIR ${APP_DIR}
+WORKDIR ${XY_DIR}
 COPY . .
-RUN chown -R ${APP_USER} ${APP_DIR}
-USER ${APP_USER}
+RUN chown -R ${XY_USER} ${XY_DIR}
+USER ${XY_USER}
 
 ENTRYPOINT [ "/sbin/tini", "-g", "--" ]
-CMD ${APP_DIR}/server/gunicorn.sh
+CMD ${XY_DIR}/server/gunicorn.sh
