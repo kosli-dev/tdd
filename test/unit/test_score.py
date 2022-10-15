@@ -1,10 +1,11 @@
 from model import score
 
 
-def test_a2189656():
+def test_a2189656(t):
     """
     Score all Xs and Ys
     """
+    assert t.id == "a2189656"
     points = score()
     assert points == {"A": 23, "B": 1245, "C": 78}
 
