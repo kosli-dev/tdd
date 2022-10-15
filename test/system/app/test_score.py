@@ -3,7 +3,9 @@ def test_04692400(xy):
     """
     ........
     """
-    assert 1 == 1
+    response = xy.score()
+    assert response.status_code == 200
+    assert response.json() == {"A": 23, "B": 1245, "C": 78}
 
 
 def test_04692401(xy):

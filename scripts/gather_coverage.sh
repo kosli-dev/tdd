@@ -7,9 +7,10 @@ readonly ROOT_DIR="$(cd "${MY_DIR}/.." && pwd)"
 docker run \
   --entrypoint="" \
   --interactive \
+  --net "${XY_NETWORK}" \
   --rm \
   --tty \
-  --volume="${MY_DIR}/../test:/${XY_DIR}/test" \
+  --volume="${ROOT_DIR}/test:/${XY_DIR}/test" \
   "${XY_IMAGE}" \
     /${XY_DIR}/test/system/gather_coverage.sh
 

@@ -23,5 +23,6 @@ COPY . .
 RUN chown -R ${XY_USER} ${XY_DIR}
 USER ${XY_USER}
 
+EXPOSE "${XY_PORT}"
 ENTRYPOINT [ "/sbin/tini", "-g", "--" ]
 CMD ${XY_DIR}/server/gunicorn.sh

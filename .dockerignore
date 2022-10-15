@@ -1,5 +1,2 @@
 *
 !server/
-!test/
-test/system/coverage
-test/unit/coverage
