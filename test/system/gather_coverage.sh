@@ -7,7 +7,9 @@
 # need to jump through a few hoops, as detailed in this dir's README.md and
 # run.sh files.
 
+readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # See https://coverage.readthedocs.io for coverage docs
 coverage combine
 coverage report --skip-empty --show-missing --precision=2
-coverage html --precision=2 --directory "/${XY_DIR}/test/system/coverage"
+coverage html --precision=2 --directory "/${MY_DIR}/coverage"

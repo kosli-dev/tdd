@@ -10,4 +10,4 @@ exec gunicorn \
   --bind 0.0.0.0:${XY_PORT} \
   --threads=4 \
   --workers=2 \
-  'server:create_xy()'
+  'xy:app()'

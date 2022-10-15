@@ -1,10 +1,12 @@
+from model import score
 
 
-def test_a2189656(t):
+def test_a2189656():
     """
     Score all Xs and Ys
     """
-    assert 1 == 2
+    points = score()
+    assert points == {"A": 23, "B": 1245, "C": 78}
 
 
 # def test_all_Xs_and_Ys
