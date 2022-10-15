@@ -18,20 +18,21 @@ class XY:
 
 
 def score_url():
-    return f"/api/v1/score/"
+    return "/api/v1/score/"
 
 
 def http_get(url, payload):
-    headers = {'content-type': 'application/json'}
-    data = json.dumps(payload, ensure_ascii=False).encode('utf8')
-    return requests.get(f'{host()}{url}', headers=headers, data=data)
+    headers = {"content-type": "application/json"}
+    data = json.dumps(payload, ensure_ascii=False).encode("utf8")
+    return requests.get(f"{host()}{url}", headers=headers, data=data)
 
 
 def host():
-    return f'http://{service_name}:{port()}'
+    return f"http://{service_name()}:{port()}"
 
 
 def port():
+    # See scripts/echo_env_vars.sh
     return int(os.environ.get("XY_PORT"))
 
 
