@@ -3,11 +3,11 @@
 # set in env_vars/test_system.env
 
 [run]
-source=${XY_DIR}/server
+source=/${XY_DIR}/server
 parallel=True
 branch=True
 
-#omit =
+# omit =
 #    **/__init__.py
 #    test/**
 #    sitecustomize.py

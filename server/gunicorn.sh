@@ -6,8 +6,6 @@ set -Eeu
 # We need gunicorn to run with PID=1 so that the SIGINT signal sent when stopping
 # the system tests is sent to gunicorn and it stops gracefully.
 
-env
-
 exec gunicorn \
   --bind 0.0.0.0:${XY_PORT} \
   --threads=4 \
