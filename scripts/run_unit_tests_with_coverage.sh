@@ -13,5 +13,9 @@ docker run \
   --interactive \
   --rm \
   --tty \
+  --volume="${MY_DIR}/../test:/${XY_DIR}/test" \
   "${XY_IMAGE}" \
     /${XY_DIR}/test/unit/run.sh
+
+readonly ROOT_DIR="$(cd "${MY_DIR}/.." && pwd)"
+echo "open ${ROOT_DIR}/test/unit/coverage/index.html"

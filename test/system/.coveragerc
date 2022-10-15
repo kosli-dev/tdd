@@ -4,6 +4,7 @@
 
 [run]
 source=${XY_DIR}/server
+parallel=True
 branch=True
 
 #omit =

@@ -4,6 +4,7 @@ services:
   tdd:
     image: ${XY_IMAGE}
     container_name: ${XY_CONTAINER}
+    env_file: [ "${ENV_FILE}" ]
     ports: ["80:${XY_PORT}"]
     stop_signal: SIGINT
     tmpfs: [ /tmp ]
