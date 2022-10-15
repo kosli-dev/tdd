@@ -1,0 +1,11 @@
+# This .coveragerc file is named in the environment-variable
+# COVERAGE_PROCESS_START=/app/test/system/.coveragerc
+# set in env_vars/test_system.env
+
+[run]
+source=/app/server
+branch=True
+omit =
+    **/__init__.py
+    test/**
+    sitecustomize.py

@@ -1,0 +1,6 @@
+__pycache__/
+**/.coverage
+**/.coverage.*
+/server/.pytest_cache/
+/test/unit/coverage
+/test/system/coverage
