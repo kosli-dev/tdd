@@ -1,15 +1,13 @@
 
 # Core
+Collapse server registration code
 Translate all Ruby unit tests to passing Python tests
 Add a few API tests
 Add html template pages
 Add a few APP tests
-Generate coverage stats in browser whether tests pass or not
-
-# Polish
-Collapse server registration code
 
 # Maybe
+Generate coverage stats in browser whether tests pass or not?
 Add est() exec-system-tests without coverage (so as not to kill server)
 Make t fixture so its available to both system and unit tests
 Drop Swagger? RestX

@@ -1,17 +1,20 @@
 
 # See README.md
 
-rut() {
+rut()
+{
   local -r TIDS=$(echo "${*// / or /}")
   make run_unit_tests TIDS="-k ${TIDS}"
 }
 
-eut() {
+eut()
+{
   local -r TIDS=$(echo "${*// / or /}")
   make exec_unit_tests TIDS="-k ${TIDS}"
 }
 
-rst() {
+rst()
+{
   local -r TIDS=$(echo "${*// / or /}")
   make run_system_tests TIDS="-k ${TIDS}";
 }
