@@ -8,6 +8,6 @@ export $(echo_env_vars)
 docker rm --force "${XY_CONTAINER}" || true
 
 docker-compose \
-	--env-file=env_vars/test_system_up.env \
+	--env-file=env_vars/demo_up.env \
   --file docker-compose.yaml \
     up --build --detach
