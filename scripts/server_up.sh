@@ -4,4 +4,4 @@ set -Eeu
 docker-compose \
 	--env-file=env_vars/test_system_up.env \
   --file docker-compose.yaml \
-    up --build --detach
+    up --no-build --detach
