@@ -5,7 +5,7 @@ Add a few API tests
 Add html template pages
 Add a few APP tests
 Generate coverage stats in browser whether tests pass or not
-Look into rut() seeing container already exists and if so exec unit-tests
+Look into rst() seeing container already exists and if so exec system-tests
 
 # Polish
 Collapse server registration code
