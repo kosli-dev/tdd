@@ -7,7 +7,6 @@ Add a few APP tests
 Generate coverage stats in browser whether tests pass or not
 
 # Polish
-Drop v1 on API call
 Collapse server registration code
 
 # Maybe

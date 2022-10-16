@@ -9,7 +9,7 @@ def xy():
 class XY:
 
     def company_score(self, **kwargs):
-        return http_get("/api/v1/company/score", **kwargs)
+        return http_get("/api/company/score", **kwargs)
 
 
 def http_get(url, **kwargs):

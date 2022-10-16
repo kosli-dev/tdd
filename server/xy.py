@@ -1,19 +1,19 @@
 """Application server"""
 
-from flask import Flask, url_for
+from flask import Flask
 from flask_restx import Api as RestXApi
 
 
 def app():
     xy = Flask(__name__)
-    init_api_v1_blueprint(xy)
+    init_api_blueprint(xy)
     init_app_blueprint(xy)
     return xy
 
 
-def init_api_v1_blueprint(xy):
-    from apis.v1 import get_api_v1_blueprint
-    api_blueprint = get_api_v1_blueprint()
+def init_api_blueprint(xy):
+    from api import get_api_blueprint
+    api_blueprint = get_api_blueprint()
 
     #if config.app_settings.SWAGGER_USE_HTTPS:
     #     @property
@@ -34,13 +34,13 @@ def init_api_v1_blueprint(xy):
         ])
     )
 
-    from apis.v1.score import ns as ns_score
+    from api.score import ns as ns_score
     api.add_namespace(ns_score, '/company')
 
-    from apis.v1.score import init_score_routes
+    from api.score import init_score_routes
     init_score_routes(ns_score)
 
-    xy.register_blueprint(api_blueprint, url_prefix='/api/v1')
+    xy.register_blueprint(api_blueprint, url_prefix='/api')
 
 
 def init_app_blueprint(xy):
