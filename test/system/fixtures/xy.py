@@ -9,13 +9,13 @@ def xy():
 class XY:
 
     def company_score(self, **kwargs):
-        return http_get("/api/company/score", **kwargs)
+        return http_post("/api/company/score", **kwargs)
 
 
-def http_get(url, **kwargs):
+def http_post(url, **kwargs):
     headers = {"content-type": "application/json"}
-    params = json.dumps(kwargs, ensure_ascii=False).encode("utf8")
-    return requests.get(url=f"{host()}{url}", headers=headers, params=params)
+    data = json.dumps(kwargs, ensure_ascii=False).encode("utf8")
+    return requests.post(f"{host()}{url}", headers=headers, data=data)
 
 
 def host():

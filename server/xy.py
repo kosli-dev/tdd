@@ -14,7 +14,7 @@ def app():
 def init_api_blueprint(xy):
     api_blueprint = get_api_blueprint()
 
-    #if config.app_settings.SWAGGER_USE_HTTPS:
+    # if config.app_settings.SWAGGER_USE_HTTPS:
     #     @property
     #     def specs_url(self):
     #         return url_for(self.endpoint('specs'), _external=True, _scheme='https')
