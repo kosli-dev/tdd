@@ -9,9 +9,9 @@ o) using tests named with a GUID
 ```
 $ source ./scripts/test_aliases.sh
 
-$ mtu          # run all unit tests, open coverage in browser
-$ mtu a2189600 # run only unit test_a2189600, open coverage in browser
+$ rut          # run all unit tests
+$ rut a2189600 # run only unit test_a2189600
 
-$ mts          # run all system tests, open coverage in browser
-$ mts 04692400 # run only system test_04692400, open coverage in browser
+$ rst          # run all system tests
+$ rst 04692400 # run only system test_04692400
 ```

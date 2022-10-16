@@ -5,7 +5,6 @@ Add a few API tests
 Add html template pages
 Add a few APP tests
 Generate coverage stats in browser whether tests pass or not
-Rename mtu() to rut() for run-unit-tests
 Look into adding eut() for exec-unit-tests which runs from existing container
 
 # Polish

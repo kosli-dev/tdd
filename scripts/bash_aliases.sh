@@ -1,12 +1,12 @@
 
 # See README.md
 
-mtu() {
+rut() {
   local -r TIDS=$(echo "$*" | sed "s/ / or /g")
-  make test_unit TIDS="-k ${TIDS}"
+  make run_unit_tests TIDS="-k ${TIDS}"
 }
 
-mts() {
+rst() {
   local -r TIDS=$(echo "$*" | sed "s/ / or /g")
-  make test_system TIDS="-k ${TIDS}";
+  make run_system_tests TIDS="-k ${TIDS}";
 }
