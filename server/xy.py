@@ -1,7 +1,7 @@
-"""Application server"""
-
 from flask import Flask
 from flask_restx import Api as RestXApi
+from api import get_api_blueprint
+from api.score import init_score_routes
 
 
 def app():
@@ -12,7 +12,6 @@ def app():
 
 
 def init_api_blueprint(xy):
-    from api import get_api_blueprint
     api_blueprint = get_api_blueprint()
 
     #if config.app_settings.SWAGGER_USE_HTTPS:
@@ -33,12 +32,7 @@ def init_api_blueprint(xy):
             "Available on LeanPub: https://leanpub.com/experientiallearning4sampleexercises"
         ])
     )
-
-    from api.score import ns as ns_score
-    api.add_namespace(ns_score, '/company')
-
-    from api.score import init_score_routes
-    init_score_routes(ns_score)
+    init_score_routes(api)
 
     xy.register_blueprint(api_blueprint, url_prefix='/api')
 

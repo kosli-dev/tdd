@@ -17,5 +17,6 @@ class CompanyScoreApi(Resource):
         return company_score(**kwargs)
 
 
-def init_score_routes(ns):
+def init_score_routes(api):
+    api.add_namespace(ns, '/company')
     ns.add_resource(CompanyScoreApi, '/score/')

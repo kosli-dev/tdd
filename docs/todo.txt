@@ -1,6 +1,5 @@
 
 # Core
-Collapse server registration code
 Translate all Ruby unit tests to passing Python tests
 Add a few API tests
 Add html template pages
