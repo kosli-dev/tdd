@@ -14,4 +14,4 @@ docker run \
  "${XY_IMAGE}" \
     /${XY_DIR}/test/system/gather_coverage.sh
 
-open "${ROOT_DIR}/test/system/coverage/index.html"
+echo "${ROOT_DIR}/test/system/coverage/index.html"

@@ -1,6 +1,7 @@
 
 
-def company_score(*decisions, **kwargs):
+def company_score(**kwargs):
+    decisions = kwargs['decisions']
     is_sentence = kwargs['is_sentence']
     is_profound = kwargs['is_profound']
     words, are_words = transpose(decisions)

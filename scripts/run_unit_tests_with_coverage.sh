@@ -18,4 +18,4 @@ docker run \
   "${XY_IMAGE}" \
     "/${XY_DIR}/test/unit/run.sh"
 
-open "${ROOT_DIR}/test/unit/coverage/index.html"
+echo "${ROOT_DIR}/test/unit/coverage/index.html"
