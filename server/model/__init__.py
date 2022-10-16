@@ -1,1 +1,1 @@
-from .score import score, company_score
+from .score import company_score

@@ -1,17 +1,19 @@
 from flask_restx import Namespace, Resource
-from model import score
+from model import company_score
 
-ns = Namespace('score', description='Score operations')
+ns = Namespace('company', description='Score operations')
 
 
-class ScoreApi(Resource):
+class CompanyScoreApi(Resource):
 
     @ns.doc('Score an XY Game play')
     @ns.param(name="...",
               description=("..."))
     def get(self):
-        return score()
+        decisions = [('XYZZY', False), ('hello', True)]
+        kwargs = {'is_sentence': False, 'is_profound': False}
+        return company_score(*decisions, **kwargs)
 
 
 def init_score_routes(ns):
-    ns.add_resource(ScoreApi, '/score/')
+    ns.add_resource(CompanyScoreApi, '/score/')

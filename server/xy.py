@@ -34,7 +34,7 @@ def init_api_v1_blueprint(xy):
     )
 
     from apis.v1.score import ns as ns_score
-    api.add_namespace(ns_score, '/score')
+    api.add_namespace(ns_score, '/company')
 
     from apis.v1.score import init_score_routes
     init_score_routes(ns_score)

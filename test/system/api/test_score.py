@@ -3,9 +3,10 @@ def test_04692400(xy):
     """
     ........
     """
-    response = xy.score()
+    decisions = [('XYZZY', False), ('hello', True)]
+    response = xy.company_score(decisions, is_sentence=False, is_profound= False)
     assert response.status_code == 200
-    assert response.json() == {"A": 23, "B": 1245, "C": 78}
+    assert response.json() == [[8, 5, 0, 0, 5], [0, -1, 16, 0, -1]]
 
 
 def test_04692401(xy):

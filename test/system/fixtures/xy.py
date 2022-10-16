@@ -8,15 +8,18 @@ def xy():
 
 class XY:
 
-    def score(self):
-        url = score_url()
-        payload = {}
+    def company_score(self, *decisions, **kwargs):
+        url = company_score_url()
+        payload = {
+            "decisions": decisions,
+            "is_sentence": kwargs["is_sentence"],
+            "is_profound": kwargs["is_profound"]
+        }
         return http_get(url, payload)
 
 
-def score_url():
-    # TODO: fix this
-    return "/api/v1/score/score"
+def company_score_url():
+    return "/api/v1/company/score"
 
 
 def http_get(url, payload):
