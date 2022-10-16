@@ -7,15 +7,14 @@ source "${MY_DIR}/echo_env_vars.sh"
 export $(echo_env_vars)
 
 "${MY_DIR}/build_image.sh"
+"${MY_DIR}/server_up.sh"
+"${MY_DIR}/wait_till_server_ready.sh"
 
-docker run \
-  --entrypoint="" \
+docker exec \
   --env TIDS="${TIDS}" \
   --interactive \
-  --rm \
   --tty \
-  --volume="${ROOT_DIR}/test:/${XY_DIR}/test" \
-  "${XY_IMAGE}" \
+  "${XY_CONTAINER}" \
     "/${XY_DIR}/test/unit/run.sh"
 
 echo "${ROOT_DIR}/test/unit/coverage/index.html"
