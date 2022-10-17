@@ -11,7 +11,6 @@ services:
     image: "${XY_IMAGE}"
     networks: [ xy_net ]
     ports: [ "80:${XY_PORT}" ]
-    stop_signal: SIGINT
     tmpfs: [ /tmp ]
     volumes: [ ".:/${XY_DIR}" ]
 
