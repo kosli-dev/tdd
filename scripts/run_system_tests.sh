@@ -8,10 +8,9 @@ docker run \
   --entrypoint="" \
   --env TIDS="${TIDS}" \
   --interactive \
-  --name xy_system_test_runner \
   --net "${XY_NETWORK}" \
   --rm \
   --tty \
-  --volume="${ROOT_DIR}/test:/${XY_DIR}/test" \
+  --volume="${ROOT_DIR}:/${XY_DIR}" \
   "${XY_IMAGE}" \
-    /${XY_DIR}/test/system/run.sh
+    "/${XY_DIR}/test/system/run.sh"
