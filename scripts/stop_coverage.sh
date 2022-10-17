@@ -10,3 +10,12 @@ docker exec \
   "${XY_CONTAINER}" \
     "/${XY_DIR}/test/system/stop_coverage.py"
 
+#docker run \
+#  --entrypoint="" \
+#  --interactive \
+#  --net "${XY_NETWORK}" \
+#  --rm \
+#  --tty \
+#  --volume="${ROOT_DIR}:/${XY_DIR}" \
+#  "${XY_IMAGE}" \
+#    "/${XY_DIR}/test/system/stop_coverage.py"
