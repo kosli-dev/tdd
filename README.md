@@ -7,7 +7,7 @@ o) gathering coverage stats from the target server's container
 o) using tests named with a GUID
 
 ```
-$ source ./scripts/bash_shortcuts.sh
+$ source ./scripts/shortcuts.sh
 
 $ rut          # run all unit tests in new container
 $ rut a2189600 # run only unit test_a2189600 in new container
