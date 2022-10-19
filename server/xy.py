@@ -1,13 +1,28 @@
 from flask import Flask
 from flask_restx import Api as RestXApi
+from flask_assets import Environment, Bundle
+from pathlib import Path
 from api import get_api_blueprint
 from api.score import init_score_routes
 
 
 def app():
     xy = Flask(__name__)
+
+    assets = Environment(xy)
+    assets.url = xy.static_url_path
+
+    css_files = asset_file_paths(xy, "css")
+    css = Bundle(*css_files, filters='cssmin', output='bundle.css')
+    assets.register('css', css)
+
+    js_files = asset_file_paths(xy, "js")
+    js = Bundle(*js_files, filters='jsmin', output='bundle.js')
+    assets.register('js', js)
+
     init_api_blueprint(xy)
     init_app_blueprint(xy)
+
     return xy
 
 
@@ -45,3 +60,8 @@ def init_app_blueprint(xy):
     app.register_score_routes(app_blueprint)
 
     xy.register_blueprint(app_blueprint)
+
+
+def asset_file_paths(app, dir_name):
+    dir = Path(f'{app.root_path}/static/{dir_name}')
+    return [f'{dir_name}/{file.name}' for file in dir.iterdir()]

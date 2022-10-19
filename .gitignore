@@ -4,5 +4,8 @@ __pycache__/
 /server/.pytest_cache/
 /test/unit/coverage/
 /test/system/coverage/
+/server/static/bundle.js
+/server/static/bundle.css
+/server/static/.webassets-cache/
 .DS_Store
 
