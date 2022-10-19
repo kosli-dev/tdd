@@ -12,19 +12,10 @@ with_coverage()
 {
   local -r command="${1}"
   shift
-  # shellcheck disable=SC2116
-  TIDS="-k $(echo "${*// / or /}")" \
+  TIDS="-k ${*// / or }" \
     "$(scripts_dir)/${command}_with_coverage.sh"
 }
 
 scripts_dir() {
   cd "$(dirname "${BASH_SOURCE[0]}")/scripts" && pwd
 }
-
-# shellcheck disable=SC2116
-# Replacing
-#    TIDS=$(echo "${*// / or /}")
-# with
-#    TIDS="$(*// / or /)"
-# causes warning
-#    rut:N: permission denied: __pycache__//
