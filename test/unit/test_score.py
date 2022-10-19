@@ -4,7 +4,8 @@ EXPECTED = {
     'invalid_entry': 76,
     'all_Xs_and_Ys': 82,
     'letters_from_heading': 1850,
-    'only_lowercase_letters_from_heading': 18500
+    'only_lowercase_letters_from_heading': 18500,
+    'only_lowercase_consonants_near_end_of_heading': 40960,
 }
 
 
@@ -52,13 +53,25 @@ def test_5386b903():
     assert sum(flatten(scores)) == EXPECTED['only_lowercase_letters_from_heading']
 
 
+def test_5386b904():
+    """Level 5: Only lowercase consonants near end of heading"""
+    decisions = go('rrrrr'), go('rrrrr'), go('rrrrr'), go('rrrrr')
+    scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)
+    assert scores == [[0, 10240, 0, 0, 0],
+                      [0, 0, 10240, 0, 0],
+                      [0, 0, 0, 10240, 0],
+                      [0, 0, 0, 0, 10240]]
+    assert sum(flatten(scores)) == EXPECTED['only_lowercase_consonants_near_end_of_heading']
+
+
 def test_5386b920():
     """ Scores increase as fortune cookies levels are unlocked"""
-    s0 = EXPECTED['invalid_entry']
-    s1 = EXPECTED['all_Xs_and_Ys']
-    s2 = EXPECTED['letters_from_heading']
-    s3 = EXPECTED['only_lowercase_letters_from_heading']
-    assert is_sorted([s0, s1, s2, s3]), 'not sorted!'
+    s1 = EXPECTED['invalid_entry']
+    s2 = EXPECTED['all_Xs_and_Ys']
+    s3 = EXPECTED['letters_from_heading']
+    s4 = EXPECTED['only_lowercase_letters_from_heading']
+    s5 = EXPECTED['only_lowercase_consonants_near_end_of_heading']
+    assert is_sorted([s1, s2, s3, s4, s5]), 'not sorted!'
 
 
 def go(s):
