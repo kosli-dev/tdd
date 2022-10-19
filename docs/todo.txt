@@ -7,7 +7,6 @@ Add a few APP tests
 Make the number of Squads dynamic.
 
 # Maybe
-Generate coverage stats in browser whether tests pass or not?
 Make t fixture so its available to both system and unit tests
 Drop Swagger? RestX
 Document API call

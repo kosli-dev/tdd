@@ -6,6 +6,7 @@ readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # To set the random-ordering seed
 #       --random-order-seed=<seed>
 
+set +e
 pytest \
   --cache-clear `# Clear .coverage cache. It persists as it is in the volume-mount` \
   --capture=no `# Turn off capturing. Makes print() effects visible and interleaved` \
@@ -18,6 +19,7 @@ pytest \
   --quiet \
   --random-order-bucket=global \
     "${TIDS}"
+set -e
 
 # See https://coverage.readthedocs.io for coverage docs
 coverage html \
