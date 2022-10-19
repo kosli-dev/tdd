@@ -3,6 +3,7 @@ source=${XY_DIR}/server
 branch=True
 omit =
     **/__init__.py
+    server/api/**
     server/app/**
     server/xy.py
     server/sitecustomize.py
