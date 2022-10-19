@@ -1,37 +1,30 @@
 # See README.md
 
-# shellcheck disable=SC2116
-# Replacing
-#    local -r TIDS=$(echo "${*// / or /}")
-# with
-#    local -r TIDS="$(*// / or /)"
-# causes warning
-#    rut:N: permission denied: __pycache__//
+rut() { with_coverage run_unit_tests "$*"; }
+eut() { with_coverage exec_unit_tests "$*"; }
+rst() { with_coverage run_system_tests "$*"; }
+est() { with_coverage exec_system_tests "$*"; }
 
-rut() {
-  TIDS="-k $(echo "${*// / or /}")" "$(scripts_dir)/run_unit_tests_with_coverage.sh"
-}
+tid() { "$(scripts_dir)/print_test_id.sh"; }
+demo() { "$(scripts_dir)/run_demo.sh"; }
 
-eut() {
-  TIDS="-k $(echo "${*// / or /}")" "$(scripts_dir)/exec_unit_tests_with_coverage.sh"
-}
-
-rst() {
-  TIDS="-k $(echo "${*// / or /}")" "$(scripts_dir)/run_system_tests_with_coverage.sh"
-}
-
-est() {
-  TIDS="-k $(echo "${*// / or /}")" "$(scripts_dir)/exec_system_tests_with_coverage.sh"
-}
-
-tid() {
-  "$(scripts_dir)/print_test_id.sh"
-}
-
-demo() {
-  "$(scripts_dir)/run_demo.sh"
+with_coverage()
+{
+  local -r command="${1}"
+  shift
+  # shellcheck disable=SC2116
+  TIDS="-k $(echo "${*// / or /}")" \
+    "$(scripts_dir)/${command}_with_coverage.sh"
 }
 
 scripts_dir() {
   cd "$(dirname "${BASH_SOURCE[0]}")/scripts" && pwd
 }
+
+# shellcheck disable=SC2116
+# Replacing
+#    TIDS=$(echo "${*// / or /}")
+# with
+#    TIDS="$(*// / or /)"
+# causes warning
+#    rut:N: permission denied: __pycache__//
