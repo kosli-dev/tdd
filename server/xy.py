@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restx import Api as RestXApi
 from flask_assets import Environment, Bundle
+import os
 from pathlib import Path
 from api import get_api_blueprint
 from api.score import init_score_routes
@@ -9,6 +10,7 @@ from api.score import init_score_routes
 def app():
     xy = Flask(__name__)
     assets = Environment(xy)
+    assets.cache = webasset_cache_dir()
     assets.url = xy.static_url_path
     init_css(xy, assets)
     init_js(xy, assets)
@@ -48,6 +50,15 @@ def init_app_blueprint(xy):
     app.register_health_routes(app_blueprint)
     app.register_score_routes(app_blueprint)
     xy.register_blueprint(app_blueprint)
+
+
+def webasset_cache_dir():
+    path = f"/tmp/webasset-cache-{os.getpid()}"
+    try:
+        os.mkdir(path)
+    except FileExistsError:
+        pass
+    return path
 
 
 def init_css(xy, assets):
