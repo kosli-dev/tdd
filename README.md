@@ -9,12 +9,15 @@ o) using tests named with a GUID
 ```
 $ source ./shortcuts.sh
 
-$ rut          # run all unit tests in new container
-$ rut a2189600 # run only unit test_a2189600 in new container
+$ rut          # run all unit tests in new server
+$ rut a2189600 # run only unit test_a2189600 in new server
 
-$ eut          # exec all unit tests in existing container
-$ eut a2189600 # exec only unit test_a2189600 in existing container
+$ eut          # exec all unit tests in existing server
+$ eut a2189600 # exec only unit test a2189600 in existing server
 
 $ rst          # run all system tests
 $ rst 04692400 # run only system test_04692400
+
+$ est          # exec all system tests in existing server
+$ est 04692400 # exec only system test 04692400 in existing server
 ```
