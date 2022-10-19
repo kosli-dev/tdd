@@ -12,8 +12,11 @@ EXPECTED = {
 }
 
 
-def test_5386b900():
-    """Level 1: Invalid entries are written as ?"""
+def test_86b900():
+    """
+    Level 1:
+    Invalid entries are written as ?
+    """
     decisions = go('XXYYY'), go('XYYXX'), go('XYYXY'), go('?YYXX')
     scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)
     assert scores == [[4, 8, 5, 3, 3],
@@ -23,8 +26,11 @@ def test_5386b900():
     assert sum(flatten(scores)) == EXPECTED['invalid_entry']
 
 
-def test_5386b901():
-    """Level 2: All Xs and Ys"""
+def test_86b901():
+    """
+    Level 2:
+    All Xs and Ys
+    """
     decisions = go('XXYYY'), go('XYYXX'), go('XYYXY'), go('XYYXX')
     scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)
     assert scores == [[4, 8, 5, 3, 3],
@@ -34,8 +40,11 @@ def test_5386b901():
     assert sum(flatten(scores)) == EXPECTED['all_Xs_and_Ys']
 
 
-def test_5386b902():
-    """Level 3: Letters from 'Big Fish Little Pond War' heading"""
+def test_86b902():
+    """
+    Level 3:
+    Letters from 'Big Fish Little Pond War' heading
+    """
     decisions = go('BigFi'), go('shLit'), go('tlePo'), go('ndWaR')
     scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)
     assert scores == [[1, -1, 1, 2, -1],
@@ -45,8 +54,11 @@ def test_5386b902():
     assert sum(flatten(scores)) == EXPECTED['letters_from_heading']
 
 
-def test_5386b903():
-    """Level 4: Only lowercase letters from 'Big Fish Little Pond War' heading"""
+def test_86b903():
+    """
+    Level 4:
+    Only lowercase letters from 'Big Fish Little Pond War' heading
+    """
     decisions = go('bigfi'), go('shlit'), go('tlepo'), go('ndwar')
     scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)
     assert scores == [[10, -10, 10, 20, -10],
@@ -56,8 +68,11 @@ def test_5386b903():
     assert sum(flatten(scores)) == EXPECTED['only_lowercase_letters_from_heading']
 
 
-def test_5386b904():
-    """Level 5: Only lowercase consonants near end of heading"""
+def test_86b904():
+    """
+    Level 5:
+    Only lowercase consonants near end of heading
+    """
     decisions = go('rrrrr'), go('rrrrr'), go('rrrrr'), go('rrrrr')
     scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)
     assert scores == [[0, 10240, 0, 0, 0],
@@ -67,8 +82,10 @@ def test_5386b904():
     assert sum(flatten(scores)) == EXPECTED['only_lowercase_consonants_near_end_of_heading']
 
 
-def test_5386b905():
-    """Unconnected lowercase 5 letter words (scores can get worse)"""
+def test_86b905():
+    """
+    Unconnected lowercase 5 letter words (scores can get worse)
+    """
     decisions = word('dwarf'), word('rules'), word('knife'), go('wwwww')
     scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)
     assert scores == [[0, 0, -100, 0, 200],
@@ -78,8 +95,11 @@ def test_5386b905():
     assert sum(flatten(scores)) == 7020
 
 
-def test_5386b906():
-    """Level 6: sentence of lowercase 5 letter words"""
+def test_86b906():
+    """
+    Level 6:
+    Sentence of lowercase 5 letter words
+    """
     decisions = word('wrong'), word('words'), word('score'), word('small')
     scores = company_score(decisions=decisions, is_sentence=True, is_profound=False)
     assert scores == [[5120000, 10240000, -10000, 1280000, 10000],
@@ -89,8 +109,11 @@ def test_5386b906():
     assert sum(flatten(scores)) == EXPECTED['sentence_of_lowercase_5_letter_words']
 
 
-def test_5386b907():
-    """Level 7: better sentence of lowercase 5 letter words"""
+def test_86b907():
+    """
+    Level 7:
+    Better sentence of lowercase 5 letter words
+    """
     decisions = word('wrote'), word('wrong'), word('wrote'), word('wrath')
     scores = company_score(decisions=decisions, is_sentence=True, is_profound=False)
     assert scores == [[5120000, 10240000, -10000, 320000, -10000],
@@ -100,8 +123,11 @@ def test_5386b907():
     assert sum(flatten(scores)) == EXPECTED['better_sentence_of_lowercase_5_letter_words']
 
 
-def X_test_5386b908():
-    """Level 8: profound_sentence_of_lowercase_5_letter_words"""
+def X_test_86b908():
+    """
+    Level 8:
+    Profound sentence of lowercase 5 letter words
+    """
     decisions = word('waits'), word('while'), word('world'), word('warms')
     scores = company_score(decisions=decisions, is_sentence=True, is_profound=True)
     assert scores == [[51200000, -100000, -100000, 0, 0],
@@ -112,7 +138,16 @@ def X_test_5386b908():
     assert sum(flatten(scores)) == expected
 
 
-def test_5386b920():
+def test_86b909():
+    """Example with 3 squads"""
+    decisions = word('waits'), word('while'), word('world')
+    scores = company_score(decisions=decisions, is_sentence=True, is_profound=True)
+    assert scores == [[51200000, -100000, -100000, 0, 0],
+                      [0, 800000, -100000, 1600000, -100000],
+                      [51200000, -100000, 102400000, 0, 0]]
+
+
+def test_86b920():
     """ Scores increase as fortune cookies levels are unlocked"""
     s1 = EXPECTED['invalid_entry']
     s2 = EXPECTED['all_Xs_and_Ys']

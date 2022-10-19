@@ -2,5 +2,5 @@
 
 import uuid
 
-tid = str(uuid.uuid4())[:6]
-print(f"def test_{tid}00():")
+tid = str(uuid.uuid4())[:5]
+print(f"def test_{tid}0():")

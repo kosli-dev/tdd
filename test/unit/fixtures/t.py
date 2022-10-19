@@ -9,11 +9,11 @@ def t(request):
 class T:
 
     def __init__(self, request):
-        test_name = request.node.name  # eg  'test_ede61960[3-4]' where [ starts parameters
-        parts = re.split(r'_|\[', test_name)  # eg ['test', 'ede61960', '3-4']
-        assert len(parts[1]) == 8
+        test_name = request.node.name  # eg  'test_e61960[3-4]' where [ starts parameters
+        parts = re.split(r'_|\[', test_name)  # eg ['test', 'e61960', '3-4']
+        assert len(parts[1]) == 6
         prefix = parts[1]
-        self.id = prefix        # eg 'ede61960'
+        self.id = prefix        # eg 'e61960'
         self.n = tally(prefix)  # eg 0
 
 
