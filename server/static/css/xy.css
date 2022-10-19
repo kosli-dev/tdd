@@ -1,21 +1,31 @@
 
 body
 {
-   margin: 50px;
-   background: khaki;
-   font-size: 2em
+    margin: 50px;
+    background: khaki;
+    font-size: 2em
 }
 
 .squad, .yes_no
 {
-   margin: 20px;
-   padding: 20px;
-   font-size: 1.6em;
-   border: 1px solid gray;
+    margin: 20px;
+    padding: 20px;
+    font-size: 1.6em;
+    border: 1px solid gray;
 }
 
-.squad input
+input[type=text]
 {
-  font-size: 1em;
-  max-width: 5ch;
+    font-size: 1em;
+    padding-left: 25px;
+    padding-right: 20px;
+    max-width: 5ch;
+}
+
+input[type=checkbox]
+{
+    margin-left: 25px;
+    transform: scale(3);
+    position: relative;
+    top: -10px;
 }
