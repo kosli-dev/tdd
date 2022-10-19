@@ -1,6 +1,7 @@
 
 # Core
 Translate all Ruby unit tests to passing Python tests
+Ensure webassets path is set per process. See https://github.com/kosli-dev/server/commit/451f762d44a9ac1b16f43ed3c24bbe8b70ab97c9
 Add a few API tests
 Add html template pages
 Add a few APP tests
