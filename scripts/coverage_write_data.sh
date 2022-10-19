@@ -8,16 +8,14 @@ readonly ROOT_DIR="$(cd "${MY_DIR}/.." && pwd)"
 # forces coverage to write its pending coverage data
 # to .coverage.* file) without actually sending SIGINT
 # The idea is that we can re-run system tests without
-# having to restart a server and mongo and then wait
+# having to restart a server (and mongo) and then wait
 # for them to be ready.
-# Once this is done we will also need to drop all the
-# databases before running the system tests.
 
 #docker exec \
 #  --interactive \
 #  --tty \
 #  "${XY_CONTAINER}" \
-#    "/${XY_DIR}/test/system/stop_coverage.py"
+#    "/${XY_DIR}/test/system/coverage_write_data.py"
 
 
 # Sending SIGINT does indeed run the coverage exit-handlers
@@ -47,4 +45,4 @@ docker exec \
 #  --tty \
 #  --volume="${ROOT_DIR}:/${XY_DIR}" \
 #  "${XY_IMAGE}" \
-#    "/${XY_DIR}/test/system/stop_coverage.py"
+#    "/${XY_DIR}/test/system/coverage_write_data.py"

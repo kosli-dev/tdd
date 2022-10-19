@@ -14,7 +14,7 @@ export $(echo_env_vars)
 
 "${MY_DIR}/server_down.sh"
 "${MY_DIR}/wait_till_server_exited.sh"
-#"${MY_DIR}/stop_coverage.sh" # not working
+#"${MY_DIR}/coverage_write_data.sh" # not working
 
-"${MY_DIR}/gather_coverage.sh"
+"${MY_DIR}/coverage_write_report.sh"
 

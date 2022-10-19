@@ -12,7 +12,7 @@ docker run \
   --tty \
   --volume="${ROOT_DIR}:/${XY_DIR}" \
   "${XY_IMAGE}" \
-    "/${XY_DIR}/test/system/gather_coverage.sh"
+    "/${XY_DIR}/test/system/coverage_write_report.sh"
 
 
 echo "${ROOT_DIR}/test/system/coverage/index.html"
