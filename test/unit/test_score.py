@@ -41,7 +41,7 @@ def test_5386b902():
     assert sum(flatten(scores)) == EXPECTED['letters_from_heading']
 
 
-def X_test_5386b903():
+def test_5386b903():
     """Level 4: Only lowercase letters from 'Big Fish Little Pond War' heading"""
     decisions = go('bigfi'), go('shlit'), go('tlepo'), go('ndwar')
     scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)

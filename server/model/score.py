@@ -8,8 +8,8 @@ def company_score(**kwargs):
     assert well_formed(words)
     words = [list(word) for word in words]
     multipliers = squad_multipliers(words, are_words, is_sentence, is_profound)
-    return [score * multiplier
-            for score, multiplier
+    return [[score * multiplier for score in scores]
+            for scores, multiplier
             in zip(squad_scores(*words), multipliers)]
 
 
@@ -26,7 +26,7 @@ def squad_scores(*company_decisions):
 def squad_score(n, squad_decisions, company_decisions):
     scores = []
     for i in range(0, 5):
-        score, n = letter_score(n, squad_decisions[i], ith(company_decisions,i))
+        score, n = letter_score(n, squad_decisions[i], ith(company_decisions, i))
         scores.append(score)
     return [scores, n]
 
