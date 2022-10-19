@@ -8,21 +8,12 @@ from api.score import init_score_routes
 
 def app():
     xy = Flask(__name__)
-
     assets = Environment(xy)
     assets.url = xy.static_url_path
-
-    css_files = asset_file_paths(xy, "css")
-    css = Bundle(*css_files, filters='cssmin', output='bundle.css')
-    assets.register('css', css)
-
-    js_files = asset_file_paths(xy, "js")
-    js = Bundle(*js_files, filters='jsmin', output='bundle.js')
-    assets.register('js', js)
-
+    init_css(xy, assets)
+    init_js(xy, assets)
     init_api_blueprint(xy)
     init_app_blueprint(xy)
-
     return xy
 
 
@@ -48,20 +39,29 @@ def init_api_blueprint(xy):
         ])
     )
     init_score_routes(api)
-
     xy.register_blueprint(api_blueprint, url_prefix='/api')
 
 
 def init_app_blueprint(xy):
     import app
     app_blueprint = app.get_app_blueprint()
-
     app.register_health_routes(app_blueprint)
     app.register_score_routes(app_blueprint)
-
     xy.register_blueprint(app_blueprint)
 
 
+def init_css(xy, assets):
+    css_files = asset_file_paths(xy, "css")
+    css = Bundle(*css_files, filters='cssmin', output='bundle.css')
+    assets.register('css', css)
+
+
+def init_js(xy, assets):
+    js_files = asset_file_paths(xy, "js")
+    js = Bundle(*js_files, filters='jsmin', output='bundle.js')
+    assets.register('js', js)
+
+
 def asset_file_paths(app, dir_name):
-    dir = Path(f'{app.root_path}/static/{dir_name}')
-    return [f'{dir_name}/{file.name}' for file in dir.iterdir()]
+    static_path = Path(f'{app.root_path}/static/{dir_name}')
+    return [f'{static_path}/{file.name}' for file in static_path.iterdir()]
