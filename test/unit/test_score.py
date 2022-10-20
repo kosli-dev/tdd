@@ -123,7 +123,7 @@ def test_86b907():
     assert sum(flatten(scores)) == EXPECTED['better_sentence_of_lowercase_5_letter_words']
 
 
-def X_test_86b908():
+def test_86b908():
     """
     Level 8:
     Profound sentence of lowercase 5 letter words
@@ -134,7 +134,7 @@ def X_test_86b908():
                       [0, 800000, -100000, 1600000, -100000],
                       [51200000, -100000, 102400000, 0, 0],
                       [0, -100000, 0, 0, 400000]]
-    expected = EXPECTED['better_sentence_of_lowercase_5_letter_words']
+    expected = EXPECTED['profound_sentence_of_lowercase_5_letter_words']
     assert sum(flatten(scores)) == expected
 
 

@@ -1,18 +1,17 @@
 
 # Core
 Add submit button - get basic html GET -> POST working, render/redirect
-Translate all Ruby unit tests to passing Python tests
 Add a few API tests
 Add a few APP tests
-Make the number of Squads dynamic.
+Add JS to make the number of Squads dynamic.
 
-# Maybe
+# Maybe?
 Make t fixture so its available to both system and unit tests
-Drop Swagger? RestX
+Drop Swagger RestX
 Document API call
-Investigate calling coverage.embed.cleanup() so there is no need to kill server?
+Investigate calling coverage.embed.cleanup() so there is no need to kill server
   https://github.com/pytest-dev/pytest-cov/blob/master/src/pytest_cov/embed.py
 
 # Marketing
-Write slides
+Write slides. Present.
 Write blog posts
