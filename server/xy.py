@@ -54,7 +54,7 @@ def webasset_cache_dir():
     path = f"/tmp/webasset-cache-{os.getpid()}"
     try:
         os.mkdir(path)
-    except FileExistsError:
+    except FileExistsError:  # pragma: no cover
         pass
     return path
 
