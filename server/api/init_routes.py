@@ -20,9 +20,9 @@ class CompanyScoreApi(Resource):
 
 class CoverageWriteData(Resource):
     def post(self):
-        #from sitecustomize import coverage_write_data
-        #coverage_write_data()
-        pass
+        from sitecustomize import cov
+        cov.stop()
+        cov.save()
 
 
 def init_routes(api):
