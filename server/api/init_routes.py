@@ -18,6 +18,6 @@ class CompanyScoreApi(Resource):
         return company_score(**ns.payload)
 
 
-def init_score_routes(api):
+def init_routes(api):
     api.add_namespace(ns, '/company')
     ns.add_resource(CompanyScoreApi, '/score/')

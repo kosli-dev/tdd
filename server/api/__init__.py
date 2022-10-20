@@ -1,4 +1,5 @@
 from flask import Blueprint
+from .init_routes import init_routes
 
 
 def get_api_blueprint():

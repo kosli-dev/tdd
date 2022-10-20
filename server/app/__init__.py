@@ -1,7 +1,6 @@
 from flask import Blueprint
 
-from .health import register_health_routes
-from .score import register_score_routes
+from .register_routes import register_routes
 
 
 def get_app_blueprint():
