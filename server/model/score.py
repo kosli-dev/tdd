@@ -43,7 +43,6 @@ def letter_score(n, squad_decision, company_decisions):
     elif squad_decision == 'Y':
         score = xy_score(5, 3, 3, company_decisions)
     else:
-        assert squad_decision != '0'  # FIX ME
         score = BIG_FISH_TABLE[n][squad_decision]
         n = (n + 1) % 6
 
