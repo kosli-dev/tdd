@@ -1,16 +1,5 @@
 from model import company_score
 
-EXPECTED = {
-    'invalid_entry': 76,
-    'all_Xs_and_Ys': 82,
-    'letters_from_heading': 1850,
-    'only_lowercase_letters_from_heading': 18500,
-    'only_lowercase_consonants_near_end_of_heading': 40960,
-    'sentence_of_lowercase_5_letter_words': 16840000,
-    'better_sentence_of_lowercase_5_letter_words': 17310000,
-    'profound_sentence_of_lowercase_5_letter_words': 207000000,
-}
-
 
 def test_86b900():
     """
@@ -84,7 +73,7 @@ def test_86b904():
 
 def test_86b905():
     """
-    Unconnected lowercase 5 letter words (scores can get worse)
+    Unconnected lowercase words (scores can get worse)
     """
     decisions = word('dwarf'), word('rules'), word('knife'), go('wwwww')
     scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)
@@ -98,7 +87,7 @@ def test_86b905():
 def test_86b906():
     """
     Level 6:
-    Sentence of lowercase 5 letter words
+    Sentence of lowercase words
     """
     decisions = word('wrong'), word('words'), word('score'), word('small')
     scores = company_score(decisions=decisions, is_sentence=True, is_profound=False)
@@ -106,13 +95,13 @@ def test_86b906():
                       [0, -10000, 0, 0, 40000],
                       [0, 0, -10000, 0, -10000],
                       [40000, 0, -10000, 160000, 0]]
-    assert sum(flatten(scores)) == EXPECTED['sentence_of_lowercase_5_letter_words']
+    assert sum(flatten(scores)) == EXPECTED['sentence_of_lowercase_words']
 
 
 def test_86b907():
     """
     Level 7:
-    Better sentence of lowercase 5 letter words
+    Better sentence of lowercase words
     """
     decisions = word('wrote'), word('wrong'), word('wrote'), word('wrath')
     scores = company_score(decisions=decisions, is_sentence=True, is_profound=False)
@@ -120,13 +109,13 @@ def test_86b907():
                       [0, 0, -10000, 1280000, 10000],
                       [0, 0, -10000, 0, -10000],
                       [0, 0,-10000, 320000, 80000]]
-    assert sum(flatten(scores)) == EXPECTED['better_sentence_of_lowercase_5_letter_words']
+    assert sum(flatten(scores)) == EXPECTED['better_sentence_of_lowercase_words']
 
 
 def test_86b908():
     """
     Level 8:
-    Profound sentence of lowercase 5 letter words
+    Profound sentence of lowercase words
     """
     decisions = word('waits'), word('while'), word('world'), word('warms')
     scores = company_score(decisions=decisions, is_sentence=True, is_profound=True)
@@ -134,8 +123,7 @@ def test_86b908():
                       [0, 800000, -100000, 1600000, -100000],
                       [51200000, -100000, 102400000, 0, 0],
                       [0, -100000, 0, 0, 400000]]
-    expected = EXPECTED['profound_sentence_of_lowercase_5_letter_words']
-    assert sum(flatten(scores)) == expected
+    assert sum(flatten(scores)) == EXPECTED['profound_sentence_of_lowercase_words']
 
 
 def test_86b909():
@@ -154,11 +142,23 @@ def test_86b920():
     s3 = EXPECTED['letters_from_heading']
     s4 = EXPECTED['only_lowercase_letters_from_heading']
     s5 = EXPECTED['only_lowercase_consonants_near_end_of_heading']
-    #             'unconnected_lowercase_5_letter_words'
-    s6 = EXPECTED['sentence_of_lowercase_5_letter_words']
-    s7 = EXPECTED['better_sentence_of_lowercase_5_letter_words']
-    s8 = EXPECTED['profound_sentence_of_lowercase_5_letter_words']
+    #             'unconnected_lowercase_words'
+    s6 = EXPECTED['sentence_of_lowercase_words']
+    s7 = EXPECTED['better_sentence_of_lowercase_words']
+    s8 = EXPECTED['profound_sentence_of_lowercase_words']
     assert is_sorted([s1, s2, s3, s4, s5, s6, s7, s8]), 'Level scores must increase!'
+
+
+EXPECTED = {
+    'invalid_entry': 76,
+    'all_Xs_and_Ys': 82,
+    'letters_from_heading': 1850,
+    'only_lowercase_letters_from_heading': 18500,
+    'only_lowercase_consonants_near_end_of_heading': 40960,
+    'sentence_of_lowercase_words': 16840000,
+    'better_sentence_of_lowercase_words': 17310000,
+    'profound_sentence_of_lowercase_words': 207000000,
+}
 
 
 def go(s):
@@ -170,8 +170,11 @@ def word(s):
 
 
 def is_sorted(s):
-    return all(s[i] <= s[i+1] for i in range(len(s) - 1))
+    return all(s[i] <= s[i+1]
+               for i in range(len(s) - 1))
 
 
 def flatten(arg):
-    return [item for sublist in arg for item in sublist]
+    return [item
+            for sublist in arg
+            for item in sublist]
