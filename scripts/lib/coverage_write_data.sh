@@ -11,12 +11,26 @@ readonly ROOT_DIR="$(cd "${MY_DIR}/../.." && pwd)"
 # having to restart a server (and mongo) and then wait
 # for them to be ready.
 
+#OUTPUT_FILE=$(mktemp)
+#URL=http://localhost:80/api/company/coverage_write_data
+#
+#set +e
+#HTTP_CODE=$(curl --header 'Content-Type: application/json' \
+#  --request POST \
+#  --output "${OUTPUT_FILE}" \
+#  --write-out "%{http_code}" \
+#  "${URL}"
+#)
+#set -e
+#>&2 cat "${OUTPUT_FILE}"
+#echo -n .
+#echo ${HTTP_CODE}
+
 #docker exec \
 #  --interactive \
 #  --tty \
 #  "${XY_CONTAINER}" \
 #    "/${XY_DIR}/test/system/coverage_write_data.py"
-
 
 # Sending SIGINT does indeed run the coverage exit-handlers
 # but it also kills the container...

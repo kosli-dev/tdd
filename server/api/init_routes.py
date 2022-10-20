@@ -18,6 +18,14 @@ class CompanyScoreApi(Resource):
         return company_score(**ns.payload)
 
 
+class CoverageWriteData(Resource):
+    def post(self):
+        #from sitecustomize import coverage_write_data
+        #coverage_write_data()
+        pass
+
+
 def init_routes(api):
     api.add_namespace(ns, '/company')
     ns.add_resource(CompanyScoreApi, '/score/')
+    ns.add_resource(CoverageWriteData, '/coverage_write_data')
