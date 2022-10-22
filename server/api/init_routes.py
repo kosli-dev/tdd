@@ -18,7 +18,7 @@ class CompanyScoreApi(Resource):
         return company_score(**ns.payload)
 
 
-class CoverageWriteData(Resource):
+class CoverageReport(Resource):
     def post(self):
         from coverage import Coverage
         cov = Coverage.current()
@@ -35,4 +35,4 @@ class CoverageWriteData(Resource):
 def init_routes(api):
     api.add_namespace(ns, '/company')
     ns.add_resource(CompanyScoreApi, '/score/')
-    ns.add_resource(CoverageWriteData, '/coverage_write_data')
+    ns.add_resource(CoverageReport, '/coverage_report')

@@ -7,5 +7,5 @@ export $(echo_env_vars)
 
 "${LIB_DIR}/coverage_rm.sh"
 "${LIB_DIR}/run_system_tests.sh"
-"${LIB_DIR}/coverage_write_data.sh"
+"${LIB_DIR}/coverage_report.sh"
 #"${LIB_DIR}/coverage_write_report.sh"

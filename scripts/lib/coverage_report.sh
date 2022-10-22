@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 set -Eeu
 
-readonly URL=http://localhost:80/api/company/coverage_write_data
+readonly URL=http://localhost:80/api/company/coverage_report
 
-HTTP_CODE=$(curl --header 'Content-Type: application/json' \
+$(curl --header 'Content-Type: application/json' \
   --request POST \
   --silent \
   --write-out "%{http_code}" \
-  "${URL}"
-)
+  "${URL}")
 
 docker exec \
   --interactive \
