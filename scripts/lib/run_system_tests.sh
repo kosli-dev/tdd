@@ -9,7 +9,7 @@ docker run \
   --net "${XY_NETWORK}" \
   --rm \
   --tty \
-  --volume="${XY_HOME_DIR}:/${XY_DIR}" \
+  --volume="${XY_REPO_DIR}:/${XY_DIR}" \
   "${XY_IMAGE}" \
     "/${XY_DIR}/test/system/run.sh"
 set -e
