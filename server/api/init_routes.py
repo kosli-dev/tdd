@@ -6,16 +6,17 @@ import os
 
 ns = Namespace('company', description='Score operations')
 
+DESCRIPTION = json.dumps({
+    "is_sentence": False,
+    "is_profound": False,
+    "decisions": [["XYZZY", False], ["hello", True]]
+})
+
 
 class CompanyScoreApi(Resource):
 
-    example = json.dumps({
-        "is_sentence": False,
-        "is_profound": False,
-        "decisions": [["XYZZY", False], ["hello", True]]
-    })
     @ns.doc('Score a round in an XY Business Game')
-    @ns.param(name="kwargs", _in="body", description=example)
+    @ns.param(name="kwargs", _in="body", description=DESCRIPTION)
     def post(self):
         return company_score(**ns.payload)
 
@@ -26,13 +27,11 @@ class CoverageReport(Resource):
 
     def _report(self):  # pragma: no cover
         cov = Coverage.current()
+        xy_dir = os.environ.get("XY_DIR")
         cov.stop()
         cov.save()
-        cov.combine(data_paths=[self._xy_dir()])
-        cov.html_report(directory=self._xy_dir()+"/test/system/coverage")
-
-    def _xy_dir(self):  # pragma: no cover
-        return os.environ.get("XY_DIR")
+        cov.combine(data_paths=[xy_dir])
+        cov.html_report(directory=xy_dir+"/test/system/coverage")
 
 
 def init_routes(api):
