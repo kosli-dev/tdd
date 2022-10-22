@@ -6,16 +6,18 @@ ns = Namespace('coverage', description='Coverage operations')
 
 
 class CoverageReport(Resource):
+    
     def post(self):
-        self._report()
+        report()
 
-    def _report(self):  # pragma: no cover
-        cov = Coverage.current()
-        xy_dir = os.environ.get("XY_DIR")
-        cov.stop()
-        cov.save()
-        cov.combine(data_paths=[xy_dir])
-        cov.html_report(directory=f"{xy_dir}/test/system/coverage")
+
+def report():  # pragma: no cover
+    cov = Coverage.current()
+    xy_dir = os.environ.get("XY_DIR")
+    cov.stop()
+    cov.save()
+    cov.combine(data_paths=[xy_dir])
+    cov.html_report(directory=f"{xy_dir}/test/system/coverage")
 
 
 def init_coverage_routes(api):
