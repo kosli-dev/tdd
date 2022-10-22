@@ -22,7 +22,6 @@ class CompanyScoreApi(Resource):
 
 class CoverageReport(Resource):
     def post(self):
-        cov = Coverage.current()
         self._report()
 
     def _report(self):  # pragma: no cover
