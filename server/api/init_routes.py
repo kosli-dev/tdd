@@ -1,6 +1,8 @@
 from flask_restx import Namespace, Resource
 from model import company_score
+from coverage import Coverage
 import json
+import os
 
 ns = Namespace('company', description='Score operations')
 
@@ -20,15 +22,17 @@ class CompanyScoreApi(Resource):
 
 class CoverageReport(Resource):
     def post(self):
-        from coverage import Coverage
+        cov = Coverage.current()
+        self._report()
+
+    def _report(self):  # pragma: no cover
         cov = Coverage.current()
         cov.stop()
         cov.save()
-        cov.combine(data_paths=[self.xy_dir()])
-        cov.html_report(directory=self.xy_dir()+"/test/system/coverage")
+        cov.combine(data_paths=[self._xy_dir()])
+        cov.html_report(directory=self._xy_dir()+"/test/system/coverage")
 
-    def xy_dir(self):
-        import os
+    def _xy_dir(self):  # pragma: no cover
         return os.environ.get("XY_DIR")
 
 
