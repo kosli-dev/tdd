@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -Eeu
 
+cd "${XY_HOME_DIR}"
+
 docker build \
   --build-arg XY_DIR \
   --build-arg XY_PORT \

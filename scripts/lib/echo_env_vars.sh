@@ -9,4 +9,5 @@ echo_env_vars()
   echo XY_NETWORK=xy_net
   echo XY_PORT=8001
   echo XY_USER=xy
+  echo XY_HOME_DIR="$(cd "${XY_LIB_DIR}/../.."; pwd)"
 }

@@ -16,6 +16,10 @@ with_coverage()
     "$(scripts_dir)/${command}_with_coverage.sh"
 }
 
-scripts_dir() {
-  cd "$(dirname "${BASH_SOURCE[0]}")/scripts" && pwd
+scripts_dir()
+{
+  # BASH_SOURCE is empty inside a 'sourced' script
+  local -r repo_home=$(git rev-parse --show-toplevel)
+  echo "${repo_home}/scripts"
 }
+

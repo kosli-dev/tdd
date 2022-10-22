@@ -7,17 +7,17 @@ o) gathering coverage stats from the target server's container
 o) using tests named with a GUID
 
 ```
-$ source ./shortcuts.sh
+$ source ./scripts/shortcuts.sh
 
-$ rut          # run all unit tests in new server
-$ rut a2189600 # run only unit test_a2189600 in new server
+$ rut          # run all unit tests in new xy server
+$ rut a2189600 # run only unit test_a2189600 in new xy server
 
-$ eut          # exec all unit tests in existing server
-$ eut a2189600 # exec only unit test a2189600 in existing server
+$ rst          # run all system tests in new xy server
+$ rst 04692400 # run only system test_04692400 in new xy server
 
-$ rst          # run all system tests
-$ rst 04692400 # run only system test_04692400
+$ eut          # run all unit tests in existing xy server
+$ eut a2189600 # run only unit test a2189600 in existing xy server
 
-$ est          # exec all system tests in existing server
-$ est 04692400 # exec only system test 04692400 in existing server
+$ est          # run all system tests in restarted xy server
+$ est 04692400 # run only system test 04692400 in restarted xy server
 ```
