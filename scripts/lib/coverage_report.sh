@@ -7,4 +7,9 @@ curl \
   http://localhost:80/api/coverage/report \
     > /dev/null
 
-echo "${XY_REPO_DIR}/test/system/coverage/index.html"
+FILE="${XY_REPO_DIR}/test/system/coverage/index.html"
+if [ -f "${FILE}" ]; then
+  echo "${FILE}"
+else
+  echo "!!! MISSING...${FILE}"
+fi

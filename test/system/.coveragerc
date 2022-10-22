@@ -1,9 +1,9 @@
 # This .coveragerc file is named in the environment-variable
-# COVERAGE_PROCESS_START=/${XY_DIR}/test/system/.coveragerc
+# COVERAGE_PROCESS_START=/${XY_APP_DIR}/test/system/.coveragerc
 # set in env_vars/test_system.env
 
 [run]
-source=/${XY_DIR}/server
+source=/${XY_APP_DIR}/server
 parallel=True
 branch=True
 omit =

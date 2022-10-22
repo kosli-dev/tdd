@@ -12,6 +12,11 @@ docker exec \
   --interactive \
   --tty \
   "${XY_CONTAINER}" \
-    "${XY_DIR}/test/unit/run.sh"
+    "${XY_APP_DIR}/test/unit/run.sh"
 
-echo "${XY_REPO_DIR}/test/unit/coverage/index.html"
+FILE="${XY_REPO_DIR}/test/unit/coverage/index.html"
+if [ -f "${FILE}" ]; then
+  echo "${FILE}"
+else
+  echo "!!! MISSING...${FILE}"
+fi

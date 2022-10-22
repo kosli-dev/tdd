@@ -12,7 +12,7 @@ services:
     networks: [ xy_net ]
     ports: [ "80:${XY_PORT}" ]
     tmpfs: [ /tmp ]
-    volumes: [ ".:${XY_DIR}" ]
+    volumes: [ ".:${XY_APP_DIR}" ]
 
 # The volume-mount is required so that
 # html coverage reports written inside a container
