@@ -7,4 +7,4 @@ curl \
   http://localhost:80/api/coverage/report \
     > /dev/null
 
-echo "${XY_HOME_DIR}/test/system/coverage/index.html"
+echo "${XY_REPO_DIR}/test/system/coverage/index.html"
