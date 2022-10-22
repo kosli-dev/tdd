@@ -6,7 +6,8 @@ ns = Namespace('coverage', description='Coverage operations')
 
 
 class CoverageReport(Resource):
-    
+
+    # noinspection PyMethodMayBeStatic
     def post(self):
         report()
 
