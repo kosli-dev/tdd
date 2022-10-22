@@ -4,6 +4,8 @@ set -Eeu
 exec gunicorn \
   --bind "0.0.0.0:${XY_PORT}" \
   --log-level info \
-  --threads=4 \
-  --workers=2 \
   'xy:app()'
+
+# TODO: get combined coverage of both workers
+#  --threads=4 \
+#  --workers=2 \
