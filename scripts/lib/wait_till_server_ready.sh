@@ -2,7 +2,7 @@
 set -Eeu
 
 readonly IP_ADDRESS=localhost
-readonly MAX_TRIES=3
+readonly MAX_TRIES=15
 
 for try in $(seq 1 ${MAX_TRIES}); do
   if [ $(curl -sw '%{http_code}' "${IP_ADDRESS}/ready" -o /dev/null) -eq 200 ]; then
@@ -10,7 +10,7 @@ for try in $(seq 1 ${MAX_TRIES}); do
     exit 0
   else
     echo "Waiting for ${IP_ADDRESS} readiness... ${try}/${MAX_TRIES}"
-    sleep 1
+    sleep 0.2
   fi
 done
 echo "Failed ${IP_ADDRESS} readiness"
