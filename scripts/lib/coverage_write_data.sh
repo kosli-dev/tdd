@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
 set -Eeu
 
-readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly URL=http://localhost:80/api/company/coverage_write_data
 
-OUTPUT_FILE=$(mktemp)
-URL=http://localhost:80/api/company/coverage_write_data
-
-set +e
 HTTP_CODE=$(curl --header 'Content-Type: application/json' \
   --request POST \
-  --output "${OUTPUT_FILE}" \
+  --silent \
   --write-out "%{http_code}" \
   "${URL}"
 )
-set -e
->&2 cat "${OUTPUT_FILE}"
-echo -n .
-echo "${HTTP_CODE}"
+
+docker exec \
+  --interactive \
+  --tty \
+  "${XY_CONTAINER}" \
+    sh -c "pkill -SIGHUP -o gunicorn"
+
+readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly ROOT_DIR="$(cd "${MY_DIR}/../.." && pwd)"
+echo "${ROOT_DIR}/test/system/coverage/index.html"

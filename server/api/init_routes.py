@@ -20,9 +20,16 @@ class CompanyScoreApi(Resource):
 
 class CoverageWriteData(Resource):
     def post(self):
-        from sitecustomize import cov
+        from coverage import Coverage
+        cov = Coverage.current()
         cov.stop()
         cov.save()
+        cov.combine(data_paths=[self.xy_dir()])
+        cov.html_report(directory=self.xy_dir()+"/test/system/coverage")
+
+    def xy_dir(self):
+        import os
+        return os.environ.get("XY_DIR")
 
 
 def init_routes(api):
