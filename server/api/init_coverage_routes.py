@@ -15,7 +15,7 @@ class CoverageReport(Resource):
         cov.stop()
         cov.save()
         cov.combine(data_paths=[xy_dir])
-        cov.html_report(directory=xy_dir+"/test/system/coverage")
+        cov.html_report(directory=f"{xy_dir}/test/system/coverage")
 
 
 def init_coverage_routes(api):
