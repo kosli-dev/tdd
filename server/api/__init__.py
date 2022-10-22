@@ -1,5 +1,6 @@
 from flask import Blueprint
-from .init_routes import init_routes
+from .init_score_routes import init_score_routes
+from .init_coverage_routes import init_coverage_routes
 
 
 def get_api_blueprint():

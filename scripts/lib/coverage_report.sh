@@ -4,7 +4,7 @@ set -Eeu
 curl \
   --request POST \
   --silent \
-  http://localhost:80/api/company/coverage_report \
+  http://localhost:80/api/coverage/report \
     > /dev/null
 
 readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
