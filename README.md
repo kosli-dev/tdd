@@ -4,7 +4,11 @@ Repo to illustrate TDD topics for future talks/blogs
 o) gathering coverage stats from the target server's container
    when tests are being run from a different container.
 
+o) gathering coverage stats for code and for tests
+
 o) using tests named with a GUID
+
+o) contract/characterisation testing with decorators
 
 ```
 $ source ./scripts/shortcuts.sh
