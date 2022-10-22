@@ -3,6 +3,11 @@ from .init_score_routes import init_score_routes
 from .init_coverage_routes import init_coverage_routes
 
 
+def init_routes(api):
+    init_score_routes(api)
+    init_coverage_routes(api)
+
+
 def get_api_blueprint():
     # The dynamic blueprint creation pattern is used
     # to enable multiple instantiations of the application

@@ -3,7 +3,7 @@ from flask_restx import Api as RestXApi
 from flask_assets import Environment, Bundle
 import os
 from pathlib import Path
-from api import get_api_blueprint, init_score_routes, init_coverage_routes
+from api import get_api_blueprint, init_routes
 
 
 def app():
@@ -39,8 +39,7 @@ def init_api_blueprint(xy):
             "Available on LeanPub: https://leanpub.com/experientiallearning4sampleexercises"
         ])
     )
-    init_score_routes(api)
-    init_coverage_routes(api)
+    init_routes(api)
     xy.register_blueprint(api_blueprint, url_prefix='/api')
 
 
