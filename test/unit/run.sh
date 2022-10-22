@@ -3,10 +3,13 @@ set -Eeu
 
 readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# To set the random-ordering seed
-#       --random-order-seed=<seed>
+# Important to _not_ quote the rm'd expression here so * expands
+rm ${XY_APP_DIR}/.coverage* > /dev/null || true
+rm -rf "${XY_APP_DIR}/test/unit/coverage" > /dev/null || true
 
 set +e
+# To set the random-ordering seed
+#       --random-order-seed=<seed>
 pytest \
   --cache-clear `# Clear .coverage cache. It persists as it is in the volume-mount` \
   --capture=no `# Turn off capturing. Makes print() effects visible and interleaved` \
