@@ -1,19 +1,19 @@
 # See README.md
 
-rut() { with_coverage run_unit_tests "$*"; }
-eut() { with_coverage exec_unit_tests "$*"; }
-rst() { with_coverage run_system_tests "$*"; }
-est() { with_coverage exec_system_tests "$*"; }
+rut() { testing run unit "$*"; }
+eut() { testing exec unit "$*"; }
+rst() { testing run system "$*"; }
+est() { testing exec system "$*"; }
 
 tid() { "$(scripts_dir)/print_test_id.sh"; }
 demo() { "$(scripts_dir)/run_demo.sh"; }
 
-with_coverage()
+testing()
 {
-  local -r command="${1}"
-  shift
+  local -r command="${1}"; shift
+  local -r scope="${1}"; shift
   TIDS="-k ${*// / or }" \
-    "$(scripts_dir)/${command}_with_coverage.sh"
+    "$(scripts_dir)/test/${scope}/covered_${command}.sh"
 }
 
 scripts_dir()
