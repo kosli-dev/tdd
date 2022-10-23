@@ -28,4 +28,4 @@ set -e
 coverage html \
   --directory "${MY_DIR}/coverage" \
   --precision=2 \
-  --skip-empty > /dev/null
+  --quiet
