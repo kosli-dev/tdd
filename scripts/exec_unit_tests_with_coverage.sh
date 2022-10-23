@@ -14,9 +14,4 @@ docker exec \
   "${XY_CONTAINER}" \
     "${XY_APP_DIR}/test/unit/run.sh"
 
-FILE="${XY_REPO_DIR}/test/unit/coverage/index.html"
-if [ -f "${FILE}" ]; then
-  echo "${FILE}"
-else
-  echo "!!! MISSING...${FILE}"
-fi
+echo "${XY_REPO_DIR}/test/unit/coverage/index.html"
