@@ -9,11 +9,11 @@ if [ -z "${XY_LIB_DIR:-}" ]; then
   export $(echo_env_vars)
 fi
 
-"${MY_DIR}/server_restart.sh"
+"${MY_DIR}/lib/server_restart.sh"
 "${XY_LIB_DIR}/wait_till_server_ready.sh"
-"${MY_DIR}/rm_coverage.sh"
-"${MY_DIR}/run_tests.sh"
-"${MY_DIR}/report_coverage.sh"
+"${MY_DIR}/lib/rm_coverage.sh"
+"${MY_DIR}/lib/run_tests.sh"
+"${MY_DIR}/lib/report_coverage.sh"
 
 
 
