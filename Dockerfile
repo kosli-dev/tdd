@@ -6,10 +6,12 @@ RUN pip3 install -r /tmp/requirements.txt
 
 ARG XY_APP_DIR \
     XY_PORT \
-    XY_USER
+    XY_USER \
+    XY_WORKERS
 
 ENV XY_APP_DIR=${XY_APP_DIR} \
     XY_PORT=${XY_PORT} \
+    XY_WORKERS=${XY_WORKERS} \
     PYTHONPATH=${XY_APP_DIR}/server \
     TERM=xterm-256color
 

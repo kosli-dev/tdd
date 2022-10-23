@@ -5,8 +5,10 @@ cd "${XY_APP_DIR}"
 status=42
 while [ ${status} != 0 ];
 do
-  # Empirically, we have to loop until this works
-  coverage combine --quiet "${XY_APP_DIR}" &> /dev/null
+  # We often get the following error
+  #   Couldn't use data file '/xy/.coverage': unable to open database file
+  # Empirically, if we keep trying it becomes ready.
+  coverage combine "${XY_APP_DIR}" &> /dev/null
   status=$?
 done
 

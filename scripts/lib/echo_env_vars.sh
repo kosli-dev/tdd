@@ -10,4 +10,5 @@ echo_env_vars()
   echo XY_NETWORK=xy_net  # Also in docker-compose.yaml
   echo XY_PORT=8001
   echo XY_USER=xy
+  echo XY_WORKERS=2
 }
