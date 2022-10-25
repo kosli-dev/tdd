@@ -8,7 +8,7 @@ source "${MY_DIR}/../lib.sh"
 export $(echo_env_vars)
 
 build_image
-"${XY_LIB_DIR}/network_up.sh"
+network_up
 "${XY_LIB_DIR}/server_up.sh"
 "${XY_LIB_DIR}/wait_till_server_ready.sh"
 "${MY_DIR}/covered_exec.sh"

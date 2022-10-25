@@ -24,3 +24,7 @@ build_image() {
       .
 }
 
+network_up() {
+  docker network inspect "${XY_NETWORK}" > /dev/null \
+    || docker network create --driver bridge "${XY_NETWORK}"
+}
