@@ -7,7 +7,7 @@ export XY_LIB_DIR="$(cd "${MY_DIR}/../../lib"; pwd)"
 source "${MY_DIR}/../lib.sh"
 export $(echo_env_vars)
 
-"${XY_LIB_DIR}/build_image.sh"
+build_image
 "${XY_LIB_DIR}/network_up.sh"
 "${XY_LIB_DIR}/server_up.sh"
 "${XY_LIB_DIR}/wait_till_server_ready.sh"
