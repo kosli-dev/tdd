@@ -2,8 +2,6 @@
 set -Eeu
 
 MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
-
-export XY_LIB_DIR="$(cd "${MY_DIR}/../../lib"; pwd)"
 source "${MY_DIR}/../lib.sh"
 export $(echo_env_vars)
 
