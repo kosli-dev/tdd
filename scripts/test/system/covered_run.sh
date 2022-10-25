@@ -10,5 +10,6 @@ export $(echo_env_vars)
 build_image
 network_up
 server_up
-"${XY_LIB_DIR}/wait_till_server_ready.sh"
+wait_till_server_ready
+
 "${MY_DIR}/covered_exec.sh"

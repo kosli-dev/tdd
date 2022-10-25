@@ -10,7 +10,7 @@ if [ -z "${XY_LIB_DIR:-}" ]; then
 fi
 
 "${MY_DIR}/lib/server_restart.sh"
-"${XY_LIB_DIR}/wait_till_server_ready.sh"
+wait_till_server_ready
 "${MY_DIR}/lib/rm_coverage.sh"
 "${MY_DIR}/lib/run_tests.sh"
 "${MY_DIR}/lib/report_coverage.sh"
