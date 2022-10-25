@@ -43,18 +43,18 @@ server_up() {
 }
 
 wait_till_server_ready() {
-  local -r IP_ADDRESS=localhost
-  local -r MAX_TRIES=15
-  for try in $(seq 1 ${MAX_TRIES}); do
-    if [ $(curl -sw '%{http_code}' "${IP_ADDRESS}/ready" -o /dev/null) -eq 200 ]; then
-      echo "${IP_ADDRESS} is ready"
+  local -r ip_address=localhost
+  local -r max_tries=15
+  for try in $(seq 1 ${max_tries}); do
+    if [ $(curl -sw '%{http_code}' "${ip_address}/ready" -o /dev/null) -eq 200 ]; then
+      echo "${ip_address} is ready"
       return 0
     else
-      echo "Waiting for ${IP_ADDRESS} readiness... ${try}/${MAX_TRIES}"
+      echo "Waiting for ${ip_address} readiness... ${try}/${max_tries}"
       sleep 0.2
     fi
   done
-  echo "Failed ${IP_ADDRESS} readiness"
+  echo "Failed ${ip_address} readiness"
   docker container logs "${XY_CONTAINER}" || true
   exit 1
 }

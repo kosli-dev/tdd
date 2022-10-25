@@ -5,5 +5,5 @@ exec gunicorn \
   --bind "0.0.0.0:${XY_PORT}" \
   --log-level info \
   --threads=4 \
-  --workers="${XY_WORKERS}" \
+  --workers="${XY_WORKERS:-2}" \
   'xy:app()'
