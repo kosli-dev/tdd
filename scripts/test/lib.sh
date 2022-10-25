@@ -28,3 +28,11 @@ network_up() {
   docker network inspect "${XY_NETWORK}" > /dev/null \
     || docker network create --driver bridge "${XY_NETWORK}"
 }
+
+server_up() {
+  cd "${XY_REPO_DIR}"
+  docker-compose \
+    --env-file=env_vars/test_system_up.env \
+    --file docker-compose.yaml \
+      up --no-build --detach
+}
