@@ -71,3 +71,10 @@ server_restart() {
       sh -c "pkill -SIGHUP -o gunicorn"
 }
 export -f server_restart
+
+rm_coverage() {
+  # Important to _not_ quote the rm'd expression here so * expands
+  rm ${XY_REPO_DIR}/.coverage* > /dev/null || true
+  rm -rf "${XY_REPO_DIR}/test/system/coverage" > /dev/null || true
+}
+export -f rm_coverage
