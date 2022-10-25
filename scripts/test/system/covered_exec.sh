@@ -5,7 +5,7 @@ MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
 
 if [ -z "${XY_LIB_DIR:-}" ]; then
   export XY_LIB_DIR="$(cd "${MY_DIR}/../../lib"; pwd)"
-  source "${XY_LIB_DIR}/echo_env_vars.sh"
+  source "${MY_DIR}/../lib.sh"
   export $(echo_env_vars)
 fi
 
