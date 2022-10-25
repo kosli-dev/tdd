@@ -12,7 +12,10 @@ server_restart
 wait_till_server_ready
 rm_coverage
 run_tests
-"${MY_DIR}/lib/report_coverage.sh"
+save_coverage
+report_coverage
+echo "${XY_REPO_DIR}/test/system/coverage/index.html"
+
 
 
 

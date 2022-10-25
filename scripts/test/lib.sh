@@ -58,7 +58,6 @@ wait_till_server_ready() {
   docker container logs "${XY_CONTAINER}" || true
   exit 1
 }
-export -f wait_till_server_ready
 
 server_restart() {
   # There are several processes with the name gunicorn.
@@ -70,14 +69,12 @@ server_restart() {
     "${XY_CONTAINER}" \
       sh -c "pkill -SIGHUP -o gunicorn"
 }
-export -f server_restart
 
 rm_coverage() {
   # Important to _not_ quote the rm'd expression here so * expands
   rm ${XY_REPO_DIR}/.coverage* > /dev/null || true
   rm -rf "${XY_REPO_DIR}/test/system/coverage" > /dev/null || true
 }
-export -f rm_coverage
 
 run_tests() {
   set +e
@@ -93,4 +90,47 @@ run_tests() {
       "${XY_APP_DIR}/test/system/run.sh"
   set -e
 }
+
+coverage_file_count()
+{
+  # Find is less noisy than ls when there are no matches
+  find . -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
+}
+
+save_coverage_curl()
+{
+  # Docker exec-ing into the container to save coverage files doesn't work
+  # so we have to curl an API route.
+  curl \
+    --request POST \
+    --silent \
+    http://localhost:80/api/coverage/save \
+    >/dev/null
+}
+
+save_coverage()
+{
+  # Repeat until we have curled each worker process.
+  while [ "$(coverage_file_count)" != "${XY_WORKERS}" ]
+  do
+    save_coverage_curl
+  done
+}
+
+report_coverage()
+{
+  docker exec \
+    --interactive \
+    --tty \
+    "${XY_CONTAINER}" \
+      "${XY_APP_DIR}/test/system/report_coverage.sh"
+}
+
+export -f wait_till_server_ready
+export -f server_restart
+export -f rm_coverage
 export -f run_tests
+export -f coverage_file_count
+export -f save_coverage_curl
+export -f save_coverage
+export -f report_coverage
