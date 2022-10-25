@@ -78,3 +78,19 @@ rm_coverage() {
   rm -rf "${XY_REPO_DIR}/test/system/coverage" > /dev/null || true
 }
 export -f rm_coverage
+
+run_tests() {
+  set +e
+  docker run \
+    --entrypoint="" \
+    --env TIDS="${TIDS}" \
+    --interactive \
+    --net "${XY_NETWORK}" \
+    --rm \
+    --tty \
+    --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
+    "${XY_IMAGE}" \
+      "${XY_APP_DIR}/test/system/run.sh"
+  set -e
+}
+export -f run_tests

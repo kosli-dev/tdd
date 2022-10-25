@@ -11,7 +11,7 @@ fi
 server_restart
 wait_till_server_ready
 rm_coverage
-"${MY_DIR}/lib/run_tests.sh"
+run_tests
 "${MY_DIR}/lib/report_coverage.sh"
 
 
