@@ -8,7 +8,7 @@ if [ -z "${XY_REPO_DIR:-}" ]; then
   export $(echo_env_vars)
 fi
 
-"${MY_DIR}/lib/server_restart.sh"
+server_restart
 wait_till_server_ready
 "${MY_DIR}/lib/rm_coverage.sh"
 "${MY_DIR}/lib/run_tests.sh"

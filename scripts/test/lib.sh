@@ -59,3 +59,15 @@ wait_till_server_ready() {
   exit 1
 }
 export -f wait_till_server_ready
+
+server_restart() {
+  # There are several processes with the name gunicorn.
+  # One for the 'master' and one each for the workers.
+  # Send SIGHUP to the master which is the oldest (-o).
+  docker exec \
+    --interactive \
+    --tty \
+    "${XY_CONTAINER}" \
+      sh -c "pkill -SIGHUP -o gunicorn"
+}
+export -f server_restart
