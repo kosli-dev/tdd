@@ -2,7 +2,7 @@
 set -Eeu
 
 echo_env_vars() {
-  echo XY_REPO_DIR="$(cd "${XY_LIB_DIR}/../.."; pwd)"  # Outside the container
+  echo XY_REPO_DIR="$(xy_repo_dir)"  # Outside the container
   echo XY_APP_DIR=/xy  # Inside the container
   echo XY_CONTAINER=xy
   echo XY_IMAGE=xy_image
@@ -10,6 +10,11 @@ echo_env_vars() {
   echo XY_PORT=8001
   echo XY_USER=xy
   echo XY_WORKERS=2
+}
+
+xy_repo_dir() {
+  # BASH_SOURCE is empty inside a 'sourced' script
+  git rev-parse --show-toplevel
 }
 
 build_image() {
