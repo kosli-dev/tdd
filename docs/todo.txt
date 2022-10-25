@@ -1,5 +1,6 @@
 
 # Core
+Print overall % of coverage
 Add submit button - get basic html GET -> POST working, render/redirect
 Add a few API tests
 Add a few APP tests
