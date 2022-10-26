@@ -8,10 +8,10 @@ def test_86b900():
     """
     decisions = go('XXYYY'), go('XYYXX'), go('XYYXY'), go('?YYXX')
     scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)
-    assert scores == [[4, 8, 5, 3, 3],
-                      [4, 3, 5, 4, 4],
-                      [4, 3, 5, 4, 3],
-                      [-2, 3, 5, 4, 4]]
+    assert scores == [[4, 8, 6, 3, 3],
+                      [4, 3, 6, 4, 4],
+                      [4, 3, 6, 4, 3],
+                      [-2, 3, 6, 4, 4]]
     assert sum(flatten(scores)) == EXPECTED['invalid_entry']
 
 
@@ -22,10 +22,10 @@ def test_86b901():
     """
     decisions = go('XXYYY'), go('XYYXX'), go('XYYXY'), go('XYYXX')
     scores = company_score(decisions=decisions, is_sentence=False, is_profound=False)
-    assert scores == [[4, 8, 5, 3, 3],
-                      [4, 3, 5, 4, 4],
-                      [4, 3, 5, 4, 3],
-                      [4, 3, 5, 4, 4]]
+    assert scores == [[4, 8, 6, 3, 3],
+                      [4, 3, 6, 4, 4],
+                      [4, 3, 6, 4, 3],
+                      [4, 3, 6, 4, 4]]
     assert sum(flatten(scores)) == EXPECTED['all_Xs_and_Ys']
 
 
@@ -158,30 +158,30 @@ def test_86b910():
         return [sum(squads_scores)] + squads_scores
 
     # 2 Squads
-    assert xy('YY') == [10, 5, 5]
+    assert xy('YY') == [12, 6, 6]
     assert xy('XY') == [11, 8, 3]
     assert xy('XX') == [8, 4, 4]
 
     # 3 Squads
-    assert xy('YYY') == [15, 5, 5, 5]
+    assert xy('YYY') == [18, 6, 6, 6]
     assert xy('XYY') == [14, 8, 3, 3]
     assert xy('XXY') == [11, 4, 4, 3]
     assert xy('XXX') == [12, 4, 4, 4]
 
-    assert xy('YYYY') == [20, 5, 5, 5, 5]
+    assert xy('YYYY') == [24, 6, 6, 6, 6]
     assert xy('XYYY') == [17, 8, 3, 3, 3]
     assert xy('XXYY') == [14, 4, 4, 3, 3]
     assert xy('XXXY') == [15, 4, 4, 4, 3]
     assert xy('XXXX') == [16, 4, 4, 4, 4]
 
-    assert xy('YYYYY') == [25, 5, 5, 5, 5, 5]
+    assert xy('YYYYY') == [30, 6, 6, 6, 6, 6]
     assert xy('XYYYY') == [20, 8, 3, 3, 3, 3]
     assert xy('XXYYY') == [17, 4, 4, 3, 3, 3]
     assert xy('XXXYY') == [18, 4, 4, 4, 3, 3]
     assert xy('XXXXY') == [19, 4, 4, 4, 4, 3]
     assert xy('XXXXX') == [20, 4, 4, 4, 4, 4]
 
-    assert xy('YYYYYY') == [30, 5, 5, 5, 5, 5, 5]
+    assert xy('YYYYYY') == [36, 6, 6, 6, 6, 6, 6]
     assert xy('XYYYYY') == [23, 8, 3, 3, 3, 3, 3]
     assert xy('XXYYYY') == [20, 4, 4, 3, 3, 3, 3]
     assert xy('XXXYYY') == [21, 4, 4, 4, 3, 3, 3]
@@ -205,8 +205,8 @@ def test_86b920():
 
 
 EXPECTED = {
-    'invalid_entry': 76,
-    'all_Xs_and_Ys': 82,
+    'invalid_entry': 80,
+    'all_Xs_and_Ys': 86,
     'letters_from_heading': 1850,
     'only_lowercase_letters_from_heading': 18500,
     'only_lowercase_consonants_near_end_of_heading': 40960,

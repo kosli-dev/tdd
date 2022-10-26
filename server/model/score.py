@@ -41,7 +41,7 @@ def letter_score(n, squad_decision, company_decisions):
     elif squad_decision == 'X':
         score = xy_score(0, 8, 4, company_decisions)
     elif squad_decision == 'Y':
-        score = xy_score(5, 3, 3, company_decisions)
+        score = xy_score(6, 3, 3, company_decisions)
     else:
         score = BIG_FISH_TABLE[n][squad_decision]
         n = (n + 1) % 6
