@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block body %}
-<h2>Division Score==143</h2>
+<h2>Division Score=={{ result.total_score }}</h2>
 <div id="scores">
     {% for squad in result.squads %}
     <div class="squad">
