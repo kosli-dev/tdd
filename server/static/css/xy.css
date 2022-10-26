@@ -6,7 +6,8 @@ body
     font-size: 2em
 }
 
-fieldset {
+fieldset
+{
   border: none;
   padding: 0px;
   margin: 0px;
