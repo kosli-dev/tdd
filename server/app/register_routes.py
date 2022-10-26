@@ -12,10 +12,11 @@ def register_routes(app_blueprint):
     def score():
         form = ScoreForm()
         if form.validate_on_submit():
-            return redirect(url_for('app.scores'))
+            # Score the input, save score in /tmp/file against generated sid
+            return redirect(url_for('app.scores', sid='ed783w'))
         else:
             return render_template('score.html', form=form)
 
-    @app_blueprint.route('/scores', methods=['GET'])
-    def scores():
+    @app_blueprint.route('/scores/<sid>', methods=['GET'])
+    def scores(sid):
         return render_template('scores.html')
