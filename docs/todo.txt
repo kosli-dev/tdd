@@ -1,10 +1,10 @@
 
 # Core
+Style the submit button
 Print overall % of coverage on terminal
 Add data to ScoreForm - allow number of squads to be dynamic
 Add a few system API tests
 Add a few system APP tests
-Add link to API page at bottom
 
 # Maybe?
 Make t fixture so its available to both system and unit tests
