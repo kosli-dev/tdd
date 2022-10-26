@@ -7,6 +7,7 @@ est() { testing exec system "$*"; }
 
 tid() { "$(scripts_dir)/print_test_id.sh"; }
 demo() { "$(scripts_dir)/run_demo.sh"; }
+hup() { "$(scripts_dir)/hup.sh"; }
 
 testing()
 {
