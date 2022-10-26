@@ -20,19 +20,15 @@ def filename(sid):
 
 
 def scored(data):
-    decisions = [[d["letters"], d["is_word"]] for d in data["squads"]]
-    scores = company_score(decisions=decisions,
-                           is_sentence=data["is_sentence"],
-                           is_profound=data["is_profound"])
+    squads = data["squads"]
+    decisions = [[squad["letters"], squad["is_word"]] for squad in squads]
+    all_scores = company_score(decisions=decisions,
+                               is_sentence=data["is_sentence"],
+                               is_profound=data["is_profound"])
     total_score = 0
-    squads = []
-    for i, score in enumerate(scores):
-        squads.append({
-            "char": data["squads"][i]["char"],
-            "letters": decisions[i][0],
-            "points": score,
-            "total": sum(score)
-        })
-        total_score += sum(score)
+    for i, scores in enumerate(all_scores):
+        squads[i]["total"] = sum(scores)
+        squads[i]["scores"] = scores
+        total_score += sum(scores)
 
     return {"squads": squads, "total_score": total_score}
