@@ -2,7 +2,7 @@
 
 {% block body %}
 <button>Score</button>
-<div id="decisions">
+<div id="Xdecisions">
     <div class="squad">
       Squad-A <input id="decisions_a" type="text" name="decisions_a" maxlength="5" value="">
       word? <input id="word_a" type="checkbox" name="word_a" value="">
@@ -26,4 +26,16 @@
       profound?<input id="profound" type="checkbox" name="profound" value="">
     </div>
 </div>
+
+      {% from "_render_field.html" import render_field %}
+      <form method="POST">
+        {{ form.csrf_token }}
+        <fieldset class="form-group">
+          <div id="decisions">
+              WIP
+          </div>
+        </fieldset>
+        {{ form.submit() }}
+      </form>
+
 {% endblock %}

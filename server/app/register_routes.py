@@ -1,4 +1,5 @@
 from flask import render_template
+from .score_form import ScoreForm
 
 
 def register_routes(app_blueprint):
@@ -9,7 +10,7 @@ def register_routes(app_blueprint):
 
     @app_blueprint.route('/xy')
     def xy():
-        return render_template('xy.html')
+        return render_template('xy.html', form=ScoreForm())
 
     @app_blueprint.route('/scores')
     def scores():
