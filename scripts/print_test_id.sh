@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -Eeu
 
-readonly XY_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/lib"; pwd)"
-source "${XY_LIB_DIR}/echo_env_vars.sh"
+MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
+source "${MY_DIR}/test/lib.sh"
 export $(echo_env_vars)
 
 docker run \
