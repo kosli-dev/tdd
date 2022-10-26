@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 set -Eeu
 
+ip_address() {
+  echo "http://localhost:80"
+}
+
 echo_env_vars() {
-  echo XY_REPO_DIR="$(xy_repo_dir)"  # Outside the container
-  echo XY_APP_DIR=/xy  # Inside the container
+  echo XY_REPO_DIR="$(xy_repo_dir)" # Outside the container
+  echo XY_APP_DIR=/xy               # Inside the container
   echo XY_CONTAINER=xy
   echo XY_IMAGE=xy_image
-  echo XY_NETWORK=xy_net  # Also in docker-compose.yaml
+  echo XY_NETWORK=xy_net # Also in docker-compose.yaml
   echo XY_PORT=8001
   echo XY_USER=xy
   echo XY_WORKERS=2
@@ -26,12 +30,12 @@ build_image() {
     --build-arg XY_WORKERS \
     --file Dockerfile \
     --tag "${XY_IMAGE}" \
-      .
+    .
 }
 
 network_up() {
-  docker network inspect "${XY_NETWORK}" > /dev/null \
-    || docker network create --driver bridge "${XY_NETWORK}"
+  docker network inspect "${XY_NETWORK}" >/dev/null ||
+    docker network create --driver bridge "${XY_NETWORK}"
 }
 
 server_up() {
@@ -39,22 +43,21 @@ server_up() {
   docker-compose \
     --env-file=env_vars/test_system_up.env \
     --file docker-compose.yaml \
-      up --no-build --detach
+    up --no-build --detach
 }
 
 wait_till_server_ready() {
-  local -r ip_address=localhost
   local -r max_tries=15
   for try in $(seq 1 ${max_tries}); do
-    if [ $(curl -sw '%{http_code}' "${ip_address}/ready" -o /dev/null) -eq 200 ]; then
-      echo "${ip_address} is ready"
+    if [ $(curl -sw '%{http_code}' "$(ip_address)/api/health/ready" -o /dev/null) -eq 200 ]; then
+      echo "$(ip_address) is ready"
       return 0
     else
-      echo "Waiting for ${ip_address} readiness... ${try}/${max_tries}"
+      echo "Waiting for $(ip_address) readiness... ${try}/${max_tries}"
       sleep 0.2
     fi
   done
-  echo "Failed ${ip_address} readiness"
+  echo "Failed $(ip_address) readiness"
   docker container logs "${XY_CONTAINER}" || true
   exit 1
 }
@@ -67,13 +70,13 @@ server_restart() {
     --interactive \
     --tty \
     "${XY_CONTAINER}" \
-      sh -c "pkill -SIGHUP -o gunicorn"
+    sh -c "pkill -SIGHUP -o gunicorn"
 }
 
 rm_coverage() {
   # Important to _not_ quote the rm'd expression here so * expands
-  rm ${XY_REPO_DIR}/.coverage* > /dev/null || true
-  rm -rf "${XY_REPO_DIR}/test/system/coverage" > /dev/null || true
+  rm ${XY_REPO_DIR}/.coverage* >/dev/null || true
+  rm -rf "${XY_REPO_DIR}/test/system/coverage" >/dev/null || true
 }
 
 run_tests() {
@@ -87,45 +90,41 @@ run_tests() {
     --tty \
     --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
     "${XY_IMAGE}" \
-      "${XY_APP_DIR}/test/system/run.sh"
+    "${XY_APP_DIR}/test/system/run.sh"
   set -e
 }
 
-coverage_file_count()
-{
+coverage_file_count() {
   # Find is less noisy than ls when there are no matches
   find . -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
 }
 
-save_coverage_curl()
-{
+save_coverage_curl() {
   # Docker exec-ing into the container to save coverage files doesn't work
   # so we have to curl an API route.
   curl \
     --request POST \
     --silent \
-    http://localhost:80/api/coverage/save \
+    "$(ip_address)/api/coverage/save" \
     >/dev/null
 }
 
-save_coverage()
-{
+save_coverage() {
   # Repeat until we have curled each worker process.
-  while [ "$(coverage_file_count)" != "${XY_WORKERS}" ]
-  do
+  while [ "$(coverage_file_count)" != "${XY_WORKERS}" ]; do
     save_coverage_curl
   done
 }
 
-report_coverage()
-{
+report_coverage() {
   docker exec \
     --interactive \
     --tty \
     "${XY_CONTAINER}" \
-      "${XY_APP_DIR}/test/system/report_coverage.sh"
+    "${XY_APP_DIR}/test/system/report_coverage.sh"
 }
 
+export -f ip_address
 export -f wait_till_server_ready
 export -f server_restart
 export -f rm_coverage

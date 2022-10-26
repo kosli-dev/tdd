@@ -5,10 +5,6 @@ from .results import write_result, read_result
 
 def register_routes(app_blueprint):
 
-    @app_blueprint.route('/ready')
-    def ready():
-        return "OK", 200  # TODO: Move to API
-
     @app_blueprint.route('/')
     def home():
         return redirect(url_for('app.score', n=3))

@@ -15,3 +15,5 @@ docker-compose \
 	--env-file=env_vars/demo_up.env \
   --file docker-compose.yaml \
     up --build --detach
+
+wait_till_server_ready
