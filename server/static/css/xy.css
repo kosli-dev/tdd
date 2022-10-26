@@ -6,6 +6,12 @@ body
     font-size: 2em
 }
 
+fieldset {
+  border: none;
+  padding: 0px;
+  margin: 0px;
+}
+
 .squad, .yes_no
 {
     margin: 10px;
