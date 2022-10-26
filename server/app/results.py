@@ -1,8 +1,13 @@
 import json
 import secrets
+from model import company_score
 
 
-def write_result(_input):
+def write_result(data):
+    score = company_score(decisions=data["decisions"],
+                          is_sentence=data["is_sentence"],
+                          is_profound=data["is_profound"])
+    # TODO: create result from score
     result = {
         "squads": [
             {"char": "A", "letters": "xyzzy", "points": [4, 4, 15, 5, 6], "total": 34},

@@ -14,7 +14,7 @@ def register_routes(app_blueprint):
         form = ScoreForm(int(n))
         if form.validate_on_submit():
             # TODO: Score the form's data
-            sid = write_result(None)
+            sid = write_result(FAKE_FORM_DATA)
             return redirect(url_for('app.scores', sid=sid))
         else:
             return render_template('score.html', form=form)
@@ -22,3 +22,14 @@ def register_routes(app_blueprint):
     @app_blueprint.route('/scores/<sid>', methods=['GET'])
     def scores(sid):
         return render_template('scores.html', result=read_result(sid))
+
+
+FAKE_FORM_DATA = {
+    "decisions": [
+        ["xyzzy", False],
+        ["hello", True],
+        ["world", True]
+    ],
+    "is_sentence": False,
+    "is_profound": False
+}
