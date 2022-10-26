@@ -20,7 +20,7 @@ def filename(sid):
 
 
 def scored(data):
-    decisions = data["decisions"]
+    decisions = [[d["letters"], d["is_word"]] for d in data["squads"]]
     scores = company_score(decisions=decisions,
                            is_sentence=data["is_sentence"],
                            is_profound=data["is_profound"])
@@ -28,7 +28,7 @@ def scored(data):
     squads = []
     for i, score in enumerate(scores):
         squads.append({
-            "char": chr(ord('a') + i).upper(),
+            "char": data["squads"][i]["char"],
             "letters": decisions[i][0],
             "points": score,
             "total": sum(score)

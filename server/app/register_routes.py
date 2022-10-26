@@ -25,10 +25,10 @@ def register_routes(app_blueprint):
 
 
 FAKE_FORM_DATA = {
-    "decisions": [
-        ["xyzzy", False],
-        ["hello", True],
-        ["world", True]
+    "squads": [
+        {"char": "A", "letters": "xyzzy", "is_word": False},
+        {"char": "B", "letters": "hello", "is_word": True },
+        {"char": "C", "letters": "world", "is_word": True },
     ],
     "is_sentence": False,
     "is_profound": False
