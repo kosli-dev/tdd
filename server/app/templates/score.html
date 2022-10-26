@@ -1,38 +1,56 @@
 {% extends "base.html" %}
 
 {% block body %}
+<!--
 <button>Score</button>
 <div id="Xdecisions">
     <div class="squad">
       Squad-A <input id="decisions_a" type="text" name="decisions_a" maxlength="5" value="">
       word? <input id="word_a" type="checkbox" name="word_a" value="">
     </div>
-
     <div class="squad">
       Squad-B <input id="decisions_b" type="text" name="decisions_b" maxlength="5" value="">
       word? <input id="word_b" type="checkbox" name="word_b" value="">
     </div>
-
     <div class="squad">
       Squad-C <input id="decisions_c" type="text" name="decisions_c" maxlength="5" value="">
       word? <input id="word_c" type="checkbox" name="word_c" value="">
     </div>
-
     <div class="yes_no">
       sentence?<input id="sentence" type="checkbox" name="sentence" value="">
     </div>
-
     <div class="yes_no">
       profound?<input id="profound" type="checkbox" name="profound" value="">
     </div>
 </div>
-
+-->
       {% from "_render_field.html" import render_field %}
       <form method="POST">
         {{ form.csrf_token }}
         <fieldset class="form-group">
           <div id="decisions">
-              WIP
+            <div class="squad">
+              Squad-A <input id="decisions_a" type="text" name="decisions_a" maxlength="5" value="">
+              word? <input id="word_a" type="checkbox" name="word_a" value="">
+            </div>
+
+            <div class="squad">
+              Squad-B <input id="decisions_b" type="text" name="decisions_b" maxlength="5" value="">
+              word? <input id="word_b" type="checkbox" name="word_b" value="">
+            </div>
+
+            <div class="squad">
+              Squad-C <input id="decisions_c" type="text" name="decisions_c" maxlength="5" value="">
+              word? <input id="word_c" type="checkbox" name="word_c" value="">
+            </div>
+
+            <div class="yes_no">
+              sentence?<input id="sentence" type="checkbox" name="sentence" value="">
+            </div>
+
+            <div class="yes_no">
+              profound?<input id="profound" type="checkbox" name="profound" value="">
+            </div>
           </div>
         </fieldset>
         {{ form.submit() }}
