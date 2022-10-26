@@ -157,6 +157,11 @@ def test_86b910():
         squads_scores = [s[0] for s in scores]
         return [sum(squads_scores)] + squads_scores
 
+    # 2 Squads
+    assert xy('YY') == [10, 5, 5]
+    assert xy('XY') == [11, 8, 3]
+    assert xy('XX') == [8, 4, 4]
+
     # 3 Squads
     assert xy('YYY') == [15, 5, 5, 5]
     assert xy('XYY') == [14, 8, 3, 3]
