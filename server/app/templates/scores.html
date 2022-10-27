@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block body %}
-<h2>Division Score=={{ result.total_score }}</h2>
+<h1>XY Business Game: Score=={{ result.total_score }}</h1>
+<a href="/score/{{ result.squads | length }}">
+  <button>Reset</button>
+</a>
 <div id="scores">
     {% for squad in result.squads %}
     <div class="squad">
