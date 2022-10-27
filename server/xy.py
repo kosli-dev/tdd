@@ -4,19 +4,13 @@ from flask_assets import Environment, Bundle
 import os
 from pathlib import Path
 from api import get_api_blueprint, init_routes
-
-
-def raise_(ex):
-    raise ex
-
-
-class AppSettings:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or raise_(Exception('SECRET_KEY not set'))
+from config import Config
 
 
 def app():
     xy = Flask(__name__)
-    xy.config.from_object(AppSettings())
+    xy.config.from_object(Config)
+    xy.config['RESTX_VALIDATE'] = True
     assets = Environment(xy)
     assets.cache = webasset_cache_dir()
     assets.url = xy.static_url_path
@@ -29,14 +23,6 @@ def app():
 
 def init_api_blueprint(xy):
     api_blueprint = get_api_blueprint()
-
-    # if config.app_settings.SWAGGER_USE_HTTPS:
-    #     @property
-    #     def specs_url(self):
-    #         return url_for(self.endpoint('specs'), _external=True, _scheme='https')
-    #
-    #     RestXApi.specs_url = specs_url
-
     api = RestXApi(
         app=api_blueprint,
         doc='/doc/',
