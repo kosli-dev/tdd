@@ -7,6 +7,7 @@
     {{ form.csrf_token }}
     {{ form.submit() }}
     <fieldset class="form-group">
+        {# render_field(form.squadA, class="xxx") #}
         <div class="squad">
           squad-A <input id="decisions_a" type="text" name="decisions_a" maxlength="5" value="">
           word? <input id="word_a" type="checkbox" name="word_a" value="">

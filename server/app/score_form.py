@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired, Length
 
 
 class ScoreForm(FlaskForm):
@@ -8,4 +9,5 @@ class ScoreForm(FlaskForm):
         super().__init__(**kwargs)
         self.n = n
 
+    squadA = StringField('Squad-A', validators=[DataRequired(), Length(min=5, max=5)])
     submit = SubmitField('Score')
