@@ -1,15 +1,15 @@
 
 # Core
 Add fields to ScoreForm - allow number of squads to be dynamic
-Add separate env-files for unit/system tests
-Collect coverage outside of test/ dirs
-Run server in readonly volume
 Drop Bundling of JS
 Print overall % of test coverage on terminal
 Add a few system API tests
 Add a few system APP tests
 
 # Maybe?
+Add separate env-files for unit/system tests
+Collect coverage outside of test/ dirs
+Run server in readonly volume
 Make t fixture available to both system and unit tests
 Document API call
 
