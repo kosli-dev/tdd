@@ -8,14 +8,14 @@ if [ -z "${XY_REPO_DIR:-}" ]; then
   export $(echo_env_vars)
 fi
 
-wait_till_server_ready  # for when called from run
-rm_coverage
-server_restart  # start new workers
-
-wait_till_server_ready  # new workers are ready
-run_tests
-server_restart  # force existing workers to exit
-
+server_restart
 wait_till_server_ready
+rm_coverage
+run_tests
+save_coverage
 report_coverage
 echo "${XY_REPO_DIR}/test/system/coverage/index.html"
+
+
+
+

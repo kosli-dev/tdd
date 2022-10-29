@@ -9,5 +9,5 @@ class ScoreForm(FlaskForm):
         super().__init__(**kwargs)
         self.n = n
 
-    squadA = StringField('Squad-A')  #, validators=[DataRequired(), Length(min=5, max=5)])
+    squadA = StringField('Squad-A', validators=[DataRequired(), Length(min=5, max=5)])
     submit = SubmitField('Score')

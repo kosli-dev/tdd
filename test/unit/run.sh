@@ -24,10 +24,6 @@ pytest \
     "${TIDS}"
 set -e
 
-coverage json > /dev/null
-percent=$(cat "${XY_APP_DIR}/coverage.json" | jq .totals.percent_covered)
-printf "%.2f\n" "${percent}"
-
 # See https://coverage.readthedocs.io for coverage docs
 coverage html \
   --directory "${MY_DIR}/coverage" \

@@ -48,9 +48,8 @@ server_up() {
 
 wait_till_server_ready() {
   local -r max_tries=15
-  local -r url="$(ip_address)/api/health/ready"
   for try in $(seq 1 ${max_tries}); do
-    if [ $(curl --silent --write-out '%{http_code}' --output /dev/null "${url}") -eq 200 ]; then
+    if [ $(curl -sw '%{http_code}' "$(ip_address)/api/health/ready" -o /dev/null) -eq 200 ]; then
       return 0
     else
       echo "Waiting for $(ip_address) readiness... ${try}/${max_tries}"
@@ -65,7 +64,7 @@ wait_till_server_ready() {
 server_restart() {
   # There are several processes with the name gunicorn.
   # One for the 'master' and one each for the workers.
-  # Send SIGHUP to the master, which is the oldest (-o).
+  # Send SIGHUP to the master which is the oldest (-o).
   docker exec \
     --interactive \
     --tty \
@@ -76,7 +75,7 @@ server_restart() {
 rm_coverage() {
   # Important to _not_ quote the rm'd expression here so * expands
   rm ${XY_REPO_DIR}/.coverage* >/dev/null || true
-  ls -al ${XY_REPO_DIR}/.coverage* || true
+  rm -rf "${XY_REPO_DIR}/test/system/coverage" >/dev/null || true
 }
 
 run_tests() {
@@ -90,11 +89,33 @@ run_tests() {
     --tty \
     --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
     "${XY_IMAGE}" \
-      "${XY_APP_DIR}/test/system/run.sh"
+    "${XY_APP_DIR}/test/system/run.sh"
   set -e
 }
 
-x_report_coverage() {
+coverage_file_count() {
+  # Find is less noisy than ls when there are no matches
+  find . -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
+}
+
+save_coverage_curl() {
+  # Docker exec-ing into the container to save coverage files doesn't work
+  # so we have to curl an API route.
+  curl \
+    --request POST \
+    --silent \
+    "$(ip_address)/api/coverage/save" \
+    >/dev/null
+}
+
+save_coverage() {
+  # Repeat until we have curled each worker process.
+  while [ "$(coverage_file_count)" != "${XY_WORKERS}" ]; do
+    save_coverage_curl
+  done
+}
+
+report_coverage() {
   docker exec \
     --interactive \
     --tty \
@@ -102,21 +123,12 @@ x_report_coverage() {
     "${XY_APP_DIR}/test/system/report_coverage.sh"
 }
 
-report_coverage() {
-  docker run \
-    --entrypoint="" \
-    --interactive \
-    --net "${XY_NETWORK}" \
-    --rm \
-    --tty \
-    --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
-    "${XY_IMAGE}" \
-      "${XY_APP_DIR}/test/system/report_coverage.sh"
-}
-
 export -f ip_address
 export -f wait_till_server_ready
 export -f server_restart
 export -f rm_coverage
 export -f run_tests
+export -f coverage_file_count
+export -f save_coverage_curl
+export -f save_coverage
 export -f report_coverage
