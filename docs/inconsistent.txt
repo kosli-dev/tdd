@@ -1,0 +1,22 @@
+
+$ rst
+80.06
+
+$ est 400
+Combined data file .coverage.2b87933419ee.30.703590
+Combined data file .coverage.2b87933419ee.56.214374
+Combined data file .coverage.2b87933419ee.29.183117
+50.00
+
+$ est 400
+Combined data file .coverage.2b87933419ee.87.103859
+Combined data file .coverage.2b87933419ee.86.851489
+Combined data file .coverage.2b87933419ee.64.640867
+Combined data file .coverage.2b87933419ee.65.546231
+81.29
+
+# - - - - - - - - - - - - - - - - -
+Correct percentage for tid=400 == 81.29
+
+Why do I get 3 coverage files the first time
+and 4 coverage files the second time?

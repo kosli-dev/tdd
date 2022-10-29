@@ -8,7 +8,7 @@ do
   # We often get the following error
   #   Couldn't use data file '/xy/.coverage': unable to open database file
   # Empirically, if we keep trying it becomes ready.
-  coverage combine "${XY_APP_DIR}" &> /dev/null
+  coverage combine "${XY_APP_DIR}" # &> /dev/null
   status=$?
 done
 
