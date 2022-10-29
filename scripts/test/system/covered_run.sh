@@ -8,5 +8,6 @@ export $(echo_env_vars)
 build_image
 network_up
 server_up
+wait_till_server_ready
 
 "${MY_DIR}/covered_exec.sh"

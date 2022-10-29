@@ -48,8 +48,9 @@ server_up() {
 
 wait_till_server_ready() {
   local -r max_tries=15
+  local -r url="$(ip_address)/api/health/ready"
   for try in $(seq 1 ${max_tries}); do
-    if [ $(curl -sw '%{http_code}' "$(ip_address)/api/health/ready" -o /dev/null) -eq 200 ]; then
+    if [ $(curl --silent --write-out '%{http_code}' --output /dev/null "${url}") -eq 200 ]; then
       return 0
     else
       echo "Waiting for $(ip_address) readiness... ${try}/${max_tries}"

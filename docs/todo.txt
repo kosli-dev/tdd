@@ -1,8 +1,7 @@
 
 # Core
 Broke something.
-  drma; demo; rut; rst;  # This works
-  drma; demo; rst;  # Fails: rst - server fails to become ready
+  drma; demo; Fails
 Add fields to ScoreForm - allow number of squads to be dynamic
 Drop Bundling of JS
 Print overall % of test coverage on terminal
