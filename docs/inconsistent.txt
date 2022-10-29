@@ -99,7 +99,8 @@ Currently the SIGHUP happen both before and after the tests are run.
 Before for the cov.start() in post_worker_init
 After for the cov.stop() cov.save() in worker_exit
 But of course, both run in both.
-I think what I need is
+
+I think what I need is...
 cov.start() _only_ before the tests start, and
 cov.stop() cov.save() only after the tests finish.
 

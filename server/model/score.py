@@ -2,7 +2,7 @@ import threading, os
 
 
 def company_score(**kwargs):
-    print(f"{os.getpid()} {threading.get_ident()}")
+    #print(f"Code running pid={os.getpid()} tid={threading.get_ident()}", flush=True)
     decisions = kwargs['decisions']
     is_sentence = kwargs['is_sentence']
     is_profound = kwargs['is_profound']
