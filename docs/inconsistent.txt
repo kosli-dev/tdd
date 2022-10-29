@@ -16,10 +16,11 @@ Combined data file .coverage.2b87933419ee.65.546231
 81.29
 
 # - - - - - - - - - - - - - - - - -
-Correct percentage for tid=400 == 81.29
+Correct percentage for tid=400 == 81.29  (now higher)
 
 Why do I get 3 coverage files the first time
 and 4 coverage files the second time?
 Why are there 4 coverage files? There are only
 1 master and 2 workers?
+Correct answer seems to be when I get 4 coverage files.
 

@@ -39,14 +39,13 @@ def test_04692403(xy):
     """
     Lowercase letters from 'Big Fish Little Pond War' heading
     """
-    decisions = [('bigfi', False), ('shlit', False), ('tlepo', False), ('ndwaw', False)]
+    decisions = [('bigfi', False), ('shlit', False), ('tlepo', False), ('ndwar', False)]
     response = xy.company_score(decisions=decisions, is_sentence=False, is_profound=False)
     assert response.status_code == 200
-    STRANGE = 0  # This is 10240 in equivalent unit test???
     assert response.json() == [[10, -10, 10, 20, -10],
                                [40, 80, 160, -10, 320],
                                [0, 0, -10, 0, -10],
-                               [0, 2560, 5120, -10, STRANGE]]
+                               [0, 2560, 5120, -10, 10240]]
 
 
 def test_04692410(xy):
