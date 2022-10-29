@@ -12,7 +12,10 @@ do
   status=$?
 done
 
-set -e
+coverage json > /dev/null
+percent=$(cat "${XY_APP_DIR}/coverage.json" | jq .totals.percent_covered)
+printf "%.2f\n" "${percent}"
+
 coverage html \
   --directory "${XY_APP_DIR}/test/system/coverage" \
   --precision=2 \
