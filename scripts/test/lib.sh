@@ -75,8 +75,11 @@ server_restart() {
 
 rm_coverage() {
   # Important to _not_ quote the rm'd expression here so * expands
-  rm ${XY_REPO_DIR}/.coverage* >/dev/null || true
+  rm -f ${XY_REPO_DIR}/.coverage >/dev/null || true
+  rm -f ${XY_REPO_DIR}/.coverage.* >/dev/null || true
   rm -rf "${XY_REPO_DIR}/test/system/coverage" >/dev/null || true
+  echo "after rm_coverage"
+  ls -al ${XY_REPO_DIR}/.coverage* || true
 }
 
 run_tests() {
@@ -96,7 +99,7 @@ run_tests() {
 
 coverage_file_count() {
   # Find is less noisy than ls when there are no matches
-  find . -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
+  find "${XY_REPO_DIR}" -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
 }
 
 save_coverage_curl() {
@@ -111,7 +114,10 @@ save_coverage_curl() {
 
 save_coverage() {
   # Repeat until we have curled each worker process.
+  #echo "file-count==$(coverage_file_count)"
+  #echo "workers==${XY_WORKERS}"
   while [ "$(coverage_file_count)" != "${XY_WORKERS}" ]; do
+    #echo ...
     save_coverage_curl
   done
 }
