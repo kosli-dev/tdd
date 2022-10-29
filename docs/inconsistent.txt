@@ -83,3 +83,23 @@ Combined data file .coverage.5bdc0c584ef7.1278.836931
 Similar pattern with
 $ est 400
 
+
+I tried running a _lot_ more tests using pytest's
+@pytest.mark.parametrize("n", [2]*128)
+def test_04692414(xy, n):
+    ...
+
+And get the same pattern.
+
+I'm pretty sure this is something to do with the fact that in
+scripts/test/system/covered_exec.sh
+I run server_restart more than once...
+
+Currently the SIGHUP happen both before and after the tests are run.
+Before for the cov.start() in post_worker_init
+After for the cov.stop() cov.save() in worker_exit
+But of course, both run in both.
+I think what I need is
+cov.start() _only_ before the tests start, and
+cov.stop() cov.save() only after the tests finish.
+

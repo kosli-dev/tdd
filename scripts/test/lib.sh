@@ -76,6 +76,7 @@ server_restart() {
 rm_coverage() {
   # Important to _not_ quote the rm'd expression here so * expands
   rm ${XY_REPO_DIR}/.coverage* >/dev/null || true
+  ls -al ${XY_REPO_DIR}/.coverage* || true
 }
 
 run_tests() {
@@ -89,16 +90,28 @@ run_tests() {
     --tty \
     --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
     "${XY_IMAGE}" \
-    "${XY_APP_DIR}/test/system/run.sh"
+      "${XY_APP_DIR}/test/system/run.sh"
   set -e
 }
 
-report_coverage() {
+x_report_coverage() {
   docker exec \
     --interactive \
     --tty \
     "${XY_CONTAINER}" \
     "${XY_APP_DIR}/test/system/report_coverage.sh"
+}
+
+report_coverage() {
+  docker run \
+    --entrypoint="" \
+    --interactive \
+    --net "${XY_NETWORK}" \
+    --rm \
+    --tty \
+    --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
+    "${XY_IMAGE}" \
+      "${XY_APP_DIR}/test/system/report_coverage.sh"
 }
 
 export -f ip_address

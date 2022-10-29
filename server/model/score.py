@@ -1,6 +1,8 @@
+import threading, os
 
 
 def company_score(**kwargs):
+    print(f"{os.getpid()} {threading.get_ident()}")
     decisions = kwargs['decisions']
     is_sentence = kwargs['is_sentence']
     is_profound = kwargs['is_profound']
