@@ -6,5 +6,6 @@ omit =
     server/api/**
     server/app/**
     server/xy.py
+    server/gunicorn_config.py
     server/config.py
     server/sitecustomize.py

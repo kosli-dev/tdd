@@ -2,7 +2,6 @@
 # Core
 Add fields to ScoreForm - allow number of squads to be dynamic
 Drop Bundling of JS
-Print overall % of test coverage on terminal
 Add a few system API tests
 Add a few system APP tests
 
