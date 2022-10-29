@@ -20,3 +20,6 @@ Correct percentage for tid=400 == 81.29
 
 Why do I get 3 coverage files the first time
 and 4 coverage files the second time?
+Why are there 4 coverage files? There are only
+1 master and 2 workers?
+
