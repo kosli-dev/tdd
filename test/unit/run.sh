@@ -5,7 +5,7 @@ readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Important to _not_ quote the rm'd expression here so * expands
 rm ${XY_APP_DIR}/.coverage* > /dev/null || true
-rm -rf "${XY_APP_DIR}/test/unit/coverage" > /dev/null || true
+#rm -rf "${XY_APP_DIR}/test/unit/coverage" > /dev/null || true
 
 set +e
 # To set the random-ordering seed
@@ -23,6 +23,10 @@ pytest \
   --random-order-bucket=global \
     "${TIDS}"
 set -e
+
+coverage json > /dev/null
+percent=$(cat "${XY_APP_DIR}/coverage.json" | jq .totals.percent_covered)
+printf "%.2f\n" "${percent}"
 
 # See https://coverage.readthedocs.io for coverage docs
 coverage html \
