@@ -1,26 +1,85 @@
 
-$ rst
-80.06
+When I run `rst` ...
+sometimes it generates 4 .coverage* files
+sometimes it generates 3 .coverage* files
 
-$ est 400
-Combined data file .coverage.2b87933419ee.30.703590
-Combined data file .coverage.2b87933419ee.56.214374
-Combined data file .coverage.2b87933419ee.29.183117
+When it generates 4 coverage files I consistently get
+the same coverage. For example:
+
+$ rst
+...ellision...
+pytest-parallel: 4 workers (processes), 1 test per worker (thread)
+..............
+7 passed in 0.14s
+Combined data file .coverage.5bdc0c584ef7.804.353715
+Combined data file .coverage.5bdc0c584ef7.781.713547
+Combined data file .coverage.5bdc0c584ef7.782.060828
+Combined data file .coverage.5bdc0c584ef7.803.772957
+89.26
+
+When it generates 3 coverage files, the coverage varies...
+Eg
+
+$ rst
+...ellision...
+pytest-parallel: 4 workers (processes), 1 test per worker (thread)
+..............
+7 passed in 0.14s
+Combined data file .coverage.5bdc0c584ef7.979.874531
+Combined data file .coverage.5bdc0c584ef7.956.041552
+Combined data file .coverage.5bdc0c584ef7.957.825949
+88.04
+
+$ rst
+...ellision...
+pytest-parallel: 4 workers (processes), 1 test per worker (thread)
+..............
+7 passed in 0.17s
+Combined data file .coverage.5bdc0c584ef7.991.904850
+Combined data file .coverage.5bdc0c584ef7.1014.172914
+Combined data file .coverage.5bdc0c584ef7.992.767232
+83.44
+
+This difference also occurs in exactly the same pattern for `est`.
+
+It does not appear to be anything to do with running the system
+tests in parallel. If I comment out
+parallel=True
+in .coveragrc it I get the same inconsistency...
+
+
+If I run just a single test I still get inconsistencies
+Eg, 81.90 with 4 coverage files
+$ rst 400
+pytest-parallel: 4 workers (processes), 1 test per worker (thread)
+..
+1 passed, 6 deselected in 0.13s
+Combined data file .coverage.5bdc0c584ef7.1226.611083
+Combined data file .coverage.5bdc0c584ef7.1248.334620
+Combined data file .coverage.5bdc0c584ef7.1247.470056
+Combined data file .coverage.5bdc0c584ef7.1225.030124
+81.90
+
+# Eg 81.90 with 3 coverage files
+$ rst 400
+pytest-parallel: 4 workers (processes), 1 test per worker (thread)
+..
+1 passed, 6 deselected in 0.12s
+Combined data file .coverage.5bdc0c584ef7.1313.534314
+Combined data file .coverage.5bdc0c584ef7.1289.287197
+Combined data file .coverage.5bdc0c584ef7.1312.866183
+81.90
+
+# Eg 50.00 with 3 coverage files
+$ rst 400
+pytest-parallel: 4 workers (processes), 1 test per worker (thread)
+..
+1 passed, 6 deselected in 0.13s
+Combined data file .coverage.5bdc0c584ef7.1256.073490
+Combined data file .coverage.5bdc0c584ef7.1257.047112
+Combined data file .coverage.5bdc0c584ef7.1278.836931
 50.00
 
+Similar pattern with
 $ est 400
-Combined data file .coverage.2b87933419ee.87.103859
-Combined data file .coverage.2b87933419ee.86.851489
-Combined data file .coverage.2b87933419ee.64.640867
-Combined data file .coverage.2b87933419ee.65.546231
-81.29
-
-# - - - - - - - - - - - - - - - - -
-Correct percentage for tid=400 == 81.29  (now higher)
-
-Why do I get 3 coverage files the first time
-and 4 coverage files the second time?
-Why are there 4 coverage files? There are only
-1 master and 2 workers?
-Correct answer seems to be when I get 4 coverage files.
 
