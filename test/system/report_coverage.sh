@@ -2,21 +2,30 @@
 
 cd "${XY_APP_DIR}"
 
-status=42
-while [ ${status} != 0 ];
-do
-  # We often get the following error
-  #   Couldn't use data file '/xy/.coverage': unable to open database file
-  # Empirically, if we keep trying it becomes ready.
-  coverage combine "${XY_APP_DIR}" #&> /dev/null
-  status=$?
-done
+coverage_file_count() {
+  # Find is less noisy than ls when there are no matches
+  find "${XY_APP_DIR}" -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
+}
+
+wait_for_all_coverage_files() {
+  # We have sent a SIGHUP to gunicorn master
+  # So now we have to wait for all sigterm handlers
+  # to write their coverage file
+  while [ "$(coverage_file_count)" != 4 ]; do
+    echo -n .
+    sleep 0.1
+  done
+  echo .
+}
+
+wait_for_all_coverage_files
+
+coverage combine "${XY_APP_DIR}" #&> /dev/null
 
 coverage json > /dev/null
 percent=$(cat "${XY_APP_DIR}/coverage.json" | jq .totals.percent_covered)
 printf "%.2f\n" "${percent}"
 
-#set -e
 coverage html \
   --directory "${XY_APP_DIR}/test/system/coverage" \
   --precision=2 \

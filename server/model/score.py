@@ -1,5 +1,4 @@
 
-
 def company_score(**kwargs):
     decisions = kwargs['decisions']
     is_sentence = kwargs['is_sentence']

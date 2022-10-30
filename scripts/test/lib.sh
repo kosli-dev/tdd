@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -Eeu
 
-ip_address() {
-  echo "http://localhost:80"
-}
-
 echo_env_vars() {
   echo XY_REPO_DIR="$(xy_repo_dir)" # Outside the container
   echo XY_APP_DIR=/xy               # Inside the container
@@ -16,8 +12,12 @@ echo_env_vars() {
   echo XY_WORKERS=2
 }
 
+ip_address() {
+  echo "http://localhost:80"
+}
+
 xy_repo_dir() {
-  # BASH_SOURCE is empty inside a 'sourced' script
+  # Can't use BASH_SOURCE as it's empty inside a 'sourced' script
   git rev-parse --show-toplevel
 }
 
@@ -93,16 +93,16 @@ run_tests() {
     --tty \
     --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
     "${XY_IMAGE}" \
-    "${XY_APP_DIR}/test/system/run.sh"
+      "${XY_APP_DIR}/test/system/run.sh"
   set -e
 }
 
-coverage_file_count() {
+XX_coverage_file_count() {
   # Find is less noisy than ls when there are no matches
   find "${XY_REPO_DIR}" -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
 }
 
-save_coverage_curl() {
+XXX_save_coverage_curl() {
   # Docker exec-ing into the container to save coverage files doesn't work
   # so we have to curl an API route.
   curl \
@@ -112,17 +112,17 @@ save_coverage_curl() {
     >/dev/null
 }
 
-save_coverage() {
+XX_save_coverage() {
   # Repeat until we have curled each worker process.
-  #echo "file-count==$(coverage_file_count)"
-  #echo "workers==${XY_WORKERS}"
+  echo "file-count==$(coverage_file_count)"
+  echo "workers==${XY_WORKERS}"
   while [ "$(coverage_file_count)" != "${XY_WORKERS}" ]; do
-    #echo ...
+    echo ...
     save_coverage_curl
   done
 }
 
-report_coverage() {
+XX_report_coverage() {
   docker exec \
     --interactive \
     --tty \
@@ -130,12 +130,24 @@ report_coverage() {
     "${XY_APP_DIR}/test/system/report_coverage.sh"
 }
 
+report_coverage() {
+  docker run \
+    --entrypoint="" \
+    --interactive \
+    --net "${XY_NETWORK}" \
+    --rm \
+    --tty \
+    --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
+    "${XY_IMAGE}" \
+      "${XY_APP_DIR}/test/system/report_coverage.sh"
+}
+
 export -f ip_address
 export -f wait_till_server_ready
 export -f server_restart
 export -f rm_coverage
 export -f run_tests
-export -f coverage_file_count
-export -f save_coverage_curl
-export -f save_coverage
+#export -f coverage_file_count
+#export -f save_coverage_curl
+#export -f save_coverage
 export -f report_coverage
