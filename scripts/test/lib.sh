@@ -46,6 +46,17 @@ server_up() {
     up --no-build --detach
 }
 
+server_restart() {
+  # There are several processes with the name gunicorn.
+  # One for the 'master' and one each for the workers.
+  # Send SIGHUP to the master which is the oldest (-o).
+  docker exec \
+    --interactive \
+    --tty \
+    "${XY_CONTAINER}" \
+    sh -c "pkill -SIGHUP -o gunicorn"
+}
+
 wait_till_server_ready() {
   local -r max_tries=15
   local -r url="$(ip_address)/api/health/ready"
@@ -60,17 +71,6 @@ wait_till_server_ready() {
   echo "Failed $(ip_address) readiness"
   docker container logs "${XY_CONTAINER}" || true
   exit 1
-}
-
-server_restart() {
-  # There are several processes with the name gunicorn.
-  # One for the 'master' and one each for the workers.
-  # Send SIGHUP to the master which is the oldest (-o).
-  docker exec \
-    --interactive \
-    --tty \
-    "${XY_CONTAINER}" \
-    sh -c "pkill -SIGHUP -o gunicorn"
 }
 
 cov_dir() {

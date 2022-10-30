@@ -2,8 +2,7 @@
 # Core
 Add fields to ScoreForm - allow number of squads to be dynamic
 Drop Bundling of JS
-Add a few system API tests
-Add a few system APP tests
+Add some system APP tests
 
 # Maybe?
 Collect coverage of system tests themselves
