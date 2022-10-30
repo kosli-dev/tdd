@@ -42,5 +42,6 @@ coverage_report() {
 
 run_tests
 cd $(cov_dir)
+# coverage combine .
 printf "%.2f%%\n" "$(coverage_percent)"
 coverage_report

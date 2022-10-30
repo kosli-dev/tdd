@@ -31,8 +31,8 @@ coverage_percent() {
   jq .totals.percent_covered "${tmp_file}"
 }
 
-cd "$(cov_dir)"
 wait_for_all_coverage_files
+cd "$(cov_dir)"
 coverage combine .
 printf "%.2f%%\n" "$(coverage_percent)"
 coverage html \
