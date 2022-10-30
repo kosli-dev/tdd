@@ -6,9 +6,9 @@ Add a few system API tests
 Add a few system APP tests
 
 # Maybe?
+Collect unit/system coverage in different dirs?
 Add separate env-files for unit/system tests
-Collect coverage outside of test/ dirs
-Run server in readonly volume
+Run server in readonly volume - need coverage files outside of test/
 Make t fixture available to both system and unit tests
 Document API call
 
