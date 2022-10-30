@@ -1,16 +1,14 @@
 
 # Core
 Add fields to ScoreForm - allow number of squads to be dynamic
-Drop Bundling of JS
+Run unit tests in parallel and run coverage combine
 Add some system APP tests
 
 # Maybe?
+Drop Bundling of JS
 Collect coverage of system tests themselves
    Note that this will require coverage on two containers...!
 Add separate env-files for unit/system tests
 Make t fixture available to both system and unit tests
 Document API call
 
-# Marketing
-Write slides. Present.
-Write blog posts
