@@ -2,16 +2,20 @@
 
 cd "${XY_APP_DIR}"
 
-coverage_file_count() {
+actual_coverage_file_count() {
   # Find is less noisy than ls when there are no matches
   find "${XY_APP_DIR}" -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
+}
+
+expected_coverage_file_count() {
+  echo "$(("${XY_WORKERS}" * 2))"
 }
 
 wait_for_all_coverage_files() {
   # We have sent a SIGHUP to gunicorn master
   # So now we have to wait for all sigterm handlers
   # to write their coverage file
-  while [ "$(coverage_file_count)" != 4 ]; do
+  while [ "$(actual_coverage_file_count)" != "$(expected_coverage_file_count)" ]; do
     echo -n .
     sleep 0.1
   done

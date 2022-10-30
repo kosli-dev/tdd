@@ -97,39 +97,6 @@ run_tests() {
   set -e
 }
 
-XX_coverage_file_count() {
-  # Find is less noisy than ls when there are no matches
-  find "${XY_REPO_DIR}" -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
-}
-
-XXX_save_coverage_curl() {
-  # Docker exec-ing into the container to save coverage files doesn't work
-  # so we have to curl an API route.
-  curl \
-    --request POST \
-    --silent \
-    "$(ip_address)/api/coverage/save" \
-    >/dev/null
-}
-
-XX_save_coverage() {
-  # Repeat until we have curled each worker process.
-  echo "file-count==$(coverage_file_count)"
-  echo "workers==${XY_WORKERS}"
-  while [ "$(coverage_file_count)" != "${XY_WORKERS}" ]; do
-    echo ...
-    save_coverage_curl
-  done
-}
-
-XX_report_coverage() {
-  docker exec \
-    --interactive \
-    --tty \
-    "${XY_CONTAINER}" \
-    "${XY_APP_DIR}/test/system/report_coverage.sh"
-}
-
 report_coverage() {
   docker run \
     --entrypoint="" \
@@ -147,7 +114,4 @@ export -f wait_till_server_ready
 export -f server_restart
 export -f rm_coverage
 export -f run_tests
-#export -f coverage_file_count
-#export -f save_coverage_curl
-#export -f save_coverage
 export -f report_coverage

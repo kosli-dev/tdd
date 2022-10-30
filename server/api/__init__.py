@@ -1,12 +1,10 @@
 from flask import Blueprint
 from .init_score_routes import init_score_routes
-from .init_coverage_routes import init_coverage_routes
 from .init_health_routes import init_health_routes
 
 
 def init_routes(api):
     init_score_routes(api)
-    init_coverage_routes(api)
     init_health_routes(api)
 
 

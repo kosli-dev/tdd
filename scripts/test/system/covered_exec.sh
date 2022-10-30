@@ -12,7 +12,6 @@ rm_coverage
 server_restart; wait_till_server_ready
 run_tests
 server_restart; wait_till_server_ready
-#save_coverage
 report_coverage
 echo "${XY_REPO_DIR}/test/system/coverage/index.html"
 
