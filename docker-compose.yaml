@@ -13,9 +13,10 @@ services:
     ports: [ "80:${XY_PORT}" ]
     tmpfs: [ /tmp ]
     volumes:
-      - ./server:${XY_APP_DIR}/server
-      - ./test:${XY_APP_DIR}/test
-      - ./coverage:${XY_APP_DIR}/coverage
+      - ./server:${XY_APP_DIR}/server:ro
+      - ./test:${XY_APP_DIR}/test:ro
+      - ./coverage:${XY_APP_DIR}/coverage:rw
+    read_only: true
 
 # The volume-mount is required so that
 # html coverage reports written inside a container

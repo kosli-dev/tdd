@@ -13,6 +13,7 @@ ENV XY_APP_DIR=${XY_APP_DIR} \
     XY_PORT=${XY_PORT} \
     XY_WORKERS=${XY_WORKERS} \
     PYTHONPATH=${XY_APP_DIR}/server \
+    PYTHONPYCACHEPREFIX=/tmp/py_caches \
     TERM=xterm-256color
 
 WORKDIR ${XY_APP_DIR}
