@@ -22,7 +22,7 @@ pytest \
 set -e
 
 percent=$(coverage json --quiet -o /dev/stdout | jq .totals.percent_covered)
-printf "%.2f\n" "${percent}"
+printf "%.2f%%\n" "${percent}"
 
 coverage html \
   --directory "${MY_DIR}/coverage" \

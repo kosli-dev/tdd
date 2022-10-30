@@ -28,7 +28,7 @@ wait_for_all_coverage_files
 coverage combine "${XY_APP_DIR}" #&> /dev/null
 
 percent=$(coverage json --quiet -o /dev/stdout | jq .totals.percent_covered)
-printf "%.2f\n" "${percent}"
+printf "%.2f%%\n" "${percent}"
 
 coverage html \
   --directory "${XY_APP_DIR}/test/system/coverage" \
