@@ -26,7 +26,9 @@ wait_for_all_coverage_files() {
 }
 
 coverage_percent() {
-  coverage json --quiet -o /dev/stdout | jq .totals.percent_covered
+  local -r tmp_file=/tmp/coverage.system.json
+  coverage json --quiet -o "${tmp_file}"
+  jq .totals.percent_covered "${tmp_file}"
 }
 
 cd "$(cov_dir)"
