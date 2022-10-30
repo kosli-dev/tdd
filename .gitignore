@@ -1,10 +1,5 @@
 __pycache__/
-**/.coverage
-**/.coverage.*
-coverage.json
-/server/.pytest_cache/
-/test/unit/coverage/
-/test/system/coverage/
+coverage/
 /server/static/bundle.js
 /server/static/bundle.css
 /server/static/.webassets-cache/
