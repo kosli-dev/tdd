@@ -6,12 +6,10 @@ RUN pip3 install -r /tmp/requirements.txt
 
 ARG XY_APP_DIR \
     XY_PORT \
-    XY_USER \
-    XY_WORKERS
+    XY_USER
 
 ENV XY_APP_DIR=${XY_APP_DIR} \
     XY_PORT=${XY_PORT} \
-    XY_WORKERS=${XY_WORKERS} \
     PYTHONPATH=${XY_APP_DIR}/server \
     PYTHONPYCACHEPREFIX=/tmp/py_caches \
     TERM=xterm-256color
