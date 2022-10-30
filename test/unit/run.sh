@@ -19,6 +19,7 @@ run_tests() {
     --cov="${XY_APP_DIR}/" \
     --cov-config="${MY_DIR}/.coveragerc" \
     --cov-report= `# Turn off verbose coverage report` \
+    -o cache_dir=/tmp \
     --pythonwarnings=error \
     --quiet \
     --random-order-bucket=global \

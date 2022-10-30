@@ -6,6 +6,7 @@ pytest \
   --capture=no \
   --color=yes \
   --ignore=test/unit \
+  -o cache_dir=/tmp \
   --pythonwarnings=error \
   --tb=short \
   --quiet \
