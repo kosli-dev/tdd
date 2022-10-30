@@ -9,10 +9,10 @@ if [ -z "${XY_REPO_DIR:-}" ]; then
 fi
 
 rm_coverage system
-server_restart; wait_till_server_ready
+server_restart
+wait_till_server_ready
 run_tests
-server_restart;
-wait_till_server_ready  # Don't need this. We need to wait till all .coverage files appear
+server_restart
 report_coverage
 echo "$(cov_dir system)/index.html"
 
