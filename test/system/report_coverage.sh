@@ -8,6 +8,7 @@ actual_coverage_file_count() {
 }
 
 expected_coverage_file_count() {
+  # Empirically, this is what we see.
   echo "$(("${XY_WORKERS}" * 2))"
 }
 

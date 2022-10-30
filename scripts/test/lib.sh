@@ -78,8 +78,6 @@ rm_coverage() {
   rm -f ${XY_REPO_DIR}/.coverage >/dev/null || true
   rm -f ${XY_REPO_DIR}/.coverage.* >/dev/null || true
   rm -rf "${XY_REPO_DIR}/test/system/coverage" >/dev/null || true
-  echo "after rm_coverage"
-  ls -al ${XY_REPO_DIR}/.coverage* || true
 }
 
 run_tests() {
