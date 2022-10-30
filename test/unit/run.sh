@@ -11,10 +11,9 @@ pytest \
   --cache-clear `# Clear .coverage cache. It persists as it is in the volume-mount` \
   --capture=no `# Turn off capturing. Makes print() effects visible and interleaved` \
   --color=yes \
-  --cov="${XY_APP_DIR}/server/" \
+  --cov="${XY_APP_DIR}/" \
   --cov-config="${MY_DIR}/.coveragerc" \
   --cov-report= `# Turn off verbose coverage report` \
-  --ignore=test/system \
   --pythonwarnings=error \
   --quiet \
   --random-order-bucket=global \

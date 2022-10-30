@@ -8,3 +8,5 @@ omit =
     server/xy.py
     server/config.py
     server/sitecustomize.py
+    test/conftest.py
+    test/print_id.py
