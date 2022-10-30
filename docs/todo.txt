@@ -6,9 +6,13 @@ Add a few system API tests
 Add a few system APP tests
 
 # Maybe?
-Collect unit/system coverage in different dirs?
+Collect coverage of system tests themselves
+   Note that this will require coverage on two containers...!
+Collect unit/system coverage in different dirs
 Add separate env-files for unit/system tests
-Run server in readonly volume - need coverage files outside of test/
+Run server in readonly volume
+  Need coverage files outside of test/ WIP
+  Need cache files in /tmp See https://github.com/orgs/kosli-dev/projects/2/views/1
 Make t fixture available to both system and unit tests
 Document API call
 

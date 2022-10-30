@@ -7,6 +7,7 @@ export $(echo_env_vars)
 
 build_image
 network_up
+rm_coverage system
 server_up
 wait_till_server_ready
 

@@ -73,11 +73,14 @@ server_restart() {
     sh -c "pkill -SIGHUP -o gunicorn"
 }
 
+cov_dir() {
+  local -r kind="${1}"  # system | unit
+  echo "${XY_REPO_DIR}/coverage/${kind}"
+}
+
 rm_coverage() {
-  # Important to _not_ quote the rm'd expression here so * expands
-  rm -f ${XY_REPO_DIR}/.coverage > /dev/null || true
-  rm -f ${XY_REPO_DIR}/.coverage.* > /dev/null || true
-  rm -rf "${XY_REPO_DIR}/test/system/coverage" > /dev/null || true
+  rm -rf "$(cov_dir "${1}")" > /dev/null || true
+  mkdir -p "$(cov_dir "${1}")"
 }
 
 run_tests() {
@@ -111,5 +114,6 @@ export -f ip_address
 export -f wait_till_server_ready
 export -f server_restart
 export -f rm_coverage
+export -f cov_dir
 export -f run_tests
 export -f report_coverage

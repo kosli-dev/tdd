@@ -3,6 +3,7 @@
 # set in env_vars/test_system.env
 
 [run]
+data_file=/${XY_APP_DIR}/coverage/system/.coverage
 source=/${XY_APP_DIR}/server
 parallel=True
 branch=True

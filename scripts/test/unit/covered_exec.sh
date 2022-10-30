@@ -8,7 +8,7 @@ if [ -z "${XY_REPO_DIR:-}" ]; then
   export $(echo_env_vars)
 fi
 
-rm_coverage
+rm_coverage unit
 
 docker exec \
   --env TIDS="${TIDS}" \
