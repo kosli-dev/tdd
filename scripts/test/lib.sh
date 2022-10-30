@@ -90,7 +90,7 @@ run_tests() {
     --net "${XY_NETWORK}" \
     --rm \
     --tty \
-    --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
+    --volume="${XY_REPO_DIR}/test:${XY_APP_DIR}/test:ro" \
     "${XY_IMAGE}" \
       "${XY_APP_DIR}/test/system/run.sh"
   set -e
