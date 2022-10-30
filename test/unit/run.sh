@@ -3,11 +3,6 @@ set -Eeu
 
 readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Important to _not_ quote the rm'd expression here so * expands
-rm ${XY_APP_DIR}/.coverage > /dev/null || true
-rm ${XY_APP_DIR}/.coverage* > /dev/null || true
-rm -rf "${XY_APP_DIR}/test/unit/coverage" > /dev/null || true
-
 # See https://coverage.readthedocs.io for coverage docs
 # To set the random-ordering seed
 #       --random-order-seed=<seed>
