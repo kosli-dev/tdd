@@ -25,20 +25,12 @@ def post_fork(server, worker):
 
 def worker_exit(server, worker):
     # Save coverage when the worker finishes
-    print("Before worker_exit()")
-    ls_coverage_dir()
-    # eg
-    # -rw-r--r--    1 xy       xy           53248 Nov  1 13:00 .coverage.5c4ed550a9c7.11.975221
-    # -rw-r--r--    1 xy       xy           53248 Nov  1 13:00 .coverage.5c4ed550a9c7.14.412705
+    # print("Before worker_exit()")
+    # ls_coverage_dir()
     cov.stop()
     cov.save()
-    print("After worker_exit()")
-    ls_coverage_dir()
-    # eg
-    # -rw-r--r--    1 xy       xy           53248 Nov  1 13:00 .coverage.5c4ed550a9c7.11.975221
-    # -rw-r--r--    1 xy       xy           53248 Nov  1 13:00 .coverage.5c4ed550a9c7.14.412705
-    # -rw-r--r--    1 xy       xy           69632 Nov  1 13:01 .coverage.5c4ed550a9c7.24.950769
-    # -rw-r--r--    1 xy       xy           69632 Nov  1 13:01 .coverage.5c4ed550a9c7.25.240037
+    # print("After worker_exit()")
+    # ls_coverage_dir()
 
 
 def dot_coverage_dir():

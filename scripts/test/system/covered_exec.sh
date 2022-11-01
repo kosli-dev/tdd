@@ -8,9 +8,9 @@ if [ -z "${XY_REPO_DIR:-}" ]; then
   export $(echo_env_vars)
 fi
 
-rm_coverage system
 server_restart
 wait_till_server_ready
+rm_coverage system
 run_tests
 server_restart
 report_coverage

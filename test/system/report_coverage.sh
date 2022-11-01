@@ -33,7 +33,6 @@ coverage_percent() {
 
 wait_for_all_coverage_files
 cd "$(cov_dir)"
-# ls -al .coverage* || true
 coverage combine .
 printf "%.2f%%\n" "$(coverage_percent)"
 coverage html \
