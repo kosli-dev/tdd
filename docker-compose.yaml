@@ -17,7 +17,3 @@ services:
       - ./test:${XY_APP_DIR}/test:ro
       - ./coverage:${XY_APP_DIR}/coverage:rw
     read_only: true
-
-# The volume-mount is required so that
-# html coverage reports written inside a container
-# are available after the container has exited.
