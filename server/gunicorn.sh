@@ -8,5 +8,7 @@ exec gunicorn \
   --config="${MY_DIR}/gunicorn_config.py" \
   --log-level=info \
   --threads=4 \
-  --workers="${XY_WORKERS}" \
+  --workers=2 \
   "xy:app()"
+
+

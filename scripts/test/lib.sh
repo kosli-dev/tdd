@@ -9,7 +9,6 @@ echo_env_vars() {
   echo XY_NETWORK=xy_net # Also in docker-compose.yaml
   echo XY_PORT=8001
   echo XY_USER=xy
-  echo XY_WORKERS=2
 }
 
 ip_address() {
@@ -27,7 +26,6 @@ build_image() {
     --build-arg XY_APP_DIR \
     --build-arg XY_PORT \
     --build-arg XY_USER \
-    --build-arg XY_WORKERS \
     --file Dockerfile \
     --tag "${XY_IMAGE}" \
     .
