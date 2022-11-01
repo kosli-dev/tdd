@@ -17,7 +17,6 @@ ENV XY_APP_DIR=${XY_APP_DIR} \
 WORKDIR ${XY_APP_DIR}
 COPY . .
 RUN apk --update --upgrade add bash jq tini && \
-    apk --no-cache upgrade musl && \
     apk update && \
     adduser -D -g "" ${XY_USER} && \
     chown -R ${XY_USER} ${XY_APP_DIR}
