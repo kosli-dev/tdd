@@ -10,17 +10,13 @@ actual_coverage_files_count() {
 }
 
 wait_for_all_coverage_files() {
-  # We have sent a SIGHUP to gunicorn master
-  # So now we have to wait for all sigterm handlers
-  # to write their .coverage file.
-  # We don't know how many .coverage files there will be!
-  # So we empirically wait until they "settle"
+  # We have sent a SIGHUP to the gunicorn master which will restart
+  # each worker. Now we wait for each workers' sigterm handler to
+  # write its .coverage file.
   while : ; do
     echo -n .
-    a1=$(actual_coverage_files_count); sleep 0.2
-    a2=$(actual_coverage_files_count); sleep 0.2
-    a3=$(actual_coverage_files_count); sleep 0.2
-    [ "${a1}${a2}${a3}" == "${a1}${a1}${a1}" ] && break
+    [ "$(actual_coverage_files_count)" == "${XY_WORKERS}" ] && break
+    sleep 0.1
   done
   echo .
 }
