@@ -15,6 +15,3 @@ run_tests
 server_restart
 report_coverage
 echo "$(cov_dir system)/index.html"
-
-
-
