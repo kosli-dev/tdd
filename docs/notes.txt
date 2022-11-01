@@ -1,4 +1,6 @@
 
+These are the old original notes...
+
 We want coverage stats from the system tests.  
 There are a number of steps to get this working:
 

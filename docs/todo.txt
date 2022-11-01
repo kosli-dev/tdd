@@ -1,8 +1,14 @@
 
 # Core
+Decide whether to use server-hooks.
+   I get [--workers*2] coverage files, on other laptops its [--workers*1]
+   Where does this difference come from? No of cores?
+   Would it mean the number of workers would have to become an env-var?
+   If so, would that be worth it?
+
 Add fields to ScoreForm - allow number of squads to be dynamic
 Run unit tests in parallel and run coverage combine
-Add some system APP tests
+Add some simple system APP tests
 
 # Maybe?
 Drop Bundling of JS
