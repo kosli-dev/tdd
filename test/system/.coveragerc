@@ -9,3 +9,4 @@ parallel=True
 branch=True
 omit =
   server/sitecustomize.py
+  server/gunicorn_config.py
