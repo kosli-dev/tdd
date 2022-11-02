@@ -11,4 +11,4 @@ rm_coverage system
 server_up
 wait_till_server_ready
 
-"${MY_DIR}/covered_exec.sh"
+"${MY_DIR}/exec.sh"
