@@ -5,7 +5,6 @@ Run unit tests in parallel and run coverage combine
 Add some simple system APP tests
 
 # Maybe?
-Drop Bundling of JS
 Collect coverage of system tests themselves
    Will require coverage combine on the .coverage files from _two_ containers
 Add separate env-files for unit/system tests
