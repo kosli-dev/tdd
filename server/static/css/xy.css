@@ -18,7 +18,7 @@ fieldset
   margin: 0px;
 }
 
-.squad, .yes_no
+.panel
 {
   margin: 10px;
   padding: 10px 10px 10px 20px;
@@ -38,15 +38,14 @@ input[type=text]
   font-size: 1em;
   padding-left: 20px;
   padding-right: 20px;
+  margin-right: 20px;
   max-width: 5ch;
 }
 
 input[type=checkbox]
 {
-  margin-left: 25px;
+  margin-right: 10px;
   transform: scale(2);
-  position: relative;
-  top: -5px;
 }
 
 #api-link

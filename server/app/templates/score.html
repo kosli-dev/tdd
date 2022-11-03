@@ -5,73 +5,28 @@
   {% from "_render_field.html" import render_field %}
 
   <form method="POST">
-    {{ form.csrf_token }}
+    <fieldset class="form-group">
+      {{ form.csrf_token }}
+      {% set n = form.squads | length %}
 
-    <button onclick="location.href='/score/{{ form.n - 1 }}'"
-            type="button" {{'disabled' if form.n == 2 }}>-</button>
+      <button onclick="location.href='/score/{{ n - 1 }}'"
+              type="button" {{'disabled' if n == 2 }}>-</button>
 
-    {{ form.n }}
+      {{ n }}
 
-    <button onclick="location.href='/score/{{ form.n + 1 }}'"
-            type="button" {{'disabled' if form.n == 6}} >+</button>
+      <button onclick="location.href='/score/{{ n + 1 }}'"
+              type="button" {{'disabled' if n == 6}} >+</button>
 
-    {{ form.submit() }}
-    <fieldset class="form-group" id="fields">
+      {% for squad in form.squads %}
+      <div class="panel">
+        Squad-{{ "ABCDEF"[loop.index0] }} {{ squad.letters }} {{ squad.is_word }} word?
+      </div>
+      {% endfor %}
+
+      <div class="panel">{{ form.is_sentence }} sentence?</div>
+      <div class="panel">{{ form.is_profound }} profound?</div>
+
+      {{ form.submit() }}
     </fieldset>
   </form>
-{% endblock %}
-
-{% block page_custom_js %}
-<script type="text/javascript">
-
-  const squad = (letter) => {
-    const lower = letter.toLowerCase();
-    return `
-      <div class="squad">
-           squad-${letter}
-        <input id="decisions_${lower}"
-               type="text"
-               name="decisions_${lower}"
-               maxlength="5"
-               value="">
-        word?
-        <input id="word_${lower}"
-               type="checkbox"
-               name="word_${lower}"
-               value="">
-      </div>`;
-  };
-
-  const is_sentence = () => {
-    return `
-        <div class="yes_no">
-             sentence?
-          <input id="sentence"
-                 type="checkbox"
-                 name="sentence"
-                 value="">
-        </div>`;
-  };
-
-  const is_profound = () => {
-    return `
-      <div class="yes_no">
-           profound?
-        <input id="profound"
-               type="checkbox"
-               name="profound"
-               value="">
-      </div>`;
-  };
-
-  $(window).ready(()=> {
-    const fields = $("#fields")
-    const n = window.location.pathname.split("/").pop();
-    for(i = 0; i < n; i++) {
-      fields.append(squad("ABCDEF"[i]));
-    }
-    fields.append(is_sentence());
-    fields.append(is_profound());
-  });
-</script>
 {% endblock %}

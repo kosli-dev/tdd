@@ -1,5 +1,5 @@
 from flask import redirect, render_template, url_for
-from .score_form import ScoreForm
+from .score_form import ScoreForm, Org, Squad
 from .results import write_result, read_result
 
 
@@ -9,10 +9,15 @@ def register_routes(app_blueprint):
     def home():
         return redirect(url_for('app.score', n=3))
 
-    @app_blueprint.route('/score/<n>', methods=['POST', 'GET'])
+    @app_blueprint.route('/score/<int:n>', methods=['POST', 'GET'])
     def score(n):
-        form = ScoreForm(int(n))
+        org = Org()
+        org.squads = []
+        for _ in range(n):
+            org.squads.append(Squad())
+        form = ScoreForm(obj=org)
         if form.validate_on_submit():
+            form.populate_obj(org)
             # TODO: Get actual form's data
             sid = write_result(FAKE_FORM_DATA)
             return redirect(url_for('app.scores', sid=sid))
