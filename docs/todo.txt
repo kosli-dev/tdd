@@ -1,11 +1,7 @@
 
 # Core
-Decide whether to use server-hooks.
-   I get [--workers*2] coverage files, on other laptops its [--workers*1]
-   Where does this difference come from? No of cores?
-   Would it mean the number of workers would have to become an env-var?
-   If so, would that be worth it?
-
+Reinstate read_only file-system and volume-mounts in docker-compose.yaml
+Create CSS/JS files in dockerfile multi-stage build (like server)
 Add fields to ScoreForm - allow number of squads to be dynamic
 Run unit tests in parallel and run coverage combine
 Add some simple system APP tests
@@ -13,7 +9,7 @@ Add some simple system APP tests
 # Maybe?
 Drop Bundling of JS
 Collect coverage of system tests themselves
-   Note that this will require coverage on two containers...!
+   Will require coverage combine on the .coverage files from _two_ containers
 Add separate env-files for unit/system tests
 Make t fixture available to both system and unit tests
 Document API call
