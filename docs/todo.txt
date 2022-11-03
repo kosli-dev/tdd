@@ -1,6 +1,7 @@
 
 # Core
-Add validators to ensure form is only submitted when 5 letters are entered
+Add JS so when profound?[x] is checked then sentence?[x] gets checked
+Add JS so when sentence?[x] is checked then all word?[x] get checked
 Add simple .github workflow to run unit and system tests
 Reinstate read_only file-system and volume-mounts in docker-compose.yaml
 Create CSS/JS files in dockerfile multi-stage build (like server)

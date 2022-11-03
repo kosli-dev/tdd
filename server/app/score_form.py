@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import FieldList, FormField, SubmitField, StringField, BooleanField
 from wtforms import Form as NoCsrfForm
+from wtforms.validators import DataRequired, Length
 
 
 class Org:
@@ -13,7 +14,7 @@ class Squad:
 
 
 class SquadForm(NoCsrfForm):
-    letters = StringField('')
+    letters = StringField('', validators=[DataRequired(), Length(min=5, max=5)])
     is_word = BooleanField()
 
 
