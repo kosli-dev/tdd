@@ -13,7 +13,7 @@ def register_routes(app_blueprint):
     def score(n):
         form = ScoreForm(int(n))
         if form.validate_on_submit():
-            # TODO: Pass actual form's data
+            # TODO: Get actual form's data
             sid = write_result(FAKE_FORM_DATA)
             return redirect(url_for('app.scores', sid=sid))
         else:
