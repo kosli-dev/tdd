@@ -3,8 +3,18 @@
 {% block body %}
   <h1>XY Business Game</h1>
   {% from "_render_field.html" import render_field %}
+
   <form method="POST">
     {{ form.csrf_token }}
+
+    <button onclick="location.href='/score/{{ form.n - 1 }}'"
+            type="button" {{'disabled' if form.n == 2 }}>-</button>
+
+    {{ form.n }}
+
+    <button onclick="location.href='/score/{{ form.n + 1 }}'"
+            type="button" {{'disabled' if form.n == 6}} >+</button>
+
     {{ form.submit() }}
     <fieldset class="form-group">
         {# render_field(form.squadA, class="xxx") #}
