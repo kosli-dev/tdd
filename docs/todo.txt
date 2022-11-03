@@ -1,7 +1,5 @@
 
 # Core
-Create CSS/JS files in dockerfile multi-stage build (like server)
-Reinstate read_only file-system and volume-mounts in docker-compose.yaml
 Add simple .github workflow to run unit and system tests
 Run unit tests in parallel and run coverage combine
 Add some simple system APP tests

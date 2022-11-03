@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <meta charset="UTF-8" />
-      <title>Jerry Weinberg's XY Business Game</title>
-      <meta name="author" content="Jon Jagger" />
-      {% assets "css" %}<link rel="stylesheet" href="{{ ASSET_URL }}" />{% endassets %}
-      {% assets "js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+    <meta charset="UTF-8" />
+    <title>Jerry Weinberg's XY Business Game</title>
+    <meta name="author" content="Jon Jagger" />
+    <link rel="stylesheet" href="{{ bundle_css }}" />
+    <script src="{{ bundle_js }}"></script>
   </head>
   <body>
     {% block body %} {% endblock %}

@@ -7,17 +7,14 @@
     "doc": "docs"
   },
   "scripts": {
-    "remove:assets": "rm -f scss/main.*.css scss/homescreen.*.css js/main.*.js",
-    "compile-main:css": "sass --no-source-map scss/main.scss:scss/main.css --style expanded",
-    "prefix-main:css": "postcss scss/main.css -u autoprefixer -b \"last 10 versions\" -o scss/main.prefixed.css",
-    "compress-main:css": "sass --no-source-map scss/main.prefixed.css:scss/main.min.css --style compressed",
-    "compile-homescreen:css": "sass --no-source-map scss/homescreen.scss:scss/homescreen.css --style expanded",
-    "prefix-homescreen:css": "postcss scss/homescreen.css -u autoprefixer -b \"last 10 versions\" -o scss/homescreen.prefixed.css",
-    "compress-homescreen:css": "sass --no-source-map scss/homescreen.prefixed.css:scss/homescreen.min.css --style compressed",
-    "cleanup:css": "rm scss/homescreen.css && rm scss/homescreen.prefixed.css && rm scss/main.css && rm scss/main.prefixed.css",
-    "rename:css": "mv scss/homescreen.min.css scss/homescreen.${COMMIT_SHA}.css && mv scss/main.min.css scss/main.${COMMIT_SHA}.css",
-    "bundle-js:js": "bundle-js js/all.js -o js/main.${COMMIT_SHA}.js",
-    "build": "npm-run-all remove:assets compile-main:css prefix-main:css compress-main:css compile-homescreen:css prefix-homescreen:css compress-homescreen:css cleanup:css rename:css bundle-js:js"
+    "remove:assets": "rm -f scss/bundle.*.css js/bundle.*.js",
+    "compile:css": "sass --no-source-map scss/bundle.scss:scss/bundle.css --style expanded",
+    "prefix:css": "postcss scss/bundle.css -u autoprefixer -b \"last 10 versions\" -o scss/bundle.prefixed.css",
+    "compress:css": "sass --no-source-map scss/bundle.prefixed.css:scss/bundle.min.css --style compressed",
+    "cleanup:css": "rm scss/bundle.prefixed.css scss/bundle.css",
+    "rename:css": "mv scss/bundle.min.css scss/bundle.${COMMIT_SHA}.css",
+    "bundle:js": "bundle-js js/bundle.js -o js/bundle.${COMMIT_SHA}.js",
+    "build": "npm-run-all remove:assets compile:css prefix:css compress:css cleanup:css rename:css bundle:js"
   },
   "repository": {
     "type": "git",

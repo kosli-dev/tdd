@@ -1,8 +1,6 @@
-from flask import Flask
+from flask import Flask, url_for
 from flask_restx import Api as RestXApi
-from flask_assets import Environment, Bundle
 import os
-from pathlib import Path
 from api import get_api_blueprint, init_routes
 from config import Config
 
@@ -11,11 +9,7 @@ def app():
     xy = Flask(__name__)
     xy.config.from_object(Config)
     xy.config['RESTX_VALIDATE'] = True
-    assets = Environment(xy)
-    assets.cache = webasset_cache_dir()
-    assets.url = xy.static_url_path
-    init_css(xy, assets)
-    init_js(xy, assets)
+    init_jinja_variables(xy)
     init_api_blueprint(xy)
     init_app_blueprint(xy)
     return xy
@@ -45,27 +39,21 @@ def init_app_blueprint(xy):
     xy.register_blueprint(xy_blueprint)
 
 
-def webasset_cache_dir():
-    path = f"/tmp/webasset-cache-{os.getpid()}"
-    try:
-        os.mkdir(path)
-    except FileExistsError:  # pragma: no cover
-        pass
-    return path
+def git_commit_sha():
+    return os.environ.get("GIT_COMMIT_SHA")
 
 
-def init_css(xy, assets):
-    css_files = asset_file_paths(xy, "css")
-    css = Bundle(*css_files, filters='cssmin', output='bundle.css')
-    assets.register('css', css)
+def bundle_css():
+    return url_for('static', filename=f"scss/bundle.{git_commit_sha()}.css")
 
 
-def init_js(xy, assets):
-    js_files = asset_file_paths(xy, "js")
-    js = Bundle(*js_files, filters='jsmin', output='bundle.js')
-    assets.register('js', js)
+def bundle_js():
+    return url_for('static', filename=f"js/bundle.{git_commit_sha()}.js")
 
 
-def asset_file_paths(xy, dir_name):
-    static_path = Path(f'{xy.root_path}/static/{dir_name}')
-    return [f'{static_path}/{file.name}' for file in static_path.iterdir()]
+def init_jinja_variables(xy):
+
+    @xy.context_processor
+    def jinja_variables():
+        return dict(bundle_css=bundle_css(),
+                    bundle_js=bundle_js())
