@@ -22,6 +22,26 @@ xy_repo_dir() {
   git rev-parse --show-toplevel
 }
 
+die() {
+  echo >&2
+  echo "Error: $*" >&2
+  echo >&2
+  exit 1
+}
+
+refresh_assets() {
+  docker run --rm \
+    --volume "$(xy_repo_dir)/package.json:/app/package.json" \
+    --volume "$(xy_repo_dir)/server/static/scss:/app/scss" \
+    --volume "$(xy_repo_dir)/server/static/js:/app/js" \
+    --workdir /app \
+    --env GIT_COMMIT_SHA="${GIT_COMMIT_SHA}" \
+    ghcr.io/kosli-dev/assets-builder:v1 \
+    bash -c "npm run build" ||
+    die "refresh_assets.sh failed. Your docker image might be outdated. " \
+      "Run 'docker image rm ghcr.io/kosli-dev/assets-builder' and then try again"
+}
+
 build_image() {
   cd "${XY_REPO_DIR}"
   docker build \

@@ -5,6 +5,7 @@ MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
 source "${MY_DIR}/test/lib.sh"
 export $(echo_env_vars)
 
+refresh_assets
 build_image
 
 docker rm --force "${XY_CONTAINER}" 2> /dev/null || true

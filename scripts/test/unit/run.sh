@@ -5,6 +5,7 @@ MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
 source "${MY_DIR}/../lib.sh"
 export $(echo_env_vars)
 
+refresh_assets
 build_image
 network_up
 server_up
