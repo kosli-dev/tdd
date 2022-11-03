@@ -1,0 +1,40 @@
+{
+  "name": "kosli",
+  "version": "1.0.0",
+  "description": "kosli css",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "remove:assets": "rm -f scss/main.*.css scss/homescreen.*.css js/main.*.js",
+    "compile-main:css": "sass --no-source-map scss/main.scss:scss/main.css --style expanded",
+    "prefix-main:css": "postcss scss/main.css -u autoprefixer -b \"last 10 versions\" -o scss/main.prefixed.css",
+    "compress-main:css": "sass --no-source-map scss/main.prefixed.css:scss/main.min.css --style compressed",
+    "compile-homescreen:css": "sass --no-source-map scss/homescreen.scss:scss/homescreen.css --style expanded",
+    "prefix-homescreen:css": "postcss scss/homescreen.css -u autoprefixer -b \"last 10 versions\" -o scss/homescreen.prefixed.css",
+    "compress-homescreen:css": "sass --no-source-map scss/homescreen.prefixed.css:scss/homescreen.min.css --style compressed",
+    "cleanup:css": "rm scss/homescreen.css && rm scss/homescreen.prefixed.css && rm scss/main.css && rm scss/main.prefixed.css",
+    "rename:css": "mv scss/homescreen.min.css scss/homescreen.${COMMIT_SHA}.css && mv scss/main.min.css scss/main.${COMMIT_SHA}.css",
+    "bundle-js:js": "bundle-js js/all.js -o js/main.${COMMIT_SHA}.js",
+    "build": "npm-run-all remove:assets compile-main:css prefix-main:css compress-main:css compile-homescreen:css prefix-homescreen:css compress-homescreen:css cleanup:css rename:css bundle-js:js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/merkely-development/merkely.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/merkely-development/merkely/issues"
+  },
+  "homepage": "https://github.com/merkely-development/merkely#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.12",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.18",
+    "postcss-cli": "^10.0.0",
+    "sass": "^1.55.0",
+    "bundle-js": "^1.0.3"
+  }
+}

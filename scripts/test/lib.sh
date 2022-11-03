@@ -10,6 +10,7 @@ echo_env_vars() {
   echo XY_PORT=8001
   echo XY_USER=xy
   echo XY_WORKERS=2
+  echo GIT_COMMIT_SHA="$(git rev-parse HEAD)"
 }
 
 ip_address() {
@@ -28,6 +29,7 @@ build_image() {
     --build-arg XY_PORT \
     --build-arg XY_USER \
     --build-arg XY_WORKERS \
+    --build-arg GIT_COMMIT_SHA \
     --file Dockerfile \
     --tag "${XY_IMAGE}" \
     .
