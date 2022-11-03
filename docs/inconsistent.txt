@@ -1,9 +1,0 @@
-
-
-Occasionally the `coverage combine` prints the following message
-(this is after the WORKERS*2 dot coverage files have appeared)
-
-```
-Couldn't use data file '/xy/.coverage': unable to open database file
-```
-
