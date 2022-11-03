@@ -1,6 +1,6 @@
 
 # Core
-Add fields to ScoreForm - allow number of squads to be dynamic
+Add validators to ensure form is only submitted when 5 letters are entered
 Add simple .github workflow to run unit and system tests
 Reinstate read_only file-system and volume-mounts in docker-compose.yaml
 Create CSS/JS files in dockerfile multi-stage build (like server)
