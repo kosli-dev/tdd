@@ -15,7 +15,7 @@ class Squad:
 
 class SquadForm(NoCsrfForm):
     letters = StringField('', validators=[DataRequired(), Length(min=5, max=5)])
-    is_word = BooleanField()
+    is_word = BooleanField(render_kw={'class': 'word'})
 
 
 class ScoreForm(FlaskForm):

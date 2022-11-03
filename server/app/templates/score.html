@@ -29,3 +29,22 @@
     </fieldset>
   </form>
 {% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+  $(window).ready(()=> {
+    const words = $('.word');
+    const is_sentence = $('#is_sentence');
+    const is_profound = $('#is_profound');
+    is_profound.click(() => {
+      const value = is_profound.is(':checked');
+      is_sentence.prop('checked', value);
+      words.prop('checked', value);
+    });
+    is_sentence.click(() => {
+      const value = is_sentence.is(':checked');
+      words.prop('checked', value);
+    });
+  });
+</script>
+{% endblock %}
