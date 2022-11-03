@@ -31,4 +31,7 @@ def scored(data):
         squads[i]["scores"] = scores
         total_score += sum(scores)
 
-    return {"squads": squads, "total_score": total_score}
+    return {
+        "squads": squads,
+        "total_score": f"{total_score:,}"
+    }
