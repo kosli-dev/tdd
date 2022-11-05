@@ -13,4 +13,4 @@ class API:
         return http_get('/api/health/ready')
 
     def company_score(self, **kwargs):
-        return http_post("/api/company/score", **kwargs)
+        return http_post("/api/company/score/", **kwargs)
