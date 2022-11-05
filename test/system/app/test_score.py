@@ -17,8 +17,8 @@ def X_test_c8e1d001(app):
     """
     result = app.post_company_score(
         squads=[
-            {"letters": "hello", "word": True},
-            {"letters": "world", "word": True}
+            {"letters": "hello", "is_word": True},
+            {"letters": "world", "is_word": True}
         ],
         is_sentence=False,
         is_profound=False
