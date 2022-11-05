@@ -1,4 +1,3 @@
-import logging
 from flask import Flask, url_for
 from flask_restx import Api as RestXApi
 import os
@@ -8,29 +7,12 @@ from config import Config
 
 def app():
     xy = Flask(__name__)
-    init_logging(xy)
     xy.config.from_object(Config)
     xy.config['RESTX_VALIDATE'] = True
     init_jinja_variables(xy)
     init_api_blueprint(xy)
     init_app_blueprint(xy)
     return xy
-
-
-def init_logging(xy):
-    # https://www.javacodemonk.com/configure-logging-in-gunicorn-based-application-in-docker-container-9989b7db
-    # https://trstringer.com/logging-flask-gunicorn-the-manageable-way/
-    gunicorn_logger = logging.getLogger('gunicorn.error')
-    xy.logger.handlers = gunicorn_logger.handlers
-    xy.logger.setLevel(gunicorn_logger.level)
-
-    formatter = logging.Formatter(
-        fmt='[%(asctime)s.%(msecs)03d] [%(process)d] [%(levelname)s] %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
-
-    for handler in xy.logger.handlers:
-        handler.setFormatter(formatter)
 
 
 def init_api_blueprint(xy):
