@@ -12,5 +12,8 @@ class APP:
     def home(self):
         return http_get('/')
 
-    def company_score(self, *, n):
+    def get_company_score(self, *, n=3):
         return http_get(f"/score/{n}")
+
+    def post_company_score(self, **kwargs):
+        return http_post(f"/score/", **kwargs)

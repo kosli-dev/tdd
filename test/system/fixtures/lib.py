@@ -1,16 +1,12 @@
-import json, os, requests
+import os, requests
 
 
 def http_get(url, **kwargs):
-    headers = {"content-type": "application/json"}
-    data = json.dumps(kwargs, ensure_ascii=False).encode("utf8")
-    return requests.get(f"{host()}{url}", headers=headers, data=data)
+    return requests.get(f"{host()}{url}", json=kwargs)
 
 
 def http_post(url, **kwargs):
-    headers = {"content-type": "application/json"}
-    data = json.dumps(kwargs, ensure_ascii=False).encode("utf8")
-    return requests.post(f"{host()}{url}", headers=headers, data=data)
+    return requests.post(f"{host()}{url}",  json=kwargs)
 
 
 def host():
