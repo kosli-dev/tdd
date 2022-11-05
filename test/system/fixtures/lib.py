@@ -1,18 +1,4 @@
-import json, os, pytest, requests
-
-
-@pytest.fixture
-def xy():
-    yield XY()
-
-
-class XY:
-
-    def health_ready(self):
-        return http_get('/api/health/ready')
-
-    def company_score(self, **kwargs):
-        return http_post("/api/company/score", **kwargs)
+import json, os, requests
 
 
 def http_get(url, **kwargs):
