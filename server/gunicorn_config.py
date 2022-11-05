@@ -27,8 +27,11 @@ def worker_exit(server, worker):
     # Save coverage when the worker finishes
     # print("Before worker_exit()")
     # ls_coverage_dir()
-    cov.stop()
-    cov.save()
+    try:
+        cov.stop()
+        cov.save()
+    except:
+        pass
     # print("After worker_exit()")
     # ls_coverage_dir()
 

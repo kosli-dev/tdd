@@ -1,10 +1,26 @@
 
 def test_c8e1d000(app):
     """
+    There is a page for entering squads decisions.
     The number of squads in a company is controlled
     by the n argument.
     """
-    result = app.company_score(n=3)
+    result = app.get_company_score(n=3)
     assert result.status_code == 200
-    result = app.company_score(n=4)
+    result = app.get_company_score(n=4)
+    assert result.status_code == 200
+
+
+def X_test_c8e1d001(app):
+    """
+    There is a page for scoring an entered squads decisions.
+    """
+    result = app.post_company_score(
+        squads=[
+            {"letters": "hello", "word": True},
+            {"letters": "world", "word": True}
+        ],
+        is_sentence=False,
+        is_profound=False
+    )
     assert result.status_code == 200
