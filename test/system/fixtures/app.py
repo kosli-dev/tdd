@@ -9,5 +9,8 @@ def app():
 
 class APP:
 
-    def company_score(self, **kwargs):
-        return http_get("/score/4", **kwargs)
+    def home(self):
+        return http_get('/')
+
+    def company_score(self, *, n):
+        return http_get(f"/score/{n}")
