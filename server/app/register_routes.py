@@ -9,7 +9,7 @@ def register_routes(app_blueprint):
     def home():
         return redirect(url_for('app.score', n=3))
 
-    @app_blueprint.route('/score/<int:n>', methods=['POST', 'GET'])
+    @app_blueprint.route('/score/<int:n>', methods=['GET', 'POST'])
     def score(n):
         org = Org()
         org.squads = []
@@ -29,17 +29,14 @@ def register_routes(app_blueprint):
 
 
 def data_from(form):
-    data = {
-        "squads": [],
+    def squad(n):
+        return {
+            "char": "ABCDEF"[n],
+            "letters": form.squads[n].letters.data,
+            "is_word": form.squads[n].is_word.data
+        }
+    return {
+        "squads": [squad(n) for n in range(len(form.squads))],
         "is_sentence": form.is_sentence.data,
         "is_profound": form.is_profound.data
     }
-
-    for i, squad in enumerate(form.squads):
-        data["squads"].append({
-            "char": "ABCDEF"[i],
-            "letters": squad.letters.data,
-            "is_word": squad.is_word.data
-        })
-
-    return data
