@@ -11,7 +11,7 @@ def test_c8e1d000(app):
     assert result.status_code == 200
 
 
-def X_test_c8e1d001(app):
+def test_c8e1d001(app):
     """
     There is a page for scoring an entered squads decisions.
     """
@@ -24,3 +24,4 @@ def X_test_c8e1d001(app):
         is_profound=False
     )
     assert result.status_code == 200
+    # TODO: assert redirected to app.scores(sid)

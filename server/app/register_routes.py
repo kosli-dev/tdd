@@ -11,6 +11,8 @@ def register_routes(app_blueprint):
 
     @app_blueprint.route('/score/<int:n>', methods=['GET', 'POST'])
     def score(n):
+        # from flask import current_app
+        # current_app.logger.info("INSIDE score")
         org = Org()
         org.squads = []
         for _ in range(n):
