@@ -1,12 +1,13 @@
 
 # Core
-Add simple .github workflow to run unit and system tests
-Run unit tests in parallel and run coverage combine
-Add some simple system APP tests
-
-# Maybe?
+Add system APP test that posts scores form
+Add pytest command line flag for grep-match in test docstring
 Collect coverage of system tests themselves
    Will require coverage combine on the .coverage files from _two_ containers
+Add simple .github workflow to run unit and system tests
+Run unit tests in parallel and run coverage combine
+
+# Maybe?
 Add separate env-files for unit/system tests
 Make t fixture available to both system and unit tests
 Document API call

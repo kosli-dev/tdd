@@ -18,13 +18,11 @@ def host():
 
 
 def port():
-    # See scripts/echo_env_vars.sh
-    return int(os.environ.get("XY_PORT"))
+    return int(os.environ.get("XY_PORT"))  # See scripts/echo_env_vars.sh
 
 
 def service_name():
-    # See docker-compose.yaml
-    return 'xy'
+    return 'xy'  # See docker-compose.yaml
 
 
 def print_round_trip(response, *args, **kwargs):
@@ -35,17 +33,17 @@ def print_round_trip(response, *args, **kwargs):
     print(textwrap.dedent('''
         ---------------- request ----------------
         {req.method} {req.url}
-        {reqhdrs}
+        {req_headers}
 
         {req.body}
         ---------------- response ----------------
         {res.status_code} {res.reason} {res.url}
-        {reshdrs}
+        {res_headers}
 
         {res.text}
     ''').format(
         req=response.request,
         res=response,
-        reqhdrs=format_headers(response.request.headers),
-        reshdrs=format_headers(response.headers),
+        req_headers=format_headers(response.request.headers),
+        res_headers=format_headers(response.headers),
     ))
