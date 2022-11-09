@@ -15,6 +15,14 @@ def test_c8e1d001(app):
     """
     There is a page for scoring an entered squads decisions.
     """
+    # On server, POST had raw data like this...
+    # "squads-0-letters": "hello",
+    # "squads-1-letters": "world",
+    # "squads-2-letters": "hello",
+    # "squads-2_is_word": True,
+    # "is_sentence": False,
+    # "is_profound": False,
+
     result = app.post_company_score(
         squads=[
             {"letters": "hello", "is_word": True},

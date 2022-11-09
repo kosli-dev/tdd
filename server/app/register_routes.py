@@ -14,6 +14,7 @@ def register_routes(app_blueprint):
         # from flask import current_app
         # if request.method == 'POST':
         #     current_app.logger.info("INSIDE POST")
+        #     current_app.logger.info(request.data)
         # if request.method == 'GET':
         #     current_app.logger.info("INSIDE GET")
         org = Org()
