@@ -7,9 +7,13 @@ def http_get(url, **kwargs):
     return requests.get(f"{host()}{url}", json=kwargs)
 
 
-def http_post(url, **kwargs):
-    return requests.post(f"{host()}{url}",
-                         json=kwargs)
+def http_post_files(url, **kwargs):
+    return requests.post(f"{host()}{url}", data=kwargs)
+                         # hooks={'response': print_round_trip})
+
+
+def http_post_json(url, json):
+    return requests.post(f"{host()}{url}", json=json)
                          # hooks={'response': print_round_trip})
 
 

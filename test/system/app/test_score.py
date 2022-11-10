@@ -23,13 +23,20 @@ def test_c8e1d001(app):
     # "is_sentence": False,
     # "is_profound": False,
 
-    result = app.post_company_score(
-        squads=[
-            {"letters": "hello", "is_word": True},
-            {"letters": "world", "is_word": True}
-        ],
-        is_sentence=False,
-        is_profound=False
-    )
+    result = app.post_company_score({
+        "squads-0-letters": "hello",
+        "squads-1-letters": "world",
+        "squads-2-letters": "hello",
+        "squads-2_is_word": True,
+        "is_sentence": False,
+        "is_profound": False,
+    })
+    #     squads=[
+    #         {"letters": "hello", "is_word": True},
+    #         {"letters": "world", "is_word": True}
+    #     ],
+    #     is_sentence=False,
+    #     is_profound=False
+    # )
     assert result.status_code == 200
     # TODO: assert redirected to app.scores(sid)

@@ -27,6 +27,7 @@ def register_routes(app_blueprint):
             sid = write_result(data_from(form))
             return redirect(url_for('app.scores', sid=sid))
         else:
+            # current_app.logger.info("form.invalidate_on_submit() == False")
             return render_template('score.html', form=form)
 
     @app_blueprint.route('/scores/<sid>', methods=['GET'])

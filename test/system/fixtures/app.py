@@ -15,6 +15,6 @@ class APP:
     def get_company_score(self, *, n=3):
         return http_get(f"/score/{n}")
 
-    def post_company_score(self, **kwargs):
-        n = len(kwargs["squads"])
-        return http_post(f"/score/{n}", files=kwargs)
+    def post_company_score(self, json):
+        n = 2  # len(kwargs["squads"])
+        return http_post_json(f"/score/{n}", json)
