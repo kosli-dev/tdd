@@ -10,7 +10,6 @@ fi
 
 server_restart
 wait_till_server_ready
-rm_coverage system
 run_tests
 server_restart
 report_coverage

@@ -15,36 +15,28 @@ cov = coverage.Coverage(config_file=config_file_path())
 
 
 def post_fork(server, worker):
-    # Start coverage right after the worker forks
-    # print("Before post_fork()")
-    # ls_coverage_dir()
-    cov.start()
-    # print("After post_fork()")
-    # ls_coverage_dir()
+    if coverage_on_server():
+        recreate_coverage_dir()
+        cov.start()
 
 
 def worker_exit(server, worker):
-    # Save coverage when the worker finishes
-    # print("Before worker_exit()")
-    # ls_coverage_dir()
-    try:
-        cov.stop()
-        cov.save()
-    except:
-        pass
-    # print("After worker_exit()")
-    # ls_coverage_dir()
+    if coverage_on_server():
+        try:
+            cov.stop()
+            cov.save()
+        except:
+            pass
 
 
-def dot_coverage_dir():
-    return f"{xy_app_dir()}/coverage/system"
+def coverage_on_server():
+    return os.environ.get("COVERAGE_PROCESS_START", None)
 
 
-def ls_coverage_dir():
-    cmd = ["ls", "-al", "."]
-    result = subprocess.run(cmd,
-                            cwd=dot_coverage_dir(),
-                            capture_output=True,
-                            text=True,
-                            check=True)
-    print(result.stdout)
+def recreate_coverage_dir():
+    # This needs to work on localhost and CI run.
+    dir = "/xy/coverage/system"
+    rm = ["rm", "-rf", dir]
+    subprocess.run(rm, cwd='/xy', capture_output=True, text=True, check=True)
+    mkdir = ["mkdir", "-p", dir]
+    subprocess.run(mkdir, cwd='/xy', capture_output=True, text=True, check=True)
