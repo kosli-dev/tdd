@@ -23,20 +23,18 @@ o) runner the server as a non root user
 ```
 $ source ./scripts/shortcuts.sh
 
-$ tid  # generate a test id
+$ tid          # generate a test id
 
-$ rut          # run all unit tests in new xy server
-$ rut a2189600 # run only unit test_a2189600 in new xy server
+$ rut          # Run all Unit Tests in new xy server
+$ rut a2189600 # Run only Unit Test_a2189600 in new xy server
+$ eut          # Exec all Unit Tests in existing xy server
+$ eut a2189600 # Exec only Unit Test a2189600 in existing xy server
 
-$ rst          # run all system tests in new xy server
-$ rst 04692400 # run only system test_04692400 in new xy server
+$ rst          # Run all System Tests in new xy server
+$ rst 04692400 # Run only System Test_04692400 in new xy server
+$ est          # Exec all System Tests in restarted xy server
+$ est 04692400 # Exec only System Test 04692400 in restarted xy server
 
-$ eut          # run all unit tests in existing xy server
-$ eut a2189600 # run only unit test a2189600 in existing xy server
-
-$ est          # run all system tests in restarted xy server
-$ est 04692400 # run only system test 04692400 in restarted xy server
-
-$ demo # run a demo server 
-$ hup  # restart the demo server
+$ demo         # run a demo server 
+$ hup          # restart the demo server
 ```
