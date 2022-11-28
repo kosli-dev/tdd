@@ -17,4 +17,4 @@ docker exec \
   "${XY_CONTAINER}" \
     "${XY_APP_DIR}/test/unit/run.sh"
 
-echo "${XY_REPO_DIR}/test/unit/coverage/index.html"
+echo "${XY_REPO_DIR}/coverage/unit/index.html"
