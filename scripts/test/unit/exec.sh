@@ -11,7 +11,7 @@ docker exec \
   --env TIDS="${TIDS}" \
   --interactive \
   --tty \
-  "${XY_CONTAINER}" \
+  "${XY_CONTAINER_NAME}" \
     "${XY_APP_DIR}/test/unit/run.sh"
 
 echo "${XY_REPO_DIR}/coverage/unit/index.html"

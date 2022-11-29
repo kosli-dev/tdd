@@ -16,7 +16,7 @@ echo_env_vars() {
   echo XY_CONTAINER_PORT=8001
   echo XY_REPO_DIR="$(xy_repo_dir)" # Outside the container
   echo XY_APP_DIR=/xy               # Inside the container
-  echo XY_CONTAINER="xy_${2}"
+  echo XY_CONTAINER_NAME="xy_${2}"
   echo XY_IMAGE=xy_image
   echo XY_NETWORK=xy_net # Also in docker-compose.yaml
   echo XY_USER=xy
@@ -87,7 +87,7 @@ server_restart() {
   docker exec \
     --interactive \
     --tty \
-    "${XY_CONTAINER}" \
+    "${XY_CONTAINER_NAME}" \
     sh -c "pkill -SIGHUP -o gunicorn"
 }
 
@@ -103,7 +103,7 @@ wait_till_server_ready() {
     fi
   done
   echo "Failed $(ip_address) readiness"
-  docker container logs "${XY_CONTAINER}" || true
+  docker container logs "${XY_CONTAINER_NAME}" || true
   exit 1
 }
 
