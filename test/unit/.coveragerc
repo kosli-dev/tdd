@@ -1,5 +1,5 @@
 [run]
-data_file=/${XY_CONTAINER_DIR}/coverage/unit/.coverage
+data_file=${XY_CONTAINER_DIR}/coverage/unit/.coverage
 source=${XY_CONTAINER_DIR}/server
 branch=True
 omit =
