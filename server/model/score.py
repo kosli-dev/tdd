@@ -27,7 +27,7 @@ def squad_score(n, squad_decisions, company_decisions):
     for i in range(0, 5):
         score, n = letter_score(n, squad_decisions[i], ith(company_decisions, i))
         scores.append(score)
-    return [scores, n]
+    return scores, n
 
 
 def letter_score(n, squad_decision, company_decisions):
@@ -45,7 +45,7 @@ def letter_score(n, squad_decision, company_decisions):
         score = BIG_FISH_TABLE[n][squad_decision]
         n = (n + 1) % 6
 
-    return [score, n]
+    return score, n
 
 
 INVALID_OR_ILLEGAL = 'invalid_or_illegal'
