@@ -118,18 +118,6 @@ BIG_FISH_TABLE = {
 
 
 def marked(company_decisions):
-    # ...This is the original Ruby definition
-    # company_decisions.map do |squad_decisions|
-    #   squad_decisions.map do |decision|
-    #     if invalid_or_illegal?(decision)
-    #       marker_for(:invalid_or_illegal)
-    #     elsif vowel?(decision) || scoring_consonant?(decision)
-    #       decision.upcase
-    #     else
-    #       marker_for(:unscoring_consonant)
-    #     end
-    #   end
-    # end
     result = []
     for company_decision in company_decisions:
         part = []
