@@ -12,7 +12,7 @@ export_env_vars() {
 }
 
 echo_env_vars() {
-  echo XY_APP_PORT="${1}"
+  echo XY_HOST_PORT="${1}"
   echo XY_CONTAINER_PORT=8001
   echo XY_REPO_DIR="$(xy_repo_dir)" # Outside the container
   echo XY_APP_DIR=/xy               # Inside the container
@@ -25,7 +25,7 @@ echo_env_vars() {
 }
 
 ip_address() {
-  echo "http://localhost:${XY_APP_PORT}"
+  echo "http://localhost:${XY_HOST_PORT}"
 }
 
 xy_repo_dir() {
