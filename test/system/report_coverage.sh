@@ -16,7 +16,7 @@ wait_for_all_coverage_files_based_on_workers_count() {
   local -r max_tries=20
   for i in $(seq "${max_tries}"); do
     echo -n .
-    [ "$(actual_coverage_files_count)" == "${XY_WORKERS}" ] && break
+    [ "$(actual_coverage_files_count)" == "${XY_WORKER_COUNT}" ] && break
     sleep 0.1
   done
   echo .

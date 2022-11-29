@@ -20,7 +20,7 @@ echo_env_vars() {
   echo XY_IMAGE_NAME=xy_image
   echo XY_NETWORK_NAME=xy_net # Also in docker-compose.yaml
   echo XY_USER_NAME=xy
-  echo XY_WORKERS=2
+  echo XY_WORKER_COUNT=2
   echo GIT_COMMIT_SHA="$(git rev-parse HEAD)"
 }
 
@@ -59,7 +59,7 @@ build_image() {
     --build-arg XY_APP_DIR \
     --build-arg XY_CONTAINER_PORT \
     --build-arg XY_USER_NAME \
-    --build-arg XY_WORKERS \
+    --build-arg XY_WORKER_COUNT \
     --build-arg GIT_COMMIT_SHA \
     --file Dockerfile \
     --tag "${XY_IMAGE_NAME}" \
@@ -135,7 +135,7 @@ run_tests() {
 report_coverage() {
   docker run \
     --entrypoint="" \
-    --env XY_WORKERS \
+    --env XY_WORKER_COUNT \
     --interactive \
     --net "${XY_NETWORK_NAME}" \
     --rm \
