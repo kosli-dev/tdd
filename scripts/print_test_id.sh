@@ -11,5 +11,5 @@ docker run \
   --rm \
   --tty \
   --volume="${XY_REPO_DIR}/test:${XY_APP_DIR}/test:ro" \
-  "${XY_IMAGE}" \
+  "${XY_IMAGE_NAME}" \
     "${XY_APP_DIR}/test/print_id.py"

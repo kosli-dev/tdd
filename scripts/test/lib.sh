@@ -17,7 +17,7 @@ echo_env_vars() {
   echo XY_REPO_DIR="$(xy_repo_dir)" # Outside the container
   echo XY_APP_DIR=/xy               # Inside the container
   echo XY_CONTAINER_NAME="xy_${2}"
-  echo XY_IMAGE=xy_image
+  echo XY_IMAGE_NAME=xy_image
   echo XY_NETWORK=xy_net # Also in docker-compose.yaml
   echo XY_USER=xy
   echo XY_WORKERS=2
@@ -62,7 +62,7 @@ build_image() {
     --build-arg XY_WORKERS \
     --build-arg GIT_COMMIT_SHA \
     --file Dockerfile \
-    --tag "${XY_IMAGE}" \
+    --tag "${XY_IMAGE_NAME}" \
     .
 }
 
@@ -127,7 +127,7 @@ run_tests() {
     --rm \
     --tty \
     --volume="${XY_REPO_DIR}/test:${XY_APP_DIR}/test:ro" \
-    "${XY_IMAGE}" \
+    "${XY_IMAGE_NAME}" \
       "${XY_APP_DIR}/test/system/run.sh"
   set -e
 }
@@ -141,7 +141,7 @@ report_coverage() {
     --rm \
     --tty \
     --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
-    "${XY_IMAGE}" \
+    "${XY_IMAGE_NAME}" \
       "${XY_APP_DIR}/test/system/report_coverage.sh"
 }
 

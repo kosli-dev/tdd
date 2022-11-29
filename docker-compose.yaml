@@ -8,7 +8,7 @@ services:
   xy-{NAME}:  # See scripts/test/lib.py server_up()
     container_name: "${XY_CONTAINER_NAME}"
     env_file: [ "${ENV_FILE}" ]
-    image: "${XY_IMAGE}"
+    image: "${XY_IMAGE_NAME}"
     networks: [ xy_net ]
     ports: [ "${XY_HOST_PORT}:${XY_CONTAINER_PORT}" ]
     tmpfs: [ /tmp ]
