@@ -14,7 +14,7 @@ export_env_vars() {
 echo_env_vars() {
   echo XY_HOST_PORT="${1}"
   echo XY_CONTAINER_PORT=8001
-  echo XY_REPO_DIR="$(xy_repo_dir)" # Outside the container
+  echo XY_HOST_DIR="$(xy_host_dir)" # Outside the container
   echo XY_APP_DIR=/xy               # Inside the container
   echo XY_CONTAINER_NAME="xy_${2}"
   echo XY_IMAGE_NAME=xy_image
@@ -28,7 +28,7 @@ ip_address() {
   echo "http://localhost:${XY_HOST_PORT}"
 }
 
-xy_repo_dir() {
+xy_host_dir() {
   # Can't use BASH_SOURCE as it's empty inside a 'sourced' script
   git rev-parse --show-toplevel
 }
@@ -42,9 +42,9 @@ die() {
 
 refresh_assets() {
   docker run --rm \
-    --volume "$(xy_repo_dir)/package.json:/app/package.json" \
-    --volume "$(xy_repo_dir)/server/static/scss:/app/scss" \
-    --volume "$(xy_repo_dir)/server/static/js:/app/js" \
+    --volume "$(xy_host_dir)/package.json:/app/package.json" \
+    --volume "$(xy_host_dir)/server/static/scss:/app/scss" \
+    --volume "$(xy_host_dir)/server/static/js:/app/js" \
     --workdir /app \
     --env GIT_COMMIT_SHA="${GIT_COMMIT_SHA}" \
     ghcr.io/kosli-dev/assets-builder:v1 \
@@ -54,7 +54,7 @@ refresh_assets() {
 }
 
 build_image() {
-  cd "${XY_REPO_DIR}"
+  cd "${XY_HOST_DIR}"
   docker build \
     --build-arg XY_APP_DIR \
     --build-arg XY_CONTAINER_PORT \
@@ -73,7 +73,7 @@ network_up() {
 
 server_up() {
   local -r kind="${1}"
-  cat "${XY_REPO_DIR}/docker-compose.yaml" | sed "s/{NAME}/${kind}/" \
+  cat "${XY_HOST_DIR}/docker-compose.yaml" | sed "s/{NAME}/${kind}/" \
     | docker-compose \
       --env-file=env_vars/test_system_up.env \
       --file - \
@@ -109,7 +109,7 @@ wait_till_server_ready() {
 
 cov_dir() {
   local -r kind="${1}"  # system | unit
-  echo "${XY_REPO_DIR}/coverage/${kind}"
+  echo "${XY_HOST_DIR}/coverage/${kind}"
 }
 
 rm_coverage() {
@@ -126,7 +126,7 @@ run_tests() {
     --net "${XY_NETWORK_NAME}" \
     --rm \
     --tty \
-    --volume="${XY_REPO_DIR}/test:${XY_APP_DIR}/test:ro" \
+    --volume="${XY_HOST_DIR}/test:${XY_APP_DIR}/test:ro" \
     "${XY_IMAGE_NAME}" \
       "${XY_APP_DIR}/test/system/run.sh"
   set -e
@@ -140,7 +140,7 @@ report_coverage() {
     --net "${XY_NETWORK_NAME}" \
     --rm \
     --tty \
-    --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
+    --volume="${XY_HOST_DIR}:${XY_APP_DIR}" \
     "${XY_IMAGE_NAME}" \
       "${XY_APP_DIR}/test/system/report_coverage.sh"
 }
