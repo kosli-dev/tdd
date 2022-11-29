@@ -21,7 +21,7 @@ if coverage_on_server():
 
 def post_fork(server, worker):
     if coverage_on_server():
-        #recreate_coverage_dir()
+        recreate_coverage_dir()
         cov.start()
 
 
@@ -35,6 +35,7 @@ def worker_exit(server, worker):
 
 
 def recreate_coverage_dir():
+    # Note: dir is a tmpfs
     # This needs to work on localhost and CI run.
     dir = f"{xy_container_dir()}/coverage/system"
     rm = ["rm", "-rf", dir]

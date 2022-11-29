@@ -11,9 +11,10 @@ services:
     image: "${XY_IMAGE_NAME}"
     networks: [ xy_net ]
     ports: [ "${XY_HOST_PORT}:${XY_CONTAINER_PORT}" ]
-    tmpfs: [ /tmp ]
+    tmpfs:
+      - /tmp
+      - ${XY_CONTAINER_DIR}/coverage
     volumes:
       - ./server:${XY_CONTAINER_DIR}/server:ro
       - ./test:${XY_CONTAINER_DIR}/test:ro
-      - ./coverage:${XY_CONTAINER_DIR}/coverage:rw
     read_only: true

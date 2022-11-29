@@ -14,4 +14,6 @@ docker exec \
   "${XY_CONTAINER_NAME}" \
     "${XY_CONTAINER_DIR}/test/unit/run.sh"
 
+tar_pipe_coverage_out unit
+
 echo "${XY_HOST_DIR}/coverage/unit/index.html"

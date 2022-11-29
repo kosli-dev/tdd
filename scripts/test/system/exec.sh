@@ -11,4 +11,5 @@ wait_till_server_ready
 run_tests
 server_restart
 report_coverage
+tar_pipe_coverage_out system
 echo "$(cov_dir system)/index.html"

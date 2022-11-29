@@ -134,16 +134,20 @@ run_tests() {
 }
 
 report_coverage() {
-  docker run \
-    --entrypoint="" \
+  docker exec \
     --env XY_WORKER_COUNT \
     --interactive \
-    --net "${XY_NETWORK_NAME}" \
-    --rm \
     --tty \
-    --volume="${XY_HOST_DIR}:${XY_CONTAINER_DIR}" \
-    "${XY_IMAGE_NAME}" \
+    "${XY_CONTAINER_NAME}" \
       "${XY_CONTAINER_DIR}/test/system/report_coverage.sh"
+}
+
+tar_pipe_coverage_out() {
+  local -r kind="${1}"
+  local -r cov_dir="${XY_CONTAINER_DIR}/coverage/${kind}"
+  docker exec "${XY_CONTAINER_NAME}" tar -cf - -C \
+    $(dirname "${cov_dir}") $(basename "${cov_dir}") \
+    | tar -xf - -C "${XY_HOST_DIR}/coverage"
 }
 
 export -f ip_address
@@ -153,3 +157,4 @@ export -f rm_coverage
 export -f cov_dir
 export -f run_tests
 export -f report_coverage
+export -f tar_pipe_coverage_out
