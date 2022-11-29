@@ -21,7 +21,7 @@ if coverage_on_server():
 
 def post_fork(server, worker):
     if coverage_on_server():
-        recreate_coverage_dir()
+        #recreate_coverage_dir()
         cov.start()
 
 
