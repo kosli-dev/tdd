@@ -1,5 +1,6 @@
 
 # Core
+Write coverage files to /tmp inside container use only 1 tmpfs in docker-compose.yaml
 Add system APP test that posts scores form
 Add pytest command line flag for grep-match in test docstring
 Collect coverage of system tests themselves
