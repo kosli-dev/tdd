@@ -26,7 +26,7 @@ def port():
 
 
 def service_name():
-    return 'xy'  # See docker-compose.yaml
+    return 'xy_system'  # See docker-compose.yaml
 
 
 def print_round_trip(response, *args, **kwargs):

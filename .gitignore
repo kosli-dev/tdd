@@ -3,4 +3,3 @@ coverage/
 /server/static/js/bundle.*.js
 /server/static/scss/bundle.*.css
 .DS_Store
-

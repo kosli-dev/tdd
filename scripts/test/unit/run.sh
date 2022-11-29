@@ -8,7 +8,7 @@ export_env_vars unit
 refresh_assets
 build_image
 network_up
-server_up
+server_up unit
 wait_till_server_ready
 
 "${MY_DIR}/exec.sh"

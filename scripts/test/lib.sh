@@ -76,11 +76,12 @@ network_up() {
 }
 
 server_up() {
-  cd "${XY_REPO_DIR}"
-  docker-compose \
-    --env-file=env_vars/test_system_up.env \
-    --file docker-compose.yaml \
-    up --no-build --detach
+  local -r kind="${1}"
+  cat "${XY_REPO_DIR}/docker-compose.yaml" | sed "s/{NAME}/${kind}/" \
+    | docker-compose \
+      --env-file=env_vars/test_system_up.env \
+      --file - \
+      up --no-build --detach
 }
 
 server_restart() {

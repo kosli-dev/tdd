@@ -9,7 +9,7 @@ refresh_assets
 build_image
 network_up
 rm_coverage system
-server_up
+server_up system
 wait_till_server_ready
 
 "${MY_DIR}/exec.sh"

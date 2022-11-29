@@ -5,7 +5,7 @@ networks:
     external: true
 
 services:
-  xy:
+  xy-{NAME}:  # See scripts/test/lib.py server_up()
     container_name: "${XY_CONTAINER}"
     env_file: [ "${ENV_FILE}" ]
     image: "${XY_IMAGE}"

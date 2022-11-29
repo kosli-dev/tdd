@@ -8,13 +8,10 @@ export_env_vars demo
 refresh_assets
 build_image
 
-docker rm --force "${XY_CONTAINER}" 2> /dev/null || true
-
-cd "${XY_REPO_DIR}"
-
-docker-compose \
-	--env-file=env_vars/demo_up.env \
-  --file docker-compose.yaml \
-    up --build --detach
+cat ${XY_REPO_DIR}/docker-compose.yaml | sed 's/{NAME}/demo/' \
+  | docker-compose \
+    --env-file="${XY_REPO_DIR}/env_vars/demo_up.env" \
+    --file - \
+      up --build --detach --force-recreate
 
 wait_till_server_ready
