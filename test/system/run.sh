@@ -1,14 +1,14 @@
 #!/bin/bash -Eeu
 
 pytest \
-  --workers auto \
-  --no-cov \
   --capture=no \
   --color=yes \
-  --ignore=test/unit \
+  --ignore="${XY_APP_DIR}/test/unit" \
+  --no-cov \
   -o cache_dir=/tmp \
   --pythonwarnings=error \
-  --tb=short \
   --quiet \
   --random-order-bucket=global \
+  --tb=short \
+  --workers auto \
     "${TIDS}"
