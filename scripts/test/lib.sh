@@ -3,16 +3,12 @@ set -Eeu
 
 export_env_vars() {
   local -r kind="${1}"
-  if [ "${kind}" == demo ]; then
-    local -r PORT=80
-  fi
-  if [ "${kind}" == unit ]; then
-    local -r PORT=3001
-  fi
-  if [ "${kind}" == system ]; then
-    local -r PORT=3002
-  fi
-  export $(echo_env_vars "${PORT}" "${kind}")
+  case "${kind}" in
+    demo) local -r port=80;;
+    unit) local -r port=3001;;
+    system) local -r port=3002;;
+  esac
+  export $(echo_env_vars "${port}" "${kind}")
 }
 
 echo_env_vars() {
