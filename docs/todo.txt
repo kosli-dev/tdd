@@ -1,12 +1,5 @@
 
 # Core
-Add simple .github workflow to run unit and system tests
-  This is proving tricky. On github there is a permission issue
-  for the coverage/system/ dir. Perhaps the container could be
-  created with --detach (and no --rm), the coverage files written
-  to /tmp/coverage/system/, and then tar-piped to the host's
-  coverage/system/ dir?
-
 Add system APP test that posts scores form
 Add pytest command line flag for grep-match in test docstring
 Collect coverage of system tests themselves
