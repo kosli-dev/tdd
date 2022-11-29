@@ -73,7 +73,7 @@ network_up() {
 
 server_up() {
   local -r kind="${1}"
-  cat "${XY_HOST_DIR}/docker-compose.yaml" | sed "s/{NAME}/${kind}/" \
+  sed "s/{NAME}/${kind}/" "${XY_HOST_DIR}/docker-compose.yaml" \
     | docker-compose \
       --env-file=env_vars/test_system_up.env \
       --file - \
