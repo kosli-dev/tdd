@@ -12,8 +12,8 @@
     "prefix:css": "postcss scss/bundle.css -u autoprefixer -b \"last 10 versions\" -o scss/bundle.prefixed.css",
     "compress:css": "sass --no-source-map scss/bundle.prefixed.css:scss/bundle.min.css --style compressed",
     "cleanup:css": "rm scss/bundle.prefixed.css scss/bundle.css",
-    "rename:css": "mv scss/bundle.min.css scss/bundle.${GIT_COMMIT_SHA}.css",
-    "bundle:js": "bundle-js js/bundle.js -o js/bundle.${GIT_COMMIT_SHA}.js",
+    "rename:css": "mv scss/bundle.min.css scss/bundle.${XY_GIT_COMMIT_SHA}.css",
+    "bundle:js": "bundle-js js/bundle.js -o js/bundle.${XY_GIT_COMMIT_SHA}.js",
     "build": "npm-run-all remove:assets compile:css prefix:css compress:css cleanup:css rename:css bundle:js"
   },
   "repository": {

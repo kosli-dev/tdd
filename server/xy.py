@@ -56,7 +56,7 @@ def init_app_blueprint(xy):
 
 
 def git_commit_sha():
-    return os.environ.get("GIT_COMMIT_SHA")
+    return os.environ.get("XY_GIT_COMMIT_SHA")
 
 
 def bundle_css():

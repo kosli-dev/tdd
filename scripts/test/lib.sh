@@ -21,7 +21,7 @@ echo_env_vars() {
   echo XY_NETWORK_NAME=xy_net # Also in docker-compose.yaml
   echo XY_USER_NAME=xy
   echo XY_WORKER_COUNT=2
-  echo GIT_COMMIT_SHA="$(git rev-parse HEAD)"
+  echo XY_GIT_COMMIT_SHA="$(git rev-parse HEAD)"
 }
 
 ip_address() {
@@ -46,7 +46,7 @@ refresh_assets() {
     --volume "$(xy_host_dir)/server/static/scss:/app/scss" \
     --volume "$(xy_host_dir)/server/static/js:/app/js" \
     --workdir /app \
-    --env GIT_COMMIT_SHA="${GIT_COMMIT_SHA}" \
+    --env XY_GIT_COMMIT_SHA \
     ghcr.io/kosli-dev/assets-builder:v1 \
     bash -c "npm run build" ||
     die "refresh_assets.sh failed. Your docker image might be outdated. " \
@@ -60,7 +60,7 @@ build_image() {
     --build-arg XY_CONTAINER_PORT \
     --build-arg XY_USER_NAME \
     --build-arg XY_WORKER_COUNT \
-    --build-arg GIT_COMMIT_SHA \
+    --build-arg XY_GIT_COMMIT_SHA \
     --file Dockerfile \
     --tag "${XY_IMAGE_NAME}" \
     .
