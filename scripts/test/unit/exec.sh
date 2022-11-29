@@ -12,6 +12,6 @@ docker exec \
   --interactive \
   --tty \
   "${XY_CONTAINER_NAME}" \
-    "${XY_APP_DIR}/test/unit/run.sh"
+    "${XY_CONTAINER_DIR}/test/unit/run.sh"
 
 echo "${XY_HOST_DIR}/coverage/unit/index.html"

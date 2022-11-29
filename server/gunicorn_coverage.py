@@ -3,12 +3,12 @@ import os
 import subprocess
 
 
-def xy_app_dir():
-    return os.environ.get("XY_APP_DIR")
+def xy_container_dir():
+    return os.environ.get("XY_CONTAINER_DIR")
 
 
 def coverage_rc_file_path():
-    return f"{xy_app_dir()}/test/system/.coveragerc"
+    return f"{xy_container_dir()}/test/system/.coveragerc"
 
 
 def coverage_on_server():
@@ -36,8 +36,8 @@ def worker_exit(server, worker):
 
 def recreate_coverage_dir():
     # This needs to work on localhost and CI run.
-    dir = "/xy/coverage/system"
+    dir = f"{xy_container_dir()}/coverage/system"
     rm = ["rm", "-rf", dir]
-    subprocess.run(rm, cwd='/xy', capture_output=True, text=True, check=True)
+    subprocess.run(rm, cwd='/xy', capture_output=True, text=True, check=False)
     mkdir = ["mkdir", "-p", dir]
     subprocess.run(mkdir, cwd='/xy', capture_output=True, text=True, check=True)

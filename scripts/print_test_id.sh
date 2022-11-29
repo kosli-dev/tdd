@@ -5,13 +5,11 @@ MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
 source "${MY_DIR}/test/lib.sh"
 export_env_vars demo
 
-env
-
 docker run \
   --entrypoint="" \
   --interactive \
   --rm \
   --tty \
-  --volume="${XY_HOST_DIR}/test:${XY_APP_DIR}/test:ro" \
+  --volume="${XY_HOST_DIR}/test:${XY_CONTAINER_DIR}/test:ro" \
   "${XY_IMAGE_NAME}" \
-    "${XY_APP_DIR}/test/print_id.py"
+    "${XY_CONTAINER_DIR}/test/print_id.py"

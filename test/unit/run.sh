@@ -4,7 +4,7 @@ set -Eeu
 readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 cov_dir() {
-  echo "${XY_APP_DIR}/coverage/unit"
+  echo "${XY_CONTAINER_DIR}/coverage/unit"
 }
 
 run_tests() {
@@ -16,10 +16,10 @@ run_tests() {
     --cache-clear `# Clear .coverage cache. It persists as it is in the volume-mount` \
     --capture=no `# Turn off capturing. Makes print() effects visible and interleaved` \
     --color=yes \
-    --cov="${XY_APP_DIR}/" \
+    --cov="${XY_CONTAINER_DIR}/" \
     --cov-config="${MY_DIR}/.coveragerc" \
     --cov-report= `# Turn off verbose coverage report` \
-    --ignore="${XY_APP_DIR}/test/system" \
+    --ignore="${XY_CONTAINER_DIR}/test/system" \
     -o cache_dir=/tmp \
     --pythonwarnings=error \
     --quiet \
@@ -43,6 +43,5 @@ coverage_report() {
 
 run_tests
 cd $(cov_dir)
-# coverage combine .
 printf "%.2f%%\n" "$(coverage_percent)"
 coverage_report

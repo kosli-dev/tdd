@@ -1,10 +1,10 @@
 # This .coveragerc file is named in the environment-variable
-# COVERAGE_PROCESS_START=/${XY_APP_DIR}/test/system/.coveragerc
+# COVERAGE_PROCESS_START=/${XY_CONTAINER_DIR}/test/system/.coveragerc
 # set in env_vars/test_system.env
 
 [run]
-data_file=/${XY_APP_DIR}/coverage/system/.coverage
-source=/${XY_APP_DIR}/server
+data_file=/${XY_CONTAINER_DIR}/coverage/system/.coverage
+source=/${XY_CONTAINER_DIR}/server
 parallel=True
 branch=True
 omit =

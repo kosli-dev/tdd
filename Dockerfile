@@ -4,28 +4,28 @@ LABEL maintainer=jon@kosli.com
 COPY server/requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 
-ARG XY_APP_DIR \
+ARG XY_CONTAINER_DIR \
     XY_CONTAINER_PORT \
     XY_USER_NAME \
     XY_WORKER_COUNT \
     GIT_COMMIT_SHA
 
-ENV XY_APP_DIR=${XY_APP_DIR} \
+ENV XY_CONTAINER_DIR=${XY_CONTAINER_DIR} \
     XY_CONTAINER_PORT=${XY_CONTAINER_PORT} \
     XY_WORKER_COUNT=${XY_WORKER_COUNT} \
     GIT_COMMIT_SHA=${GIT_COMMIT_SHA} \
-    PYTHONPATH=${XY_APP_DIR}/server \
+    PYTHONPATH=${XY_CONTAINER_DIR}/server \
     PYTHONPYCACHEPREFIX=/tmp/py_caches \
     TERM=xterm-256color
 
-WORKDIR ${XY_APP_DIR}
+WORKDIR ${XY_CONTAINER_DIR}
 COPY . .
 RUN apk --update --upgrade add bash jq tini && \
     apk update && \
     adduser -D -g "" ${XY_USER_NAME} && \
-    chown -R ${XY_USER_NAME} ${XY_APP_DIR}
+    chown -R ${XY_USER_NAME} ${XY_CONTAINER_DIR}
 
 USER ${XY_USER_NAME}
 EXPOSE "${XY_CONTAINER_PORT}"
 ENTRYPOINT [ "/sbin/tini", "-g", "--" ]
-CMD ${XY_APP_DIR}/server/gunicorn.sh
+CMD ${XY_CONTAINER_DIR}/server/gunicorn.sh

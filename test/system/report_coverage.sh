@@ -1,7 +1,7 @@
 #!/bin/bash -Eu
 
 cov_dir() {
-  echo "${XY_APP_DIR}/coverage/system"
+  echo "${XY_CONTAINER_DIR}/coverage/system"
 }
 
 actual_coverage_files_count() {

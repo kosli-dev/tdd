@@ -13,10 +13,10 @@ export_env_vars() {
 
 echo_env_vars() {
   echo XY_HOST_PORT="${1}"
+  echo XY_HOST_DIR="$(xy_host_dir)"
   echo XY_CONTAINER_PORT=8001
-  echo XY_HOST_DIR="$(xy_host_dir)" # Outside the container
-  echo XY_APP_DIR=/xy               # Inside the container
   echo XY_CONTAINER_NAME="xy_${2}"
+  echo XY_CONTAINER_DIR=/xy
   echo XY_IMAGE_NAME=xy_image
   echo XY_NETWORK_NAME=xy_net # Also in docker-compose.yaml
   echo XY_USER_NAME=xy
@@ -56,7 +56,7 @@ refresh_assets() {
 build_image() {
   cd "${XY_HOST_DIR}"
   docker build \
-    --build-arg XY_APP_DIR \
+    --build-arg XY_CONTAINER_DIR \
     --build-arg XY_CONTAINER_PORT \
     --build-arg XY_USER_NAME \
     --build-arg XY_WORKER_COUNT \
@@ -126,9 +126,9 @@ run_tests() {
     --net "${XY_NETWORK_NAME}" \
     --rm \
     --tty \
-    --volume="${XY_HOST_DIR}/test:${XY_APP_DIR}/test:ro" \
+    --volume="${XY_HOST_DIR}/test:${XY_CONTAINER_DIR}/test:ro" \
     "${XY_IMAGE_NAME}" \
-      "${XY_APP_DIR}/test/system/run.sh"
+      "${XY_CONTAINER_DIR}/test/system/run.sh"
   set -e
 }
 
@@ -140,9 +140,9 @@ report_coverage() {
     --net "${XY_NETWORK_NAME}" \
     --rm \
     --tty \
-    --volume="${XY_HOST_DIR}:${XY_APP_DIR}" \
+    --volume="${XY_HOST_DIR}:${XY_CONTAINER_DIR}" \
     "${XY_IMAGE_NAME}" \
-      "${XY_APP_DIR}/test/system/report_coverage.sh"
+      "${XY_CONTAINER_DIR}/test/system/report_coverage.sh"
 }
 
 export -f ip_address

@@ -13,7 +13,7 @@ services:
     ports: [ "${XY_HOST_PORT}:${XY_CONTAINER_PORT}" ]
     tmpfs: [ /tmp ]
     volumes:
-      - ./server:${XY_APP_DIR}/server:ro
-      - ./test:${XY_APP_DIR}/test:ro
-      - ./coverage:${XY_APP_DIR}/coverage:rw
+      - ./server:${XY_CONTAINER_DIR}/server:ro
+      - ./test:${XY_CONTAINER_DIR}/test:ro
+      - ./coverage:${XY_CONTAINER_DIR}/coverage:rw
     read_only: true
