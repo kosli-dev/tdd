@@ -22,7 +22,7 @@ def host():
 
 
 def port():
-    return int(os.environ.get("XY_PORT"))  # See scripts/echo_env_vars.sh
+    return int(os.environ.get("XY_CONTAINER_PORT"))  # See scripts/lib.sh echo_env_vars()
 
 
 def service_name():

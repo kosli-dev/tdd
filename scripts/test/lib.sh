@@ -2,19 +2,20 @@
 set -Eeu
 
 echo_env_vars() {
+  echo XY_APP_PORT="${1}"
+  echo XY_CONTAINER_PORT=8001
   echo XY_REPO_DIR="$(xy_repo_dir)" # Outside the container
   echo XY_APP_DIR=/xy               # Inside the container
   echo XY_CONTAINER=xy
   echo XY_IMAGE=xy_image
   echo XY_NETWORK=xy_net # Also in docker-compose.yaml
-  echo XY_PORT=8001
   echo XY_USER=xy
   echo XY_WORKERS=2
   echo GIT_COMMIT_SHA="$(git rev-parse HEAD)"
 }
 
 ip_address() {
-  echo "http://localhost:80"
+  echo "http://localhost:${XY_APP_PORT}"
 }
 
 xy_repo_dir() {
@@ -46,7 +47,7 @@ build_image() {
   cd "${XY_REPO_DIR}"
   docker build \
     --build-arg XY_APP_DIR \
-    --build-arg XY_PORT \
+    --build-arg XY_CONTAINER_PORT \
     --build-arg XY_USER \
     --build-arg XY_WORKERS \
     --build-arg GIT_COMMIT_SHA \

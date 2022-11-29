@@ -10,7 +10,7 @@ services:
     env_file: [ "${ENV_FILE}" ]
     image: "${XY_IMAGE}"
     networks: [ xy_net ]
-    ports: [ "80:${XY_PORT}" ]
+    ports: [ "${XY_APP_PORT}:${XY_CONTAINER_PORT}" ]
     tmpfs: [ /tmp ]
     volumes:
       - ./server:${XY_APP_DIR}/server:ro
