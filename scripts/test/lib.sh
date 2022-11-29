@@ -113,8 +113,9 @@ cov_dir() {
 }
 
 rm_coverage() {
-  rm -rf "$(cov_dir "${1}")" > /dev/null || true
-  mkdir -p "$(cov_dir "${1}")"
+  local -r dir="$(cov_dir "${1}")"
+  rm -rf "${dir}" > /dev/null || true
+  mkdir -p "${dir}"
 }
 
 run_tests() {
