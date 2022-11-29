@@ -1,4 +1,4 @@
-Copyright (c) 2022, [Jon Jagger](https://www.kosli.com/about/jon-jagger/)
+Copyright (c) 2022, [Kosli](https://www.kosli.com)
 All rights reserved.
 
 
