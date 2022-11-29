@@ -6,7 +6,7 @@ RUN pip3 install -r /tmp/requirements.txt
 
 ARG XY_APP_DIR \
     XY_CONTAINER_PORT \
-    XY_USER \
+    XY_USER_NAME \
     XY_WORKERS \
     GIT_COMMIT_SHA
 
@@ -22,10 +22,10 @@ WORKDIR ${XY_APP_DIR}
 COPY . .
 RUN apk --update --upgrade add bash jq tini && \
     apk update && \
-    adduser -D -g "" ${XY_USER} && \
-    chown -R ${XY_USER} ${XY_APP_DIR}
+    adduser -D -g "" ${XY_USER_NAME} && \
+    chown -R ${XY_USER_NAME} ${XY_APP_DIR}
 
-USER ${XY_USER}
+USER ${XY_USER_NAME}
 EXPOSE "${XY_CONTAINER_PORT}"
 ENTRYPOINT [ "/sbin/tini", "-g", "--" ]
 CMD ${XY_APP_DIR}/server/gunicorn.sh

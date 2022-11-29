@@ -19,7 +19,7 @@ echo_env_vars() {
   echo XY_CONTAINER_NAME="xy_${2}"
   echo XY_IMAGE_NAME=xy_image
   echo XY_NETWORK_NAME=xy_net # Also in docker-compose.yaml
-  echo XY_USER=xy
+  echo XY_USER_NAME=xy
   echo XY_WORKERS=2
   echo GIT_COMMIT_SHA="$(git rev-parse HEAD)"
 }
@@ -58,7 +58,7 @@ build_image() {
   docker build \
     --build-arg XY_APP_DIR \
     --build-arg XY_CONTAINER_PORT \
-    --build-arg XY_USER \
+    --build-arg XY_USER_NAME \
     --build-arg XY_WORKERS \
     --build-arg GIT_COMMIT_SHA \
     --file Dockerfile \
