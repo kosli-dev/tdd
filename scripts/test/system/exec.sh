@@ -12,4 +12,4 @@ run_tests
 server_restart
 report_coverage
 tar_pipe_coverage_out system
-echo "$(cov_dir system)/index.html"
+echo "$(host_cov_dir system)/index.html"

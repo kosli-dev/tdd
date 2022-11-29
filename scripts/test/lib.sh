@@ -13,7 +13,7 @@ export_env_vars() {
 
 echo_env_vars() {
   echo XY_HOST_PORT="${1}"
-  echo XY_HOST_DIR="$(xy_host_dir)"
+  echo XY_HOST_DIR="$(git rev-parse --show-toplevel)"
   echo XY_CONTAINER_PORT=8001
   echo XY_CONTAINER_NAME="xy_${2}"
   echo XY_CONTAINER_DIR=/xy
@@ -28,11 +28,6 @@ ip_address() {
   echo "http://localhost:${XY_HOST_PORT}"
 }
 
-xy_host_dir() {
-  # Can't use BASH_SOURCE as it's empty inside a 'sourced' script
-  git rev-parse --show-toplevel
-}
-
 die() {
   echo >&2
   echo "Error: $*" >&2
@@ -42,9 +37,9 @@ die() {
 
 refresh_assets() {
   docker run --rm \
-    --volume "$(xy_host_dir)/package.json:/app/package.json" \
-    --volume "$(xy_host_dir)/server/static/scss:/app/scss" \
-    --volume "$(xy_host_dir)/server/static/js:/app/js" \
+    --volume "${XY_HOST_DIR}/package.json:/app/package.json" \
+    --volume "${XY_HOST_DIR}/server/static/scss:/app/scss" \
+    --volume "${XY_HOST_DIR}/server/static/js:/app/js" \
     --workdir /app \
     --env XY_GIT_COMMIT_SHA \
     ghcr.io/kosli-dev/assets-builder:v1 \
@@ -103,18 +98,18 @@ wait_till_server_ready() {
   done
   echo "Failed $(ip_address) readiness"
   docker container logs "${XY_CONTAINER_NAME}" || true
-  exit 1
+  exit 42
 }
 
-cov_dir() {
+host_cov_dir() {
   local -r kind="${1}"  # system | unit
   echo "${XY_HOST_DIR}/coverage/${kind}"
 }
 
 rm_coverage() {
-  local -r dir="$(cov_dir "${1}")"
-  rm -rf "${dir}" > /dev/null || true
-  mkdir -p "${dir}"
+  local -r cov_dir="$(host_cov_dir "${1}")"
+  rm -rf "${cov_dir}" > /dev/null || true
+  mkdir -p "${cov_dir}"
 }
 
 run_tests() {
@@ -151,7 +146,7 @@ export -f ip_address
 export -f wait_till_server_ready
 export -f server_restart
 export -f rm_coverage
-export -f cov_dir
+export -f host_cov_dir
 export -f run_tests
 export -f report_coverage
 export -f tar_pipe_coverage_out
