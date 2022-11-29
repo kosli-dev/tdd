@@ -3,7 +3,7 @@ set -Eeu
 
 MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
 source "${MY_DIR}/test/lib.sh"
-export $(echo_env_vars 80)
+export_env_vars demo
 
 refresh_assets
 build_image

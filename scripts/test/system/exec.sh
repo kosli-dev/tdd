@@ -3,10 +3,8 @@ set -Eeu
 
 MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
 
-if [ -z "${XY_REPO_DIR:-}" ]; then
-  source "${MY_DIR}/../lib.sh"
-  export $(echo_env_vars 3002)
-fi
+source "${MY_DIR}/../lib.sh"
+export_env_vars system
 
 server_restart
 wait_till_server_ready

@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 set -Eeu
 
+export_env_vars() {
+  if [ "${1}" == demo ]; then
+    local -r PORT=80
+  fi
+  if [ "${1}" == unit ]; then
+    local -r PORT=3001
+  fi
+  if [ "${1}" == system ]; then
+    local -r PORT=3002
+  fi
+  export $(echo_env_vars ${PORT})
+}
+
 echo_env_vars() {
   echo XY_APP_PORT="${1}"
   echo XY_CONTAINER_PORT=8001
