@@ -18,7 +18,7 @@ echo_env_vars() {
   echo XY_APP_DIR=/xy               # Inside the container
   echo XY_CONTAINER_NAME="xy_${2}"
   echo XY_IMAGE_NAME=xy_image
-  echo XY_NETWORK=xy_net # Also in docker-compose.yaml
+  echo XY_NETWORK_NAME=xy_net # Also in docker-compose.yaml
   echo XY_USER=xy
   echo XY_WORKERS=2
   echo GIT_COMMIT_SHA="$(git rev-parse HEAD)"
@@ -67,8 +67,8 @@ build_image() {
 }
 
 network_up() {
-  docker network inspect "${XY_NETWORK}" >/dev/null ||
-    docker network create --driver bridge "${XY_NETWORK}"
+  docker network inspect "${XY_NETWORK_NAME}" >/dev/null ||
+    docker network create --driver bridge "${XY_NETWORK_NAME}"
 }
 
 server_up() {
@@ -123,7 +123,7 @@ run_tests() {
     --entrypoint="" \
     --env TIDS="${TIDS}" \
     --interactive \
-    --net "${XY_NETWORK}" \
+    --net "${XY_NETWORK_NAME}" \
     --rm \
     --tty \
     --volume="${XY_REPO_DIR}/test:${XY_APP_DIR}/test:ro" \
@@ -137,7 +137,7 @@ report_coverage() {
     --entrypoint="" \
     --env XY_WORKERS \
     --interactive \
-    --net "${XY_NETWORK}" \
+    --net "${XY_NETWORK_NAME}" \
     --rm \
     --tty \
     --volume="${XY_REPO_DIR}:${XY_APP_DIR}" \
