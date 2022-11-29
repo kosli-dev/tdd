@@ -86,7 +86,6 @@ server_restart() {
   # Send SIGHUP to the master which is the oldest (-o).
   docker exec \
     --interactive \
-    --tty \
     "${XY_CONTAINER_NAME}" \
     sh -c "pkill -SIGHUP -o gunicorn"
 }
@@ -126,7 +125,6 @@ run_tests() {
     --interactive \
     --net "${XY_NETWORK_NAME}" \
     --rm \
-    --tty \
     --volume="${XY_HOST_DIR}/test:${XY_CONTAINER_DIR}/test:ro" \
     "${XY_IMAGE_NAME}" \
       "${XY_CONTAINER_DIR}/test/system/run.sh"
@@ -137,7 +135,6 @@ report_coverage() {
   docker exec \
     --env XY_WORKER_COUNT \
     --interactive \
-    --tty \
     "${XY_CONTAINER_NAME}" \
       "${XY_CONTAINER_DIR}/test/system/report_coverage.sh"
 }

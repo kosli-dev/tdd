@@ -10,7 +10,6 @@ rm_coverage unit
 docker exec \
   --env TIDS="${TIDS}" \
   --interactive \
-  --tty \
   "${XY_CONTAINER_NAME}" \
     "${XY_CONTAINER_DIR}/test/unit/run.sh"
 
