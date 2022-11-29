@@ -118,13 +118,8 @@ BIG_FISH_TABLE = {
 
 
 def marked(company_decisions):
-    result = []
-    for company_decision in company_decisions:
-        part = []
-        for letter in company_decision:
-            part.append(squad_decision(letter))
-        result.append(part)
-    return result
+    return [[squad_decision(letter) for letter in company_decision]
+            for company_decision in company_decisions]
 
 
 def squad_decision(letter):
