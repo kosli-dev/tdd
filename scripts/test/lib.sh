@@ -2,16 +2,17 @@
 set -Eeu
 
 export_env_vars() {
-  if [ "${1}" == demo ]; then
+  local -r kind="${1}"
+  if [ "${kind}" == demo ]; then
     local -r PORT=80
   fi
-  if [ "${1}" == unit ]; then
+  if [ "${kind}" == unit ]; then
     local -r PORT=3001
   fi
-  if [ "${1}" == system ]; then
+  if [ "${kind}" == system ]; then
     local -r PORT=3002
   fi
-  export $(echo_env_vars ${PORT})
+  export $(echo_env_vars "${PORT}" "${kind}")
 }
 
 echo_env_vars() {
@@ -19,7 +20,7 @@ echo_env_vars() {
   echo XY_CONTAINER_PORT=8001
   echo XY_REPO_DIR="$(xy_repo_dir)" # Outside the container
   echo XY_APP_DIR=/xy               # Inside the container
-  echo XY_CONTAINER=xy
+  echo XY_CONTAINER="xy_${2}"
   echo XY_IMAGE=xy_image
   echo XY_NETWORK=xy_net # Also in docker-compose.yaml
   echo XY_USER=xy
