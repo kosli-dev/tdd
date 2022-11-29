@@ -11,3 +11,4 @@ omit =
     server/sitecustomize.py
     test/conftest.py
     test/print_id.py
+    test/system/**

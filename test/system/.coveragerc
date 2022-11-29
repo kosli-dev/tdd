@@ -10,3 +10,4 @@ branch=True
 omit =
   server/sitecustomize.py
   server/gunicorn_config.py
+  server/gunicorn_coverage.py
