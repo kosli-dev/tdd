@@ -35,9 +35,7 @@ def worker_exit(server, worker):
 
 
 def recreate_coverage_dir():
-    # Note: dir is a tmpfs
-    # This needs to work on localhost and CI run.
-    dir = f"{xy_container_dir()}/coverage/system"
+    dir = f"/tmp/coverage/system"
     rm = ["rm", "-rf", dir]
     subprocess.run(rm, cwd='/xy', capture_output=True, text=True, check=False)
     mkdir = ["mkdir", "-p", dir]

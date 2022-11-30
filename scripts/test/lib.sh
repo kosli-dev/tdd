@@ -136,7 +136,7 @@ report_coverage() {
 
 tar_pipe_coverage_out() {
   local -r kind="${1}"
-  local -r cov_dir="${XY_CONTAINER_DIR}/coverage/${kind}"
+  local -r cov_dir="/tmp/coverage/${kind}"
   docker exec "${XY_CONTAINER_NAME}" tar -cf - -C \
     $(dirname "${cov_dir}") $(basename "${cov_dir}") \
     | tar -xf - -C "${XY_HOST_DIR}/coverage"

@@ -4,7 +4,7 @@ set -Eeu
 readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 cov_dir() {
-  echo "${XY_CONTAINER_DIR}/coverage/unit"
+  echo "/tmp/coverage/unit"
 }
 
 run_tests() {
