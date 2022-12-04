@@ -90,11 +90,13 @@ server_restart() {
 wait_till_server_ready() {
   local -r max_tries=15
   local -r url="$(ip_address)/api/health/ready"
+  echo -n "Waiting for $(ip_address) readiness"
   for try in $(seq 1 ${max_tries}); do
+    echo -n .
     if [ $(curl --silent --write-out '%{http_code}' --output /dev/null "${url}") -eq 200 ]; then
+      echo
       return 0
     else
-      echo "Waiting for $(ip_address) readiness... ${try}/${max_tries}"
       sleep 0.2
     fi
   done
