@@ -12,7 +12,7 @@ def coverage_rc_file_path():
 
 
 def coverage_on_server():
-    return os.environ.get("COVERAGE_PROCESS_START", None)
+    return os.environ.get("COVERAGE_PROCESS_START", False)
 
 
 if coverage_on_server():
@@ -35,8 +35,10 @@ def worker_exit(server, worker):
 
 
 def recreate_coverage_dir():
-    dir = f"/tmp/coverage/system"
-    rm = ["rm", "-rf", dir]
-    subprocess.run(rm, cwd='/xy', capture_output=True, text=True, check=False)
-    mkdir = ["mkdir", "-p", dir]
-    subprocess.run(mkdir, cwd='/xy', capture_output=True, text=True, check=True)
+    cwd = xy_container_dir()
+    dir = os.environ.get("XY_CONTAINER_COV_DIR")
+    print(f"{dir=}")
+    rmdir_cmd = ["rm", "-rf", dir]
+    subprocess.run(rmdir_cmd, cwd=cwd, capture_output=True, text=True, check=False)
+    mkdir_cmd = ["mkdir", "-p", dir]
+    subprocess.run(mkdir_cmd, cwd=cwd, capture_output=True, text=True, check=True)
