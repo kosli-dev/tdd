@@ -37,7 +37,6 @@ def worker_exit(server, worker):
 def recreate_coverage_dir():
     cwd = xy_container_dir()
     dir = os.environ.get("XY_CONTAINER_COV_DIR")
-    print(f"{dir=}")
     rmdir_cmd = ["rm", "-rf", dir]
     subprocess.run(rmdir_cmd, cwd=cwd, capture_output=True, text=True, check=False)
     mkdir_cmd = ["mkdir", "-p", dir]
