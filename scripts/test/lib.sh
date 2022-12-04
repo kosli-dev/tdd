@@ -155,10 +155,3 @@ get_coverage() {
     $(dirname "${XY_CONTAINER_COV_DIR}") $(basename "${XY_CONTAINER_COV_DIR}") \
       | tar -xf - -C "${XY_HOST_COV_DIR}/.."
 }
-
-export -f ip_address
-export -f wait_till_server_ready
-export -f server_restart
-export -f run_tests
-export -f gather_coverage
-export -f tar_pipe_coverage_out
