@@ -4,9 +4,9 @@ set -Eeu
 export_env_vars() {
   local -r kind="${1}"
   case "${kind}" in
-    demo) local -r port=80;;
-    unit) local -r port=3001;;
-    system) local -r port=3002;;
+  demo) local -r port=80 ;;
+  unit) local -r port=3001 ;;
+  system) local -r port=3002 ;;
   esac
   export $(echo_env_vars "${port}" "${kind}")
 }
@@ -69,8 +69,8 @@ network_up() {
 server_up() {
   # The -p option is to silence warnings about orphan containers.
   local -r kind="${1}"
-  sed "s/{NAME}/${kind}/" "${XY_HOST_DIR}/docker-compose.yaml" \
-    | docker-compose \
+  sed "s/{NAME}/${kind}/" "${XY_HOST_DIR}/docker-compose.yaml" |
+    docker-compose \
       --env-file="env_vars/test_${kind}_up.env" \
       --file - \
       -p "${kind}" \
@@ -106,17 +106,18 @@ wait_till_server_ready() {
 }
 
 host_cov_dir() {
-  local -r kind="${1}"  # system | unit
+  local -r kind="${1}" # system | unit
   echo "${XY_HOST_DIR}/coverage/${kind}"
 }
 
-rm_coverage() {
-  local -r cov_dir="$(host_cov_dir "${1}")"
-  rm -rf "${cov_dir}" > /dev/null || true
-  mkdir -p "${cov_dir}"
+run_tests() {
+  case "${1}" in
+  system) run_tests_system ;;
+  unit) run_tests_unit ;;
+  esac
 }
 
-run_tests() {
+run_tests_system() {
   set +e
   docker run \
     --entrypoint="" \
@@ -126,8 +127,16 @@ run_tests() {
     --rm \
     --volume="${XY_HOST_DIR}/test:${XY_CONTAINER_DIR}/test:ro" \
     "${XY_IMAGE_NAME}" \
-      "${XY_CONTAINER_DIR}/test/system/run.sh"
+    "${XY_CONTAINER_DIR}/test/system/run.sh"
   set -e
+}
+
+run_tests_unit() {
+  docker exec \
+    --env TIDS="${TIDS}" \
+    --interactive \
+    "${XY_CONTAINER_NAME}" \
+    "${XY_CONTAINER_DIR}/test/unit/run.sh"
 }
 
 report_coverage() {
@@ -135,21 +144,25 @@ report_coverage() {
     --env XY_WORKER_COUNT \
     --interactive \
     "${XY_CONTAINER_NAME}" \
-      "${XY_CONTAINER_DIR}/test/system/report_coverage.sh"
+    "${XY_CONTAINER_DIR}/test/system/report_coverage.sh"
 }
 
 tar_pipe_coverage_out() {
   local -r kind="${1}"
-  local -r cov_dir="/tmp/coverage/${kind}"
+  local -r container_cov_dir="/tmp/coverage/${kind}"
+  local -r cov_dir="$(host_cov_dir "${1}")"
+
+  rm -rf "${cov_dir}" >/dev/null || true
+  mkdir -p "${cov_dir}"
+
   docker exec "${XY_CONTAINER_NAME}" tar -cf - -C \
-    $(dirname "${cov_dir}") $(basename "${cov_dir}") \
-    | tar -xf - -C "${XY_HOST_DIR}/coverage"
+    $(dirname "${container_cov_dir}") $(basename "${container_cov_dir}") |
+    tar -xf - -C "${cov_dir}/.."
 }
 
 export -f ip_address
 export -f wait_till_server_ready
 export -f server_restart
-export -f rm_coverage
 export -f host_cov_dir
 export -f run_tests
 export -f report_coverage

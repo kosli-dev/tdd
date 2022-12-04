@@ -8,7 +8,6 @@ export_env_vars system
 refresh_assets
 build_image
 network_up
-rm_coverage system
 server_up system
 wait_till_server_ready
 
