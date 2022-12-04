@@ -5,7 +5,7 @@ MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
 source "${MY_DIR}/test/lib.sh"
 export_env_vars demo
 
-refresh_assets
+refresh_static_assets
 build_image
 
 sed 's/{NAME}/demo/' "${XY_HOST_ROOT_DIR}/docker-compose.yaml" \

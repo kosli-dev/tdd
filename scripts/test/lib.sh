@@ -41,7 +41,7 @@ die() {
   exit 43
 }
 
-refresh_assets() {
+refresh_static_assets() {
   docker run --rm \
     --volume "${XY_HOST_ROOT_DIR}/package.json:/app/package.json:ro" \
     --volume "${XY_HOST_ROOT_DIR}/source/static/scss:/app/scss:rw" \
@@ -66,12 +66,12 @@ build_image() {
     .
 }
 
-network_up() {
+bring_network_up() {
   docker network inspect "${XY_NETWORK_NAME}" >/dev/null \
     || docker network create --driver bridge "${XY_NETWORK_NAME}"
 }
 
-server_up() {
+bring_server_up() {
   # The -p option is to silence warnings about orphan containers.
   sed "s/{NAME}/${XY_KIND}/" "${XY_HOST_ROOT_DIR}/docker-compose.yaml" \
     | docker-compose \
@@ -81,7 +81,7 @@ server_up() {
       up --no-build --detach
 }
 
-server_restart() {
+restart_server() {
   # There are several processes with the name gunicorn.
   # One for the 'master' and one each for the workers.
   # Send SIGHUP to the master which is the oldest (-o).
@@ -147,7 +147,7 @@ gather_coverage() {
     "${XY_CONTAINER_COV_DIR}"
 }
 
-tar_pipe_coverage_out() {
+get_coverage() {
   rm -rf "${XY_HOST_COV_DIR}" >/dev/null || true
   mkdir -p "${XY_HOST_COV_DIR}"
 

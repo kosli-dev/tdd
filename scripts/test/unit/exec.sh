@@ -6,5 +6,5 @@ source "${MY_DIR}/../lib.sh"
 export_env_vars unit
 
 run_tests
-tar_pipe_coverage_out
+get_coverage
 echo "${XY_HOST_COV_DIR}/index.html"
