@@ -1,7 +1,6 @@
 
 # Core
 Add system APP test that posts scores form
-Add pytest command line flag for grep-match in test docstring
 Collect coverage of system tests themselves
    Will require coverage combine on the .coverage files from _two_ containers
 Run unit tests in parallel and run coverage combine
