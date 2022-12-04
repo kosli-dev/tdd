@@ -4,16 +4,17 @@ set -Eeu
 export_env_vars() {
   local -r kind="${1}"
   case "${kind}" in
-  demo) local -r port=80 ;;
-  unit) local -r port=3001 ;;
+    demo) local -r port=80   ;;
+    unit) local -r port=3001 ;;
   system) local -r port=3002 ;;
   esac
   export $(echo_env_vars "${port}" "${kind}")
 }
 
 echo_env_vars() {
+  local -r host_dir="$(git rev-parse --show-toplevel)"
   echo XY_HOST_PORT="${1}"
-  echo XY_HOST_DIR="$(git rev-parse --show-toplevel)"
+  echo XY_HOST_DIR="${host_dir}"
   echo XY_CONTAINER_PORT=8001
   echo XY_CONTAINER_NAME="xy_${2}"
   echo XY_CONTAINER_DIR=/xy
@@ -32,7 +33,7 @@ die() {
   echo >&2
   echo "Error: $*" >&2
   echo >&2
-  exit 1
+  exit 43
 }
 
 refresh_assets() {
@@ -68,7 +69,7 @@ network_up() {
 
 server_up() {
   # The -p option is to silence warnings about orphan containers.
-  local -r kind="${1}"
+  local -r kind="${1}"  # system | unit
   sed "s/{NAME}/${kind}/" "${XY_HOST_DIR}/docker-compose.yaml" |
     docker-compose \
       --env-file="env_vars/test_${kind}_up.env" \
@@ -105,6 +106,11 @@ wait_till_server_ready() {
   exit 42
 }
 
+container_cov_dir() {
+  local -r kind="${1}" # system | unit
+  echo "/tmp/coverage/${kind}"
+}
+
 host_cov_dir() {
   local -r kind="${1}" # system | unit
   echo "${XY_HOST_DIR}/coverage/${kind}"
@@ -113,7 +119,7 @@ host_cov_dir() {
 run_tests() {
   case "${1}" in
   system) run_tests_system ;;
-  unit) run_tests_unit ;;
+    unit) run_tests_unit   ;;
   esac
 }
 
@@ -144,20 +150,21 @@ gather_coverage() {
     --env XY_WORKER_COUNT \
     --interactive \
     "${XY_CONTAINER_NAME}" \
-    "${XY_CONTAINER_DIR}/test/system/gather_coverage.sh"
+    "${XY_CONTAINER_DIR}/test/system/gather_coverage.sh" \
+    "$(container_cov_dir system)"
 }
 
 tar_pipe_coverage_out() {
-  local -r kind="${1}"
-  local -r container_cov_dir="/tmp/coverage/${kind}"
-  local -r cov_dir="$(host_cov_dir "${1}")"
+  local -r kind="${1}"  # system | unit
+  local -r inner_cov_dir="$(container_cov_dir "${kind}")"
+  local -r outer_cov_dir="$(host_cov_dir "${kind}")"
 
-  rm -rf "${cov_dir}" >/dev/null || true
-  mkdir -p "${cov_dir}"
+  rm -rf "${outer_cov_dir}" >/dev/null || true
+  mkdir -p "${outer_cov_dir}"
 
   docker exec "${XY_CONTAINER_NAME}" tar -cf - -C \
-    $(dirname "${container_cov_dir}") $(basename "${container_cov_dir}") |
-    tar -xf - -C "${cov_dir}/.."
+    $(dirname "${inner_cov_dir}") $(basename "${inner_cov_dir}") |
+    tar -xf - -C "${outer_cov_dir}/.."
 }
 
 export -f ip_address

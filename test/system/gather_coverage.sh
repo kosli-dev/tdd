@@ -1,12 +1,10 @@
 #!/bin/bash -Eu
 
-cov_dir() {
-  echo "/tmp/coverage/system"
-}
+readonly COV_DIR="${1}"
 
 actual_coverage_files_count() {
   # Find is less noisy than ls when there are no matches
-  find "$(cov_dir)" -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
+  find "${COV_DIR}" -maxdepth 1 -type f -name '.coverage*' | wc -l | xargs
 }
 
 wait_for_all_coverage_files_based_on_workers_count() {
@@ -43,20 +41,20 @@ wait_for_all_coverage_files_based_on_stabilizing() {
 }
 
 create_coverage_json() {
-  local -r filename="$(cov_dir)/coverage.json"
+  local -r filename="${COV_DIR}/coverage.json"
   coverage json --pretty-print --quiet -o "${filename}"
   printf "%.2f%%\n" "$(jq .totals.percent_covered "${filename}")"
 }
 
 create_coverage_html() {
   coverage html \
-    --directory "$(cov_dir)" \
+    --directory "${COV_DIR}" \
     --precision=2 \
     --quiet
 }
 
 wait_for_all_coverage_files_based_on_workers_count
-cd "$(cov_dir)"
+cd "${COV_DIR}"
 coverage combine --quiet .
 create_coverage_json
 create_coverage_html
