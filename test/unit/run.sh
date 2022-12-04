@@ -28,13 +28,13 @@ run_tests() {
   set -e
 }
 
-coverage_percent() {
-  local -r tmp_file=/tmp/coverage.unit.json
-  coverage json --quiet -o "${tmp_file}"
-  jq .totals.percent_covered "${tmp_file}"
+create_coverage_json() {
+  local -r filename="$(cov_dir)/coverage.json"
+  coverage json --pretty-print --quiet -o "${filename}"
+  printf "%.2f%%\n" "$(jq .totals.percent_covered "${filename}")"
 }
 
-coverage_report() {
+create_coverage_html() {
   coverage html \
     --directory "$(cov_dir)" \
     --precision=2 \
@@ -43,5 +43,5 @@ coverage_report() {
 
 run_tests
 cd $(cov_dir)
-printf "%.2f%%\n" "$(coverage_percent)"
-coverage_report
+create_coverage_json
+create_coverage_html

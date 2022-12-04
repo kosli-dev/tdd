@@ -39,17 +39,21 @@ wait_for_all_coverage_files_based_on_stabilizing() {
   echo .
 }
 
-coverage_percent() {
-  local -r tmp_file=/tmp/coverage.system.json
-  coverage json --quiet -o "${tmp_file}"
-  jq .totals.percent_covered "${tmp_file}"
+create_coverage_json() {
+  local -r filename="$(cov_dir)/coverage.json"
+  coverage json --pretty-print --quiet -o "${filename}"
+  printf "%.2f%%\n" "$(jq .totals.percent_covered "${filename}")"
+}
+
+create_coverage_html() {
+  coverage html \
+    --directory "$(cov_dir)" \
+    --precision=2 \
+    --quiet
 }
 
 wait_for_all_coverage_files_based_on_workers_count
 cd "$(cov_dir)"
 coverage combine .
-printf "%.2f%%\n" "$(coverage_percent)"
-coverage html \
-  --directory "$(cov_dir)" \
-  --precision=2 \
-  --quiet
+create_coverage_json
+create_coverage_html
