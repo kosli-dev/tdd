@@ -3,12 +3,12 @@ import os
 import subprocess
 
 
-def xy_container_dir():
+def xy_container_root_dir():
     return os.environ.get("XY_CONTAINER_ROOT_DIR")
 
 
 def coverage_rc_file_path():
-    return f"{xy_container_dir()}/test/system/.coveragerc"
+    return f"{xy_container_root_dir()}/test/system/.coveragerc"
 
 
 def coverage_on_server():
@@ -35,9 +35,8 @@ def worker_exit(server, worker):
 
 
 def recreate_coverage_dir():
-    cwd = xy_container_dir()
-    dir = os.environ.get("XY_CONTAINER_COV_DIR")
-    rmdir_cmd = ["rm", "-rf", dir]
-    subprocess.run(rmdir_cmd, cwd=cwd, capture_output=True, text=True, check=False)
-    mkdir_cmd = ["mkdir", "-p", dir]
-    subprocess.run(mkdir_cmd, cwd=cwd, capture_output=True, text=True, check=True)
+    cov_dir = os.environ.get("XY_CONTAINER_COV_DIR")
+    rmdir_cmd = ["rm", "-rf", cov_dir]
+    mkdir_cmd = ["mkdir", "-p", cov_dir]
+    subprocess.run(rmdir_cmd, check=False)
+    subprocess.run(mkdir_cmd, check=True)
