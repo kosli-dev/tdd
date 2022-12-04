@@ -139,12 +139,12 @@ run_tests_unit() {
     "${XY_CONTAINER_DIR}/test/unit/run.sh"
 }
 
-report_coverage() {
+gather_coverage() {
   docker exec \
     --env XY_WORKER_COUNT \
     --interactive \
     "${XY_CONTAINER_NAME}" \
-    "${XY_CONTAINER_DIR}/test/system/report_coverage.sh"
+    "${XY_CONTAINER_DIR}/test/system/gather_coverage.sh"
 }
 
 tar_pipe_coverage_out() {
@@ -165,5 +165,5 @@ export -f wait_till_server_ready
 export -f server_restart
 export -f host_cov_dir
 export -f run_tests
-export -f report_coverage
+export -f gather_coverage
 export -f tar_pipe_coverage_out

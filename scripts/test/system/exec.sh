@@ -9,6 +9,6 @@ server_restart
 wait_till_server_ready
 run_tests system
 server_restart
-report_coverage
+gather_coverage
 tar_pipe_coverage_out system
 echo "$(host_cov_dir system)/index.html"
