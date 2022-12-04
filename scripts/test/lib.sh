@@ -13,8 +13,9 @@ export_env_vars() {
 
 echo_env_vars() {
   local -r port="${1}"
-  local -r kind="${2}"
+  local -r kind="${2}"  # demo | system | unit
   local -r host_dir="$(git rev-parse --show-toplevel)"
+  echo XY_KIND="${kind}"
   echo XY_HOST_PORT="${port}"
   echo XY_HOST_ROOT_DIR="${host_dir}"
   echo XY_HOST_COV_DIR="${host_dir}/coverage/${kind}"
@@ -73,12 +74,11 @@ network_up() {
 
 server_up() {
   # The -p option is to silence warnings about orphan containers.
-  local -r kind="${1}"  # system | unit
-  sed "s/{NAME}/${kind}/" "${XY_HOST_ROOT_DIR}/docker-compose.yaml" |
+  sed "s/{NAME}/${XY_KIND}/" "${XY_HOST_ROOT_DIR}/docker-compose.yaml" |
     docker-compose \
-      --env-file="${XY_HOST_ROOT_DIR}/env_vars/test_${kind}_up.env" \
+      --env-file="${XY_HOST_ROOT_DIR}/env_vars/test_${XY_KIND}_up.env" \
       --file - \
-      -p "${kind}" \
+      -p "${XY_KIND}" \
       up --no-build --detach
 }
 
@@ -111,7 +111,7 @@ wait_till_server_ready() {
 }
 
 run_tests() {
-  case "${1}" in
+  case "${XY_KIND}" in
   system) run_tests_system ;;
     unit) run_tests_unit   ;;
   esac

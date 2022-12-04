@@ -7,8 +7,8 @@ export_env_vars system
 
 server_restart
 wait_till_server_ready
-run_tests system
+run_tests
 server_restart
 gather_coverage
-tar_pipe_coverage_out system
+tar_pipe_coverage_out
 echo "${XY_HOST_COV_DIR}/index.html"
