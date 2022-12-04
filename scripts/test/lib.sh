@@ -12,13 +12,13 @@ export_env_vars() {
 }
 
 echo_env_vars() {
-  local -r port="${1}"
+  local -r port="${1}"  # See export_env_vars() above
   local -r kind="${2}"  # demo | system | unit
   local -r host_dir="$(git rev-parse --show-toplevel)"
   echo XY_KIND="${kind}"
   echo XY_HOST_PORT="${port}"
   echo XY_HOST_ROOT_DIR="${host_dir}"
-  echo XY_HOST_COV_DIR="${host_dir}/coverage/${kind}"
+  echo XY_HOST_COV_DIR="${host_dir}/coverage/${kind}"  # git ignored
   echo XY_CONTAINER_PORT=8001
   echo XY_CONTAINER_NAME="xy_${kind}"
   echo XY_CONTAINER_ROOT_DIR=/xy
