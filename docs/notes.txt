@@ -1,5 +1,5 @@
 
-These are the old original notes...
+These are mostly the old original notes...
 
 We want coverage stats from the system tests.  
 There are a number of steps to get this working:
@@ -17,7 +17,7 @@ There are a number of steps to get this working:
 1) ensure `coverage.process_startup()` is called when the server starts 
 The `site` module attempts to import a module called `sitecustomize`
 in any directory on the Python path.
-In `Dockerfile` we set `ENV PYTHONPATH="/app/source"` so we create
+In `Dockerfile` we set `ENV PYTHONPATH="/xy/source"` so we create
 `sitecustomize.py` there. It calls `coverage.process_startup()`
 which is designed to be invoked when Python starts.
 It examines the `COVERAGE_PROCESS_START` environment variable, 
@@ -36,11 +36,11 @@ ENV_FILE=env_vars/test.env
 ```
 and `env_vars/test.env` has this:
 ```
-COVERAGE_PROCESS_START=/app/test/system/.coveragerc
+COVERAGE_PROCESS_START=/xy/test/system/.coveragerc
 ```
 
 3) ensure the `.coveragerc` file has the correct settings
-The file `/app/test/system/.coveragerc` contains this option
+The file `/xy/test/system/.coveragerc` contains this option
 ```
 parallel=True
 ```
@@ -54,16 +54,16 @@ gunicorn \
   --bind 0.0.0.0:${PORT} \
   --threads=4 \
   --workers=2 \
-  'server:create_app()'
+  'xy:app()'
 ```
 
 
 # Run the system tests
-This is done in `/app/test/system/make_target.sh` with
+This is done in `/xy/test/system/make_target.sh` with
 ```
 docker run \
   ...
-  "$(IMAGE)" ./test/system/run.sh
+  "$(IMAGE)" /xy/test/system/run.sh
 ```
 Note this is a `docker run` and not a `docker exec` as we want the
 system tests to run in their own container.
@@ -71,9 +71,9 @@ system tests to run in their own container.
 
 # Ensure the server shuts down cleanly
 To successfully write their coverage data files, the Python 
-`server:create_app()` sub-processes must shut down cleanly so 
+`xy:app()` sub-processes must shut down cleanly so
 that `coverage` can run the `atexit` handlers it registers.
-This is done in `/app/test/system/make_target.sh` with:
+This is done in `/xy/test/system/make_target.sh` with:
 ```
 IMAGE="$(IMAGE)" \
   docker-compose --env-file=env_vars/test_system_up.env \
@@ -84,14 +84,14 @@ service container has finished exiting.
 
 
 # Combine the coverage files into a single `.coverage` file
-This is done in `/app/test/system/gather_coverage.sh` with
+This is done in `/xy/test/system/gather_coverage.sh` with
 ```
   coverage combine
   ...
 ```
 
 # Generate coverage reports from the coverage stats
-This is done in `/app/test/system/gather_coverage.sh` with
+This is done in `/xy/test/system/gather_coverage.sh` with
 ```
   ...
   coverage report --skip-covered --skip-empty --show-missing

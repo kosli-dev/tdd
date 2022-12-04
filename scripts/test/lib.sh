@@ -43,15 +43,14 @@ die() {
 
 refresh_assets() {
   docker run --rm \
-    --volume "${XY_HOST_ROOT_DIR}/package.json:/app/package.json" \
-    --volume "${XY_HOST_ROOT_DIR}/source/static/scss:/app/scss" \
-    --volume "${XY_HOST_ROOT_DIR}/source/static/js:/app/js" \
-    --workdir /app \
+    --volume "${XY_HOST_ROOT_DIR}/package.json:/app/package.json:ro" \
+    --volume "${XY_HOST_ROOT_DIR}/source/static/scss:/app/scss:rw" \
+    --volume "${XY_HOST_ROOT_DIR}/source/static/js:/app/js:rw" \
     --env XY_GIT_COMMIT_SHA \
     ghcr.io/kosli-dev/assets-builder:v1 \
-    bash -c "npm run build" ||
-    die "refresh_assets.sh failed. Your docker image might be outdated. " \
-      "Run 'docker image rm ghcr.io/kosli-dev/assets-builder' and then try again"
+    bash -c "npm run build" \
+      || die "refresh_assets.sh failed. Your docker image might be outdated. " \
+             "Run 'docker image rm ghcr.io/kosli-dev/assets-builder' and then try again"
 }
 
 build_image() {
@@ -68,14 +67,14 @@ build_image() {
 }
 
 network_up() {
-  docker network inspect "${XY_NETWORK_NAME}" >/dev/null ||
-    docker network create --driver bridge "${XY_NETWORK_NAME}"
+  docker network inspect "${XY_NETWORK_NAME}" >/dev/null \
+    || docker network create --driver bridge "${XY_NETWORK_NAME}"
 }
 
 server_up() {
   # The -p option is to silence warnings about orphan containers.
-  sed "s/{NAME}/${XY_KIND}/" "${XY_HOST_ROOT_DIR}/docker-compose.yaml" |
-    docker-compose \
+  sed "s/{NAME}/${XY_KIND}/" "${XY_HOST_ROOT_DIR}/docker-compose.yaml" \
+    | docker-compose \
       --env-file="${XY_HOST_ROOT_DIR}/env_vars/test_${XY_KIND}_up.env" \
       --file - \
       -p "${XY_KIND}" \
@@ -153,8 +152,8 @@ tar_pipe_coverage_out() {
   mkdir -p "${XY_HOST_COV_DIR}"
 
   docker exec "${XY_CONTAINER_NAME}" tar -cf - -C \
-    $(dirname "${XY_CONTAINER_COV_DIR}") $(basename "${XY_CONTAINER_COV_DIR}") |
-    tar -xf - -C "${XY_HOST_COV_DIR}/.."
+    $(dirname "${XY_CONTAINER_COV_DIR}") $(basename "${XY_CONTAINER_COV_DIR}") \
+      | tar -xf - -C "${XY_HOST_COV_DIR}/.."
 }
 
 export -f ip_address
