@@ -135,7 +135,8 @@ run_tests_unit() {
     --env TIDS="${TIDS}" \
     --interactive \
     "${XY_CONTAINER_NAME}" \
-    "${XY_CONTAINER_ROOT_DIR}/test/unit/run.sh"
+    "${XY_CONTAINER_ROOT_DIR}/test/unit/run.sh" \
+      "${XY_CONTAINER_COV_DIR}"
 }
 
 gather_coverage() {
@@ -144,7 +145,7 @@ gather_coverage() {
     --interactive \
     "${XY_CONTAINER_NAME}" \
     "${XY_CONTAINER_ROOT_DIR}/test/system/gather_coverage.sh" \
-    "${XY_CONTAINER_COV_DIR}"
+      "${XY_CONTAINER_COV_DIR}"
 }
 
 get_coverage() {

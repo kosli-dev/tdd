@@ -2,10 +2,7 @@
 set -Eeu
 
 readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-cov_dir() {
-  echo "/tmp/coverage/unit"
-}
+readonly COV_DIR="${1}"
 
 run_tests() {
   # See https://coverage.readthedocs.io for coverage docs
@@ -29,19 +26,19 @@ run_tests() {
 }
 
 create_coverage_json() {
-  local -r filename="$(cov_dir)/coverage.json"
+  local -r filename="${COV_DIR}/coverage.json"
   coverage json --pretty-print --quiet -o "${filename}"
   printf "%.2f%%\n" "$(jq .totals.percent_covered "${filename}")"
 }
 
 create_coverage_html() {
   coverage html \
-    --directory "$(cov_dir)" \
+    --directory "${COV_DIR}" \
     --precision=2 \
     --quiet
 }
 
 run_tests
-cd $(cov_dir)
+cd "${COV_DIR}"
 create_coverage_json
 create_coverage_html
