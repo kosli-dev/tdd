@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -Eeu
 
-MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
-source "${MY_DIR}/../lib.sh"
-export_env_vars system
+readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)"
+source "${MY_DIR}/lib.sh"
+export_env_vars "${1}"
 
 refresh_static_assets
 build_image

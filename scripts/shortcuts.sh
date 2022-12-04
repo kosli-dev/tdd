@@ -14,7 +14,7 @@ testing()
   local -r scope="${1}"; shift
   local -r command="${1}"; shift
   TIDS="-k ${*// / or }" \
-    "$(scripts_dir)/test/${scope}/${command}.sh"
+    "$(scripts_dir)/${command}_tests.sh" "${scope}"
 }
 
 scripts_dir()
