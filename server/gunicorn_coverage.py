@@ -4,7 +4,7 @@ import subprocess
 
 
 def xy_container_dir():
-    return os.environ.get("XY_CONTAINER_DIR")
+    return os.environ.get("XY_CONTAINER_ROOT_DIR")
 
 
 def coverage_rc_file_path():

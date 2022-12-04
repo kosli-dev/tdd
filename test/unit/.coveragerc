@@ -1,6 +1,6 @@
 [run]
 data_file=/tmp/coverage/unit/.coverage
-source=${XY_CONTAINER_DIR}/server
+source=${XY_CONTAINER_ROOT_DIR}/server
 branch=True
 omit =
     **/__init__.py

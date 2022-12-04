@@ -10,6 +10,6 @@ docker run \
   --interactive \
   --rm \
   --tty \
-  --volume="${XY_HOST_DIR}/test:${XY_CONTAINER_DIR}/test:ro" \
+  --volume="${XY_HOST_ROOT_DIR}/test:${XY_CONTAINER_ROOT_DIR}/test:ro" \
   "${XY_IMAGE_NAME}" \
-    "${XY_CONTAINER_DIR}/test/print_id.py"
+    "${XY_CONTAINER_ROOT_DIR}/test/print_id.py"

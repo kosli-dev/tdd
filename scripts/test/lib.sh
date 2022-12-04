@@ -14,10 +14,10 @@ export_env_vars() {
 echo_env_vars() {
   local -r host_dir="$(git rev-parse --show-toplevel)"
   echo XY_HOST_PORT="${1}"
-  echo XY_HOST_DIR="${host_dir}"
+  echo XY_HOST_ROOT_DIR="${host_dir}"
   echo XY_CONTAINER_PORT=8001
   echo XY_CONTAINER_NAME="xy_${2}"
-  echo XY_CONTAINER_DIR=/xy
+  echo XY_CONTAINER_ROOT_DIR=/xy
   echo XY_IMAGE_NAME=xy_image
   echo XY_NETWORK_NAME=xy_net # Also in docker-compose.yaml
   echo XY_USER_NAME=xy
@@ -38,9 +38,9 @@ die() {
 
 refresh_assets() {
   docker run --rm \
-    --volume "${XY_HOST_DIR}/package.json:/app/package.json" \
-    --volume "${XY_HOST_DIR}/server/static/scss:/app/scss" \
-    --volume "${XY_HOST_DIR}/server/static/js:/app/js" \
+    --volume "${XY_HOST_ROOT_DIR}/package.json:/app/package.json" \
+    --volume "${XY_HOST_ROOT_DIR}/server/static/scss:/app/scss" \
+    --volume "${XY_HOST_ROOT_DIR}/server/static/js:/app/js" \
     --workdir /app \
     --env XY_GIT_COMMIT_SHA \
     ghcr.io/kosli-dev/assets-builder:v1 \
@@ -50,9 +50,9 @@ refresh_assets() {
 }
 
 build_image() {
-  cd "${XY_HOST_DIR}"
+  cd "${XY_HOST_ROOT_DIR}"
   docker build \
-    --build-arg XY_CONTAINER_DIR \
+    --build-arg XY_CONTAINER_ROOT_DIR \
     --build-arg XY_CONTAINER_PORT \
     --build-arg XY_USER_NAME \
     --build-arg XY_WORKER_COUNT \
@@ -70,9 +70,9 @@ network_up() {
 server_up() {
   # The -p option is to silence warnings about orphan containers.
   local -r kind="${1}"  # system | unit
-  sed "s/{NAME}/${kind}/" "${XY_HOST_DIR}/docker-compose.yaml" |
+  sed "s/{NAME}/${kind}/" "${XY_HOST_ROOT_DIR}/docker-compose.yaml" |
     docker-compose \
-      --env-file="env_vars/test_${kind}_up.env" \
+      --env-file="${XY_HOST_ROOT_DIR}/env_vars/test_${kind}_up.env" \
       --file - \
       -p "${kind}" \
       up --no-build --detach
@@ -113,7 +113,7 @@ container_cov_dir() {
 
 host_cov_dir() {
   local -r kind="${1}" # system | unit
-  echo "${XY_HOST_DIR}/coverage/${kind}"
+  echo "${XY_HOST_ROOT_DIR}/coverage/${kind}"
 }
 
 run_tests() {
@@ -131,9 +131,9 @@ run_tests_system() {
     --interactive \
     --net "${XY_NETWORK_NAME}" \
     --rm \
-    --volume="${XY_HOST_DIR}/test:${XY_CONTAINER_DIR}/test:ro" \
+    --volume="${XY_HOST_ROOT_DIR}/test:${XY_CONTAINER_ROOT_DIR}/test:ro" \
     "${XY_IMAGE_NAME}" \
-    "${XY_CONTAINER_DIR}/test/system/run.sh"
+    "${XY_CONTAINER_ROOT_DIR}/test/system/run.sh"
   set -e
 }
 
@@ -142,7 +142,7 @@ run_tests_unit() {
     --env TIDS="${TIDS}" \
     --interactive \
     "${XY_CONTAINER_NAME}" \
-    "${XY_CONTAINER_DIR}/test/unit/run.sh"
+    "${XY_CONTAINER_ROOT_DIR}/test/unit/run.sh"
 }
 
 gather_coverage() {
@@ -150,7 +150,7 @@ gather_coverage() {
     --env XY_WORKER_COUNT \
     --interactive \
     "${XY_CONTAINER_NAME}" \
-    "${XY_CONTAINER_DIR}/test/system/gather_coverage.sh" \
+    "${XY_CONTAINER_ROOT_DIR}/test/system/gather_coverage.sh" \
     "$(container_cov_dir system)"
 }
 

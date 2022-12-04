@@ -16,10 +16,10 @@ run_tests() {
     --cache-clear `# Clear .coverage cache. It persists as it is in the volume-mount` \
     --capture=no `# Turn off capturing. Makes print() effects visible and interleaved` \
     --color=yes \
-    --cov="${XY_CONTAINER_DIR}/" \
+    --cov="${XY_CONTAINER_ROOT_DIR}/" \
     --cov-config="${MY_DIR}/.coveragerc" \
     --cov-report= `# Turn off verbose coverage report` \
-    --ignore="${XY_CONTAINER_DIR}/test/system" \
+    --ignore="${XY_CONTAINER_ROOT_DIR}/test/system" \
     -o cache_dir=/tmp \
     --pythonwarnings=error \
     --quiet \
