@@ -13,6 +13,7 @@ services:
     ports: [ "${XY_HOST_PORT}:${XY_CONTAINER_PORT}" ]
     read_only: true
     tmpfs: [ /tmp ]
+    user: xy
     volumes:
       - ./server:${XY_CONTAINER_DIR}/server:ro
       - ./test:${XY_CONTAINER_DIR}/test:ro
