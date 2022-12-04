@@ -7,4 +7,4 @@ export_env_vars unit
 
 run_tests unit
 tar_pipe_coverage_out unit
-echo "$(host_cov_dir unit)/index.html"
+echo "${XY_HOST_COV_DIR}"

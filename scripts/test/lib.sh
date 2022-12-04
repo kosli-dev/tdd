@@ -12,12 +12,16 @@ export_env_vars() {
 }
 
 echo_env_vars() {
+  local -r port="${1}"
+  local -r kind="${2}"
   local -r host_dir="$(git rev-parse --show-toplevel)"
-  echo XY_HOST_PORT="${1}"
+  echo XY_HOST_PORT="${port}"
   echo XY_HOST_ROOT_DIR="${host_dir}"
+  echo XY_HOST_COV_DIR="${host_dir}/coverage/${kind}"
   echo XY_CONTAINER_PORT=8001
-  echo XY_CONTAINER_NAME="xy_${2}"
+  echo XY_CONTAINER_NAME="xy_${kind}"
   echo XY_CONTAINER_ROOT_DIR=/xy
+  echo XY_CONTAINER_COV_DIR="/tmp/coverage/${kind}"
   echo XY_IMAGE_NAME=xy_image
   echo XY_NETWORK_NAME=xy_net # Also in docker-compose.yaml
   echo XY_USER_NAME=xy
@@ -106,16 +110,6 @@ wait_till_server_ready() {
   exit 42
 }
 
-container_cov_dir() {
-  local -r kind="${1}" # system | unit
-  echo "/tmp/coverage/${kind}"
-}
-
-host_cov_dir() {
-  local -r kind="${1}" # system | unit
-  echo "${XY_HOST_ROOT_DIR}/coverage/${kind}"
-}
-
 run_tests() {
   case "${1}" in
   system) run_tests_system ;;
@@ -151,26 +145,21 @@ gather_coverage() {
     --interactive \
     "${XY_CONTAINER_NAME}" \
     "${XY_CONTAINER_ROOT_DIR}/test/system/gather_coverage.sh" \
-    "$(container_cov_dir system)"
+    "${XY_CONTAINER_COV_DIR}"
 }
 
 tar_pipe_coverage_out() {
-  local -r kind="${1}"  # system | unit
-  local -r inner_cov_dir="$(container_cov_dir "${kind}")"
-  local -r outer_cov_dir="$(host_cov_dir "${kind}")"
-
-  rm -rf "${outer_cov_dir}" >/dev/null || true
-  mkdir -p "${outer_cov_dir}"
+  rm -rf "${XY_HOST_COV_DIR}" >/dev/null || true
+  mkdir -p "${XY_HOST_COV_DIR}"
 
   docker exec "${XY_CONTAINER_NAME}" tar -cf - -C \
-    $(dirname "${inner_cov_dir}") $(basename "${inner_cov_dir}") |
-    tar -xf - -C "${outer_cov_dir}/.."
+    $(dirname "${XY_CONTAINER_COV_DIR}") $(basename "${XY_CONTAINER_COV_DIR}") |
+    tar -xf - -C "${XY_HOST_COV_DIR}/.."
 }
 
 export -f ip_address
 export -f wait_till_server_ready
 export -f server_restart
-export -f host_cov_dir
 export -f run_tests
 export -f gather_coverage
 export -f tar_pipe_coverage_out

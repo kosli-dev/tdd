@@ -11,4 +11,4 @@ run_tests system
 server_restart
 gather_coverage
 tar_pipe_coverage_out system
-echo "$(host_cov_dir system)/index.html"
+echo "${XY_HOST_COV_DIR}/index.html"
