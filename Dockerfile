@@ -2,7 +2,7 @@ FROM python:3.11.0-alpine3.16
 LABEL maintainer=jon@kosli.com
 
 COPY source/requirements.txt /tmp/requirements.txt
-RUN pip3 install -r /tmp/requirements.txt
+RUN pip3 install --root-user-action=ignore --requirement /tmp/requirements.txt
 
 ARG XY_CONTAINER_ROOT_DIR \
     XY_CONTAINER_PORT \
