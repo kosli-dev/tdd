@@ -71,7 +71,7 @@ server_up() {
   local -r kind="${1}"
   sed "s/{NAME}/${kind}/" "${XY_HOST_DIR}/docker-compose.yaml" \
     | docker-compose \
-      --env-file=env_vars/test_system_up.env \
+      --env-file="env_vars/test_${kind}_up.env" \
       --file - \
       -p "${kind}" \
       up --no-build --detach
