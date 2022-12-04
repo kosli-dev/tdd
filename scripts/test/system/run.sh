@@ -10,5 +10,4 @@ build_image
 bring_network_up
 bring_server_up
 wait_till_server_ready
-
-"${MY_DIR}/exec.sh"
+exec_tests_get_coverage

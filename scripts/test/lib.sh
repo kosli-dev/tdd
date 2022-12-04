@@ -156,3 +156,25 @@ get_coverage() {
     $(dirname "${XY_CONTAINER_COV_DIR}") $(basename "${XY_CONTAINER_COV_DIR}") \
       | tar -xf - -C "${XY_HOST_COV_DIR}/.."
 }
+
+exec_tests_get_coverage() {
+  case "${XY_KIND}" in
+  system) exec_tests_get_coverage_system ;;
+    unit) exec_tests_get_coverage_unit   ;;
+  esac
+  echo "${XY_HOST_COV_DIR}/index.html"
+}
+
+exec_tests_get_coverage_system() {
+  restart_server
+  wait_till_server_ready
+  run_tests
+  restart_server
+  gather_coverage
+  get_coverage
+}
+
+exec_tests_get_coverage_unit() {
+  run_tests
+  get_coverage
+}
