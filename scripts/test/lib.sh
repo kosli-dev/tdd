@@ -67,11 +67,13 @@ network_up() {
 }
 
 server_up() {
+  # The -p option is to silence warnings about orphan containers.
   local -r kind="${1}"
   sed "s/{NAME}/${kind}/" "${XY_HOST_DIR}/docker-compose.yaml" \
     | docker-compose \
       --env-file=env_vars/test_system_up.env \
       --file - \
+      -p "${kind}" \
       up --no-build --detach
 }
 
