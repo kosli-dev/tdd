@@ -1,5 +1,5 @@
 __pycache__/
 coverage/
-/server/static/js/bundle.*.js
-/server/static/scss/bundle.*.css
+/source/static/js/bundle.*.js
+/source/static/scss/bundle.*.css
 .DS_Store

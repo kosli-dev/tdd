@@ -15,5 +15,5 @@ services:
     tmpfs: [ /tmp ]
     user: xy
     volumes:
-      - ./server:${XY_CONTAINER_ROOT_DIR}/server:ro
+      - ./source:${XY_CONTAINER_ROOT_DIR}/source:ro
       - ./test:${XY_CONTAINER_ROOT_DIR}/test:ro

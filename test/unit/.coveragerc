@@ -1,14 +1,14 @@
 [run]
 data_file=${XY_CONTAINER_COV_DIR}/.coverage
-source=${XY_CONTAINER_ROOT_DIR}/server
+source=${XY_CONTAINER_ROOT_DIR}/source
 branch=True
 omit =
     **/__init__.py
-    server/api/**
-    server/app/**
-    server/xy.py
-    server/config.py
-    server/sitecustomize.py
+    source/api/**
+    source/app/**
+    source/xy.py
+    source/config.py
+    source/sitecustomize.py
     test/conftest.py
     test/print_id.py
     test/system/**

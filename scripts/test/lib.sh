@@ -44,8 +44,8 @@ die() {
 refresh_assets() {
   docker run --rm \
     --volume "${XY_HOST_ROOT_DIR}/package.json:/app/package.json" \
-    --volume "${XY_HOST_ROOT_DIR}/server/static/scss:/app/scss" \
-    --volume "${XY_HOST_ROOT_DIR}/server/static/js:/app/js" \
+    --volume "${XY_HOST_ROOT_DIR}/source/static/scss:/app/scss" \
+    --volume "${XY_HOST_ROOT_DIR}/source/static/js:/app/js" \
     --workdir /app \
     --env XY_GIT_COMMIT_SHA \
     ghcr.io/kosli-dev/assets-builder:v1 \

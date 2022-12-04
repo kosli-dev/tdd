@@ -4,10 +4,10 @@
 
 [run]
 data_file=${XY_CONTAINER_COV_DIR}/.coverage
-source=/${XY_CONTAINER_ROOT_DIR}/server
+source=/${XY_CONTAINER_ROOT_DIR}/source
 parallel=True
 branch=True
 omit =
-  server/sitecustomize.py
-  server/gunicorn_config.py
-  server/gunicorn_coverage.py
+  source/sitecustomize.py
+  source/gunicorn_config.py
+  source/gunicorn_coverage.py
