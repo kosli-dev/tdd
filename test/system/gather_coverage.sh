@@ -13,16 +13,19 @@ wait_for_all_coverage_files_based_on_workers_count() {
   # We have sent a SIGHUP to the gunicorn master which will restart
   # each worker. Now we wait for each workers' sigterm handler to
   # write its .coverage file.
+  echo -n Waiting for coverage files
   local -r max_tries=20
   for i in $(seq "${max_tries}"); do
     echo -n .
-    [ "$(actual_coverage_files_count)" == "${XY_WORKER_COUNT}" ] && break
-    sleep 0.1
+    if [ "$(actual_coverage_files_count)" == "${XY_WORKER_COUNT}" ]; then
+      echo
+      return 0
+    else
+      sleep 0.1
+    fi
   done
-  echo .
-  if [ "${i}" == "${max_tries}" ]; then
-    echo "Gave up waiting for all .coverage files after "${max_tries}" tries"
-  fi
+  echo
+  echo "Gave up waiting for all .coverage files after "${max_tries}" tries"
 }
 
 wait_for_all_coverage_files_based_on_stabilizing() {
@@ -54,6 +57,6 @@ create_coverage_html() {
 
 wait_for_all_coverage_files_based_on_workers_count
 cd "$(cov_dir)"
-coverage combine .
+coverage combine --quiet .
 create_coverage_json
 create_coverage_html
