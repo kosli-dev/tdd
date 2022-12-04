@@ -1,5 +1,6 @@
 
 # Core
+Make /tmp/coverage/unit/ a parameter passed into containers
 Add system APP test that posts scores form
 Collect coverage of system tests themselves
    Will require coverage combine on the .coverage files from _two_ containers
