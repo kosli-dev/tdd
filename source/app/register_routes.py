@@ -22,9 +22,11 @@ def register_routes(app_blueprint):
         for _ in range(n):
             org.squads.append(Squad())
         form = ScoreForm(obj=org)
+
         if form.validate_on_submit():
             form.populate_obj(org)
-            sid = write_result(data_from(form))
+            squads = data_from(form)
+            sid = write_result(squads)
             return redirect(url_for('app.scores', sid=sid))
         else:
             # current_app.logger.info("form.invalidate_on_submit() == False")
@@ -36,14 +38,14 @@ def register_routes(app_blueprint):
 
 
 def data_from(form):
-    def squad(n):
+    def squad(squad_index, squad):
         return {
-            "char": "ABCDEF"[n],
-            "letters": form.squads[n].letters.data,
-            "is_word": form.squads[n].is_word.data
+            "char": "ABCDEF"[squad_index],
+            "letters": squad.letters.data,
+            "is_word": squad.is_word.data
         }
     return {
-        "squads": [squad(n) for n in range(len(form.squads))],
+        "squads": [squad(*item) for item in enumerate(form.squads)],
         "is_sentence": form.is_sentence.data,
         "is_profound": form.is_profound.data
     }

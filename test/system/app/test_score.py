@@ -31,12 +31,17 @@ def test_c8e1d001(app):
         "is_sentence": False,
         "is_profound": False,
     })
-    #     squads=[
-    #         {"letters": "hello", "is_word": True},
-    #         {"letters": "world", "is_word": True}
-    #     ],
-    #     is_sentence=False,
-    #     is_profound=False
-    # )
     assert result.status_code == 200
+
     # TODO: assert redirected to app.scores(sid)
+
+
+def test_c8e1d002(app):
+    """
+    The page for scoring an entered squad's decisions will redirect to score.html if the
+    request payload is invalid.
+    """
+    result = app.post_company_score({
+        "invalid": "format"
+    })
+    assert result.status_code == 500
