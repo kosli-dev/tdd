@@ -1,5 +1,11 @@
 
 # Core
+Fix server-log warning
+  'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
+Fix server-log warning
+    The setup method 'add_url_rule' can no longer be called on the blueprint 'api'. It has already been registered at least once, any changes will not be applied consistently.
+    Make sure all imports, decorators, functions, etc. needed to set up the blueprint are done before registering it.
+    This warning will become an exception in Flask 2.3.
 Add docker layer caching to CI main.yaml
 Add system APP test that posts scores form
 Collect coverage of system tests themselves
