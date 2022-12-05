@@ -2,6 +2,13 @@ import coverage
 import os
 import subprocess
 
+# We send a SIGHUP to the master gunicorn process twice.
+# Once before running the tests, one afterwards.
+# The SIGHUP handling:
+#   1. brings up the new workers and calls their post_fork()
+#   2. brings down the old workers and calls their worker_exit()
+# We rely on the ordering of 1) before 2).
+
 
 def xy_container_root_dir():
     return os.environ.get("XY_CONTAINER_ROOT_DIR")
