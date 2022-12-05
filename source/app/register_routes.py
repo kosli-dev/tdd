@@ -1,4 +1,4 @@
-from flask import request, redirect, render_template, url_for
+from flask import redirect, render_template, url_for
 from .score_form import ScoreForm, Org, Squad
 from .results import write_result, read_result
 
@@ -11,12 +11,6 @@ def register_routes(app_blueprint):
 
     @app_blueprint.route('/score/<int:n>', methods=['GET', 'POST'])
     def score(n):
-        # from flask import current_app
-        # if request.method == 'POST':
-        #     current_app.logger.info("INSIDE POST")
-        #     current_app.logger.info(request.data)
-        # if request.method == 'GET':
-        #     current_app.logger.info("INSIDE GET")
         org = Org()
         org.squads = []
         for _ in range(n):
@@ -29,7 +23,6 @@ def register_routes(app_blueprint):
             sid = write_result(squads)
             return redirect(url_for('app.scores', sid=sid))
         else:
-            # current_app.logger.info("form.invalidate_on_submit() == False")
             return render_template('score.html', form=form)
 
     @app_blueprint.route('/scores/<sid>', methods=['GET'])
