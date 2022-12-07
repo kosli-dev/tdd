@@ -28,6 +28,10 @@ echo_env_vars() {
   echo XY_USER_NAME=xy
   echo XY_WORKER_COUNT=2
   echo XY_GIT_COMMIT_SHA="$(git rev-parse HEAD)"
+  if [ "${CI:-}" != 'true' ]; then
+    # breakpoint() needs tty
+    echo XY_TTY=--tty
+  fi
 }
 
 ip_address() {
@@ -124,6 +128,7 @@ run_tests_system() {
     --interactive \
     --net "${XY_NETWORK_NAME}" \
     --rm \
+    ${XY_TTY:-} \
     --volume="${XY_HOST_ROOT_DIR}/test:${XY_CONTAINER_ROOT_DIR}/test:ro" \
     "${XY_IMAGE_NAME}" \
     "${XY_CONTAINER_ROOT_DIR}/test/system/run.sh"
@@ -134,6 +139,7 @@ run_tests_unit() {
   docker exec \
     --env TIDS="${TIDS}" \
     --interactive \
+    ${XY_TTY:-} \
     "${XY_CONTAINER_NAME}" \
     "${XY_CONTAINER_ROOT_DIR}/test/unit/run.sh" \
       "${XY_CONTAINER_COV_DIR}"
