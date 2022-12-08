@@ -1,3 +1,5 @@
+import bs4
+
 
 def test_c8e1d000(app):
     """
@@ -33,6 +35,16 @@ def test_c8e1d001(app):
     })
     assert result.status_code == 200
 
+    soup = bs4.BeautifulSoup(result.text, 'html.parser')
+    scores_div = soup.find("div", id='scores')
+    score_panels = scores_div.find_all('div', class_='panel')
+    score_text = [panel.getText() for panel in score_panels]
+    assert score_text == [
+        '\n        Squad-A\n        \n        Score==140==[0, -10, 160, 0, -10]\n    ',
+        '\n        Squad-B\n        \n        Score==150==[0, -10, 0, 160, 0]\n    ',
+        '\n        Squad-C\n        \n        Score==220==[80, -10, 0, 160, -10]\n    ',
+    ]
+
     # TODO: assert redirected to app.scores(sid)
 
 
@@ -45,3 +57,4 @@ def test_c8e1d002(app):
         "invalid": "format"
     })
     assert result.status_code == 500
+    breakpoint()
