@@ -56,5 +56,11 @@ def test_c8e1d002(app):
     result = app.post_company_score({
         "invalid": "format"
     })
+    # TODO: This test needs some work, but it's not clear to me what's expected. In the handler for the post,
+    # the input data is validated. If it fails validation, it's still passed to the score.html template, even
+    # though the template won't generally be able to use invalid data. Maybe the data I'm using is *too*
+    # invalid.
+    #
+    # So for now we're just asserting on the 500 and leaving refinement for later.
+
     assert result.status_code == 500
-    breakpoint()
