@@ -5,7 +5,8 @@ from wtforms.validators import DataRequired, Length
 
 
 class Org:
-    squads = None
+    def __init__(self, n):
+        self.squads = [Squad() for _ in range(n)]
 
 
 class Squad:

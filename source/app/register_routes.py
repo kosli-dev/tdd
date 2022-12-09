@@ -11,12 +11,8 @@ def register_routes(app_blueprint):
 
     @app_blueprint.route('/score/<int:n>', methods=['GET', 'POST'])
     def score(n):
-        org = Org()
-        org.squads = []
-        for _ in range(n):
-            org.squads.append(Squad())
+        org = Org(n)
         form = ScoreForm(obj=org)
-
         if form.validate_on_submit():
             form.populate_obj(org)
             squads = data_from(form)

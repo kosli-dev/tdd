@@ -33,5 +33,5 @@ def scored(data):
 
     return {
         "squads": squads,
-        "total_score": f"{total_score:,}"
+        "total_score": f"{total_score:,}"  # eg "5,660"
     }
