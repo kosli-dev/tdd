@@ -21,7 +21,7 @@ o) running the server in a read-only container
 o) runner the server as a non root user
 
 ```
-$ source ./scripts/shortcuts.sh
+$ source scripts/shortcuts.sh
 
 $ tid          # generate a test id
 

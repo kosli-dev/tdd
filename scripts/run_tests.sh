@@ -9,5 +9,4 @@ refresh_static_assets
 build_image
 bring_network_up
 bring_server_up
-wait_till_server_ready
 exec_tests_get_coverage
