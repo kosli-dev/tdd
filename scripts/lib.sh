@@ -174,7 +174,6 @@ exec_tests_get_coverage_system() {
 }
 
 exec_tests_get_coverage_unit() {
-  wait_till_server_ready
   run_tests_unit
   get_coverage
 }
