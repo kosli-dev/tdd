@@ -108,16 +108,10 @@ wait_till_server_ready() {
       sleep 0.2
     fi
   done
+  echo
   echo "Failed $(ip_address) readiness"
   docker container logs "${XY_CONTAINER_NAME}" || true
   exit 42
-}
-
-run_tests() {
-  case "${XY_KIND}" in
-  system) run_tests_system ;;
-    unit) run_tests_unit   ;;
-  esac
 }
 
 run_tests_system() {
@@ -172,15 +166,14 @@ exec_tests_get_coverage() {
 }
 
 exec_tests_get_coverage_system() {
-  restart_server
-  wait_till_server_ready
-  run_tests
-  restart_server
+  restart_server; wait_till_server_ready
+  run_tests_system
+  restart_server; wait_till_server_ready
   gather_coverage
   get_coverage
 }
 
 exec_tests_get_coverage_unit() {
-  run_tests
+  run_tests_unit
   get_coverage
 }
