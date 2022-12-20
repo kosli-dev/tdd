@@ -4,7 +4,8 @@ set -Eeu
 readonly MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly COV_DIR="${1}"
 
-run_tests() {
+run_tests()
+{
   # See https://coverage.readthedocs.io for coverage docs
   # To set the random-ordering seed
   #       --random-order-seed=<seed>
@@ -25,15 +26,24 @@ run_tests() {
   set -e
 }
 
-create_coverage_json() {
+create_coverage_json()
+{
   local -r filename="${COV_DIR}/coverage.json"
-  coverage json --pretty-print --quiet -o "${filename}"
+
+  coverage json \
+    --data-file=.coverage.unit \
+    -o "${filename}" \
+    --pretty-print \
+    --quiet
+
   printf "%.2f%%\n" "$(jq .totals.percent_covered "${filename}")"
 }
 
-create_coverage_html() {
+create_coverage_html()
+{
   coverage html \
-    --directory "${COV_DIR}" \
+    --data-file=.coverage.unit \
+    --directory="${COV_DIR}" \
     --precision=2 \
     --quiet
 }

@@ -3,7 +3,7 @@
 # set in env_vars/test_system.env
 
 [run]
-data_file=${XY_CONTAINER_COV_DIR}/.coverage
+data_file=${XY_CONTAINER_COV_DIR}/.coverage.system
 source=/${XY_CONTAINER_ROOT_DIR}/source
 parallel=True
 branch=True

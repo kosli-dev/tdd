@@ -155,6 +155,12 @@ get_coverage() {
   docker exec "${XY_CONTAINER_NAME}" tar -cf - -C \
     $(dirname "${XY_CONTAINER_COV_DIR}") $(basename "${XY_CONTAINER_COV_DIR}") \
       | tar -xf - -C "${XY_HOST_COV_DIR}/.."
+
+  # overwrite combined .coverage files
+  local -r ALL_COV_DIR="${XY_HOST_COV_DIR}/../all"
+  mkdir -p "${ALL_COV_DIR}"
+  rm -f ${ALL_COV_DIR}/.coverage.${XY_KIND}*
+  mv ${XY_HOST_COV_DIR}/.coverage.${XY_KIND}* "${ALL_COV_DIR}"
 }
 
 exec_tests_get_coverage() {
