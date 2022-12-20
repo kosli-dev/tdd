@@ -1,6 +1,6 @@
 
 # Core
-Add combined coverage html report
+Add combined coverage html report when unit/system tests are run
 Fix server-log warning
   'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
 Fix server-log warning

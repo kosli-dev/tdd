@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -Eeu
 
-export_env_vars() {
+export_env_vars()
+{
   local -r kind="${1}"
   case "${kind}" in
     demo) local -r port=80   ;;
@@ -11,7 +12,8 @@ export_env_vars() {
   export $(echo_env_vars "${port}" "${kind}")
 }
 
-echo_env_vars() {
+echo_env_vars()
+{
   local -r port="${1}"  # See export_env_vars() above
   local -r kind="${2}"  # demo | system | unit
   local -r host_dir="$(git rev-parse --show-toplevel)"
@@ -34,18 +36,21 @@ echo_env_vars() {
   fi
 }
 
-ip_address() {
+ip_address()
+{
   echo "http://localhost:${XY_HOST_PORT}"
 }
 
-die() {
+die()
+{
   echo >&2
   echo "Error: $*" >&2
   echo >&2
   exit 43
 }
 
-refresh_static_assets() {
+refresh_static_assets()
+{
   docker run --rm \
     --volume "${XY_HOST_ROOT_DIR}/package.json:/app/package.json:ro" \
     --volume "${XY_HOST_ROOT_DIR}/source/static/scss:/app/scss:rw" \
@@ -57,7 +62,8 @@ refresh_static_assets() {
              "Run 'docker image rm ghcr.io/kosli-dev/assets-builder' and then try again"
 }
 
-build_image() {
+build_image()
+{
   cd "${XY_HOST_ROOT_DIR}"
   docker build \
     --build-arg XY_CONTAINER_ROOT_DIR \
@@ -70,12 +76,14 @@ build_image() {
     .
 }
 
-bring_network_up() {
+bring_network_up()
+{
   docker network inspect "${XY_NETWORK_NAME}" >/dev/null \
     || docker network create --driver bridge "${XY_NETWORK_NAME}"
 }
 
-bring_server_up() {
+bring_server_up()
+{
   # The -p option is to silence warnings about orphan containers.
   sed "s/{NAME}/${XY_KIND}/" "${XY_HOST_ROOT_DIR}/docker-compose.yaml" \
     | docker-compose \
@@ -85,7 +93,8 @@ bring_server_up() {
       up --no-build --detach
 }
 
-restart_server() {
+restart_server()
+{
   # There are several processes with the name gunicorn.
   # One for the 'master' and one each for the workers.
   # Send SIGHUP to the master which is the oldest (-o).
@@ -95,7 +104,8 @@ restart_server() {
     sh -c "pkill -SIGHUP -o gunicorn"
 }
 
-wait_till_server_ready() {
+wait_till_server_ready()
+{
   local -r max_tries=15
   local -r url="$(ip_address)/api/health/ready"
   echo -n "Waiting for $(ip_address) readiness"
@@ -114,7 +124,8 @@ wait_till_server_ready() {
   exit 42
 }
 
-run_tests_system() {
+run_tests_system()
+{
   set +e
   docker run \
     --entrypoint="" \
@@ -129,7 +140,8 @@ run_tests_system() {
   set -e
 }
 
-run_tests_unit() {
+run_tests_unit()
+{
   docker exec \
     --env TIDS="${TIDS}" \
     --interactive \
@@ -139,7 +151,8 @@ run_tests_unit() {
       "${XY_CONTAINER_COV_DIR}"
 }
 
-gather_coverage() {
+gather_coverage()
+{
   docker exec \
     --env XY_WORKER_COUNT \
     --interactive \
@@ -148,7 +161,8 @@ gather_coverage() {
       "${XY_CONTAINER_COV_DIR}"
 }
 
-get_coverage() {
+get_coverage()
+{
   rm -rf "${XY_HOST_COV_DIR}" >/dev/null || true
   mkdir -p "${XY_HOST_COV_DIR}"
 
@@ -161,9 +175,12 @@ get_coverage() {
   mkdir -p "${ALL_COV_DIR}"
   rm -f ${ALL_COV_DIR}/.coverage.${XY_KIND}*
   mv ${XY_HOST_COV_DIR}/.coverage.${XY_KIND}* "${ALL_COV_DIR}"
+
+
 }
 
-exec_tests_get_coverage() {
+exec_tests_get_coverage()
+{
   case "${XY_KIND}" in
   system) exec_tests_get_coverage_system ;;
     unit) exec_tests_get_coverage_unit   ;;
@@ -171,7 +188,8 @@ exec_tests_get_coverage() {
   echo "${XY_HOST_COV_DIR}/index.html"
 }
 
-exec_tests_get_coverage_system() {
+exec_tests_get_coverage_system()
+{
   restart_server; wait_till_server_ready
   run_tests_system
   restart_server; wait_till_server_ready
@@ -179,7 +197,8 @@ exec_tests_get_coverage_system() {
   get_coverage
 }
 
-exec_tests_get_coverage_unit() {
+exec_tests_get_coverage_unit()
+{
   run_tests_unit
   get_coverage
 }
