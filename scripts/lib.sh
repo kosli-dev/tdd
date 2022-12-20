@@ -175,8 +175,6 @@ get_coverage()
   mkdir -p "${ALL_COV_DIR}"
   rm -f ${ALL_COV_DIR}/.coverage.${XY_KIND}*
   mv ${XY_HOST_COV_DIR}/.coverage.${XY_KIND}* "${ALL_COV_DIR}"
-
-
 }
 
 exec_tests_get_coverage()
