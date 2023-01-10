@@ -10,22 +10,17 @@ import subprocess
 # We rely on the ordering of 1) before 2).
 
 
-def coverage_rc_file_path():
-    return os.environ.get("COVERAGE_PROCESS_START", False)
+coverage_rc_file_path = os.environ.get("COVERAGE_PROCESS_START", False)
 
+if coverage_rc_file_path:
+    cov = coverage.Coverage(config_file=coverage_rc_file_path)
 
-if coverage_rc_file_path():
-    cov = coverage.Coverage(config_file=coverage_rc_file_path())
-
-
-def post_fork(server, worker):
-    if coverage_rc_file_path():
+    def post_fork(server, worker):
         recreate_coverage_dir()
         cov.start()
 
 
-def worker_exit(server, worker):
-    if coverage_rc_file_path():
+    def worker_exit(server, worker):
         cov.stop()
         cov.save()
 
