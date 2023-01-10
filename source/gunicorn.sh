@@ -16,5 +16,5 @@ exec gunicorn \
   ${COVERAGE_CONFIG} \
   --log-level=info \
   --threads=4 \
-  --workers="${XY_WORKER_COUNT}" \
+  --workers=2 \
   "xy:app()"

@@ -28,7 +28,6 @@ echo_env_vars()
   echo XY_IMAGE_NAME=xy_image
   echo XY_NETWORK_NAME=xy_net # Also in docker-compose.yaml
   echo XY_USER_NAME=xy
-  echo XY_WORKER_COUNT=2
   echo XY_GIT_COMMIT_SHA="$(git rev-parse HEAD)"
   if [ "${CI:-}" != 'true' ]; then
     # breakpoint() needs tty
@@ -69,7 +68,6 @@ build_image()
     --build-arg XY_CONTAINER_ROOT_DIR \
     --build-arg XY_CONTAINER_PORT \
     --build-arg XY_USER_NAME \
-    --build-arg XY_WORKER_COUNT \
     --build-arg XY_GIT_COMMIT_SHA \
     --file Dockerfile \
     --tag "${XY_IMAGE_NAME}" \
@@ -154,7 +152,6 @@ run_tests_unit()
 gather_coverage()
 {
   docker exec \
-    --env XY_WORKER_COUNT \
     --interactive \
     "${XY_CONTAINER_NAME}" \
     "${XY_CONTAINER_ROOT_DIR}/test/system/gather_coverage.sh" \
