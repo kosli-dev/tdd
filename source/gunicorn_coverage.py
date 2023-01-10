@@ -34,11 +34,8 @@ def post_fork(server, worker):
 
 def worker_exit(server, worker):
     if coverage_on_server():
-        try:
-            cov.stop()
-            cov.save()
-        except:
-            pass
+        cov.stop()
+        cov.save()
 
 
 def recreate_coverage_dir():
