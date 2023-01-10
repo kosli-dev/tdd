@@ -10,30 +10,22 @@ import subprocess
 # We rely on the ordering of 1) before 2).
 
 
-def xy_container_root_dir():
-    return os.environ.get("XY_CONTAINER_ROOT_DIR")
-
-
 def coverage_rc_file_path():
-    return f"{xy_container_root_dir()}/test/system/.coveragerc"
-
-
-def coverage_on_server():
     return os.environ.get("COVERAGE_PROCESS_START", False)
 
 
-if coverage_on_server():
+if coverage_rc_file_path():
     cov = coverage.Coverage(config_file=coverage_rc_file_path())
 
 
 def post_fork(server, worker):
-    if coverage_on_server():
+    if coverage_rc_file_path():
         recreate_coverage_dir()
         cov.start()
 
 
 def worker_exit(server, worker):
-    if coverage_on_server():
+    if coverage_rc_file_path():
         cov.stop()
         cov.save()
 
