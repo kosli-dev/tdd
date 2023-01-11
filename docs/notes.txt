@@ -1,103 +1,40 @@
 
-These are mostly the old original notes...
+Repo to illustrate TDD topics for future talks/blogs
 
-We want coverage stats from the system tests.  
-There are a number of steps to get this working:
+o) gathering coverage stats from the server's container
+   when system tests are being run from a different container
+   without having to `docker-compose up ...' each time.
+   ```
+   docker exec ... "pkill SIGHUP -o gunicorn"
+   ```
 
-- run the server in a docker container with coverage 
-  Note: gunicorn runs more than one app with --workers=2
-- run the tests from a different docker container
-  Note: the tests makes HTTP calls into the server container
-- get the coverage stats from each app in the server container
-- combine the coverage stats gathered from the apps  
-- generate coverage reports from the coverage stats
+o) doing so without killing the server container
 
-# Force the servers (plural) to run under coverage.
+o) gathering coverage stats for code and for tests
 
-1) ensure `coverage.process_startup()` is called when the server starts 
-The `site` module attempts to import a module called `sitecustomize`
-in any directory on the Python path.
-In `Dockerfile` we set `ENV PYTHONPATH="/xy/source"` so we create
-`sitecustomize.py` there. It calls `coverage.process_startup()`
-which is designed to be invoked when Python starts.
-It examines the `COVERAGE_PROCESS_START` environment variable, 
-and, if it is set, begins coverage measurement.  
+o) using tests named with a GUID
 
-2) ensure the `COVERAGE_PROCESS_START` env-var is set.
-The makefile's `test_system` target brings up the server with this:
-```
-IMAGE="${IMAGE}" \
-   docker-compose --env-file=env_vars/test_server_up.env \
-     up --detach
-```
-This names the file `env_vars/test_server_up.env` which has this:
-```
-ENV_FILE=env_vars/test.env
-```
-and `env_vars/test.env` has this:
-```
-COVERAGE_PROCESS_START=/xy/test/system/.coveragerc
-```
+o) contract/characterisation testing with decorators
 
-3) ensure the `.coveragerc` file has the correct settings
-The file `/xy/test/system/.coveragerc` contains this option
-```
-parallel=True
-```
-This option creates coverage files with a suffix of the machine name, 
-the `process` id, and random number. This is needed  because the 
-`Dockerfile`s CMD calls `gunicorn.sh` which runs gunicorn with two 
-app servers in separate processes.
-```
-gunicorn \
-  ... \
-  --bind 0.0.0.0:${PORT} \
-  --threads=4 \
-  --workers=2 \
-  'xy:app()'
-```
+o) running the server in a read-only container
 
+o) runner the server as a non root user
 
-# Run the system tests
-This is done in `/xy/test/system/make_target.sh` with
 ```
-docker run \
-  ...
-  "$(IMAGE)" /xy/test/system/run.sh
-```
-Note this is a `docker run` and not a `docker exec` as we want the
-system tests to run in their own container.
+$ source scripts/shortcuts.sh
 
+$ tid          # generate a test id
 
-# Ensure the server shuts down cleanly
-To successfully write their coverage data files, the Python 
-`xy:app()` sub-processes must shut down cleanly so
-that `coverage` can run the `atexit` handlers it registers.
-This is done in `/xy/test/system/make_target.sh` with:
-```
-IMAGE="$(IMAGE)" \
-  docker-compose --env-file=env_vars/test_system_up.env \
-    kill -s SIGINT
-```
-which is followed by a wait loop to ensure the 
-service container has finished exiting.
+$ rut          # Run all Unit Tests in new xy server
+$ rut a2189600 # Run only Unit Test_a2189600 in new xy server
+$ eut          # Exec all Unit Tests in existing xy server
+$ eut a2189600 # Exec only Unit Test a2189600 in existing xy server
 
+$ rst          # Run all System Tests in new xy server
+$ rst 04692400 # Run only System Test_04692400 in new xy server
+$ est          # Exec all System Tests in restarted xy server
+$ est 04692400 # Exec only System Test 04692400 in restarted xy server
 
-# Combine the coverage files into a single `.coverage` file
-This is done in `/xy/test/system/gather_coverage.sh` with
+$ demo         # run a demo server
+$ hup          # restart the demo server
 ```
-  coverage combine
-  ...
-```
-
-# Generate coverage reports from the coverage stats
-This is done in `/xy/test/system/gather_coverage.sh` with
-```
-  ...
-  coverage report --skip-covered --skip-empty --show-missing
-  coverage html --skip-covered --directory "${BASE_DIR}/coverage"
-```
-
-# https://docs.python.org/3/library/site.html
-# https://coverage.readthedocs.io/en/coverage-5.5/subprocess.html
-# https://coverage.readthedocs.io/en/coverage-5.5/config.html#config

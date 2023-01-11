@@ -1,40 +1,27 @@
 
-Repo to illustrate TDD topics for future talks/blogs
+[![Github Action (main)](https://github.com/kosli-dev/tdd-talks/actions/workflows/main.yml/badge.svg)](https://github.com/kosli-dev/tdd-talks/actions)
 
-o) gathering coverage stats from the server's container
-   when system tests are being run from a different container
-   without having to `docker-compose up ...' each time.
-   ```
-   docker exec ... "pkill SIGHUP -o gunicorn"
-   ```
+A public demo repo of
+- [gunicorn](https://gunicorn.org/) running with multiple workers
+- each worker running a simple [Flask](https://flask.palletsprojects.com/en/2.2.x/) web server (with an API)
 
-o) doing so without killing the server container
-
-o) gathering coverage stats for code and for tests
-
-o) using tests named with a GUID
-
-o) contract/characterisation testing with decorators
-
-o) running the server in a read-only container
-
-o) runner the server as a non root user
-
+The following blog posts link to this repo:
+- Getting Python test coverage by restarting your gunicorn server (rather than killing it)
 ```
 $ source scripts/shortcuts.sh
 
-$ tid          # generate a test id
-
-$ rut          # Run all Unit Tests in new xy server
-$ rut a2189600 # Run only Unit Test_a2189600 in new xy server
-$ eut          # Exec all Unit Tests in existing xy server
-$ eut a2189600 # Exec only Unit Test a2189600 in existing xy server
-
-$ rst          # Run all System Tests in new xy server
+$ rst          # Run all System Tests in new xy server ~10s
+$ est          # Exec all System Tests in restarted xy server ~4s
 $ rst 04692400 # Run only System Test_04692400 in new xy server
-$ est          # Exec all System Tests in restarted xy server
 $ est 04692400 # Exec only System Test 04692400 in restarted xy server
 
-$ demo         # run a demo server 
+$ rut          # Run all Unit Tests in new xy server ~10s
+$ eut          # Exec all Unit Tests in existing xy server ~1s
+$ rut a2189600 # Run only Unit Test_a2189600 in new xy server
+$ eut a2189600 # Exec only Unit Test a2189600 in existing xy server
+
+$ tid          # generate a test id
+
+$ demo         # run a demo server on localhost:80
 $ hup          # restart the demo server
 ```
