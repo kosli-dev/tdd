@@ -2,11 +2,6 @@
 
 readonly COV_DIR="${1}"
 
-actual_coverage_files_count()
-{
-  find "${COV_DIR}" -maxdepth 1 -type f -name ^.coverage | wc -l | xargs
-}
-
 wait_for_all_coverage_files()
 {
   while : ; do
@@ -18,6 +13,11 @@ wait_for_all_coverage_files()
     [ "${a1}${a2}${a3}${a4}" == "${a1}${a1}${a1}${a1}" ] && break
   done
   echo .
+}
+
+actual_coverage_files_count()
+{
+  find "${COV_DIR}" -maxdepth 1 -type f -name ^.coverage | wc -l | xargs
 }
 
 create_coverage_json()
