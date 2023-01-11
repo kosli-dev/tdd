@@ -10,11 +10,7 @@ import subprocess
 # We rely on the ordering of 1) before 2).
 
 
-def coverage_rc_file_path():
-    return os.environ.get("COVERAGE_PROCESS_START", False)
-
-
-cov = coverage.Coverage(config_file=coverage_rc_file_path())
+cov = coverage.Coverage(config_file=os.environ["COVERAGE_PROCESS_START"])
 
 
 def post_fork(server, worker):
@@ -28,7 +24,7 @@ def worker_exit(server, worker):
 
 
 def recreate_coverage_dir():
-    cov_dir = os.environ.get("XY_CONTAINER_COV_DIR")
+    cov_dir = os.environ["XY_CONTAINER_COV_DIR"]
     rmdir_cmd = ["rm", "-rf", cov_dir]
     mkdir_cmd = ["mkdir", "-p", cov_dir]
     subprocess.run(rmdir_cmd, check=False)
