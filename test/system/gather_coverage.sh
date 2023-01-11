@@ -1,4 +1,5 @@
-#!/bin/bash -Eu
+#!/usr/bin/env bash
+set -Eeu
 
 readonly COV_DIR="${1}"
 
