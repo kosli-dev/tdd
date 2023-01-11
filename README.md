@@ -9,7 +9,10 @@ A public demo repo of
 - the web server scores the [XY Business Game](https://leanpub.com/experientiallearning4sampleexercises) by [Jerry Weinberg](http://jonjagger.blogspot.com/p/jerry-weinberg.html)  
 
 The following blog posts link to this repo:
-- Getting Python test coverage by restarting your gunicorn server (rather than killing it)
+- Getting Python system-test coverage by restarting your gunicorn server (rather than killing it)
+- ...
+- ...
+
 ```
 $ source scripts/shortcuts.sh
 
@@ -23,8 +26,7 @@ $ eut          # Exec all Unit Tests in existing server ~1s
 $ rut a2189600 # Run only Unit Test a2189600 in new server
 $ eut a2189600 # Exec only Unit Test a2189600 in existing server
 
-$ tid          # generate a test id
-
 $ demo         # run a demo server on localhost:80
 $ hup          # restart the demo server
+$ tid          # generate a test id
 ```
