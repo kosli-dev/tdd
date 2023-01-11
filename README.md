@@ -1,5 +1,5 @@
 
-[![Github Action (main)](https://github.com/kosli-dev/tdd-talks/actions/workflows/main.yml/badge.svg)](https://github.com/kosli-dev/tdd-talks/actions)
+[![Github Action (main)](https://github.com/kosli-dev/tdd-talk/actions/workflows/main.yml/badge.svg)](https://github.com/kosli-dev/tdd-talk/actions)
 
 A public demo repo of
 - [gunicorn](https://gunicorn.org/) running with multiple workers
