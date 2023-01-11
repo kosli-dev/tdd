@@ -4,6 +4,8 @@
 A public demo repo of
 - [gunicorn](https://gunicorn.org/) running with multiple workers
 - each worker running a simple [Flask](https://flask.palletsprojects.com/en/2.2.x/) web server (with an API)
+- system tests with full branch coverage
+- unit tests with full branch coverage
 
 The following blog posts link to this repo:
 - Getting Python test coverage by restarting your gunicorn server (rather than killing it)
