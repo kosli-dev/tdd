@@ -6,21 +6,22 @@ A public demo repo of
 - each worker running a simple [Flask](https://flask.palletsprojects.com/en/2.2.x/) web server (with an API)
 - system tests with full branch coverage
 - unit tests with full branch coverage
+- the web server scores the [XY Business Game](https://leanpub.com/experientiallearning4sampleexercises) by [Jerry Weinberg](http://jonjagger.blogspot.com/p/jerry-weinberg.html)  
 
 The following blog posts link to this repo:
 - Getting Python test coverage by restarting your gunicorn server (rather than killing it)
 ```
 $ source scripts/shortcuts.sh
 
-$ rst          # Run all System Tests in new xy server ~10s
-$ est          # Exec all System Tests in restarted xy server ~4s
-$ rst 04692400 # Run only System Test_04692400 in new xy server
-$ est 04692400 # Exec only System Test 04692400 in restarted xy server
+$ rst          # Run all System Tests in new server ~10s
+$ est          # Exec all System Tests in restarted server ~4s
+$ rst 04692400 # Run only System Test 04692400 in new server
+$ est 04692400 # Exec only System Test 04692400 in restarted server
 
-$ rut          # Run all Unit Tests in new xy server ~10s
-$ eut          # Exec all Unit Tests in existing xy server ~1s
-$ rut a2189600 # Run only Unit Test_a2189600 in new xy server
-$ eut a2189600 # Exec only Unit Test a2189600 in existing xy server
+$ rut          # Run all Unit Tests in new server ~10s
+$ eut          # Exec all Unit Tests in existing server ~1s
+$ rut a2189600 # Run only Unit Test a2189600 in new server
+$ eut a2189600 # Exec only Unit Test a2189600 in existing server
 
 $ tid          # generate a test id
 
