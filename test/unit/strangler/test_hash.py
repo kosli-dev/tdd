@@ -13,7 +13,7 @@ def test_011200(t):
     d = Diff()
 
     assert hash(d) == 8877
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011201(t):
@@ -26,7 +26,7 @@ def test_011201(t):
     s = Same()
 
     assert hash(s) == 5
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011202(t):
@@ -41,7 +41,7 @@ def test_011202(t):
     with pytest.raises(StrangledDifference) as exc:
         hash(d)
     check_exc_log(exc.value, 'Diff', '__hash__', '69', '56')
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011203(t):
@@ -55,7 +55,7 @@ def test_011203(t):
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
         assert hash(d) == 23
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011204(t):
@@ -68,7 +68,7 @@ def test_011204(t):
     s = Same()
 
     assert hash(s) == 42
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011205(t):
@@ -81,7 +81,7 @@ def test_011205(t):
     d = Diff()
 
     assert hash(d) == 51
-    check_cm_log('51', 'not-set')
+    check_log('51', 'not-set')
 
 
 def test_011206(t):
@@ -94,7 +94,7 @@ def test_011206(t):
     d = Diff()
 
     assert hash(d) == 45
-    check_cm_log('not-set', '45')
+    check_log('not-set', '45')
 
 
 def test_011207(t):
@@ -107,7 +107,7 @@ def test_011207(t):
     s = Same()
 
     assert hash(s) == 7
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011208(t):
@@ -120,14 +120,14 @@ def test_011208(t):
     d = Diff()
 
     assert hash(d) == 1122
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 # - - - - - - - - - - - - - - - - - - - - - - -
 
 
-def check_cm_log(c, m):
-    check_cc_log('Diff', '__hash__', c, m)
+def check_log(c, m):
+    check_strangler_log('Diff', '__hash__', c, m)
 
 
 class Hash:

@@ -13,7 +13,7 @@ def test_011110(t):
     d = Diff()
 
     assert d == d
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011111(t):
@@ -26,7 +26,7 @@ def test_011111(t):
     s = Same()
 
     assert s == s
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011112(t):
@@ -41,7 +41,7 @@ def test_011112(t):
     with pytest.raises(StrangledDifference) as exc:
         d == d
     check_exc_log(exc.value, "Diff", '__eq__', 'True', 'False')
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011113(t):
@@ -55,7 +55,7 @@ def test_011113(t):
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
         assert d == d
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011114(t):
@@ -68,7 +68,7 @@ def test_011114(t):
     s = Same()
 
     assert s == s
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011115(t):
@@ -81,7 +81,7 @@ def test_011115(t):
     d = Diff()
 
     assert d == d
-    check_cm_log('True', 'False')
+    check_log('True', 'False')
 
 
 def test_011116(t):
@@ -94,7 +94,7 @@ def test_011116(t):
     d = Diff()
 
     assert d != d
-    check_cm_log('True', 'False')
+    check_log('True', 'False')
 
 
 def test_011117(t):
@@ -107,7 +107,7 @@ def test_011117(t):
     d = Diff()
 
     assert d != d
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011118(t):
@@ -120,13 +120,13 @@ def test_011118(t):
     d = Diff()
 
     assert d == d
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 # - - - - - - - - - - - - - - - - - - - - - - -
 
 
-def check_cm_log(c, m):
-    check_cc_log('Diff', '__eq__', c, m)
+def check_log(c, m):
+    check_strangler_log('Diff', '__eq__', c, m)
 
 
 class Eq:

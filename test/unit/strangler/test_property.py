@@ -13,10 +13,10 @@ def test_011600(t):
     d = Diff()
 
     assert d.p == 42
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
     d.p = 42
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011601(t):
@@ -29,10 +29,10 @@ def test_011601(t):
     s = Same()
 
     assert s.p == 5
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
     s.p = 5
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011602(t):
@@ -47,12 +47,12 @@ def test_011602(t):
     with pytest.raises(StrangledDifference) as exc:
         d.p
     check_exc_log(exc.value, 'Diff', 'p', 'not-set', '6')
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
     with pytest.raises(StrangledDifference) as exc:
         d.p = 42
     check_exc_log(exc.value, 'Diff', 'p', 'not-set', 'None')
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011603(t):
@@ -66,11 +66,11 @@ def test_011603(t):
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
         assert d.p == 5
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
         d.p = 42
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011604(t):
@@ -83,10 +83,10 @@ def test_011604(t):
     s = Same()
 
     assert s.p == "ccc"
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
     s.p = "anything"
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011605(t):
@@ -99,10 +99,10 @@ def test_011605(t):
     d = Diff()
 
     d.p
-    check_cc_log("Diff", 'p', 'ccc', 'not-set')
+    check_log("Diff", 'p', 'ccc', 'not-set')
 
     d.p = "anything"
-    check_cc_log("Diff", 'p', 'None', 'not-set')
+    check_log("Diff", 'p', 'None', 'not-set')
 
 
 def test_011606(t):
@@ -115,10 +115,10 @@ def test_011606(t):
     d = Diff()
 
     assert d.p == 45
-    check_cc_log('Diff', 'p', 'not-set', '45')
+    check_log('Diff', 'p', 'not-set', '45')
 
     d.p = "anything"
-    check_cc_log('Diff', 'p', 'not-set', 'None')
+    check_log('Diff', 'p', 'not-set', 'None')
 
 
 def test_011607(t):
@@ -131,10 +131,10 @@ def test_011607(t):
     s = Same()
 
     assert s.p == 123
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
     s.p = "anything"
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011608(t):
@@ -147,10 +147,10 @@ def test_011608(t):
     d = Diff()
 
     assert d.p == 99
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
     d.p = "anything"
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 # - - - - - - - - - - - - - - - - - - - - - - -
 

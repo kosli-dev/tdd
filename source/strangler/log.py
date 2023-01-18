@@ -1,14 +1,14 @@
 import threading
 
-_cc = threading.local()
+_strangler = threading.local()
 
 
-def get_cc_log():  # pragma no cover
-    if 'log' in _cc.__dict__:
-        return _cc.log
+def get_strangler_log():  # pragma no cover
+    if 'log' in _strangler.__dict__:
+        return _strangler.log
     else:
         return None
 
 
-def set_cc_log(log):
-    _cc.log = log
+def set_strangler_log(log):
+    _strangler.log = log

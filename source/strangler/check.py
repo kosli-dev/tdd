@@ -23,14 +23,14 @@ def strangled(cls, name, kind, use, c, m):
     return result_or_raise(p_res, p_exc)
 
 
-def ps(class_name, kind, use, ow, ao):
+def ps(class_name, kind, use, old, new):
     # Select primary and/or secondary
     d = {
-        OLD_ONLY: (ow, None),
-        NEW_TEST: (ow, ao if in_unit_tests() else None),
-        OLD_MAIN: (ow, ao),
-        NEW_MAIN: (ao, ow),
-        NEW_ONLY: (ao, None)
+        OLD_ONLY: (old, None),
+        NEW_TEST: (old, new if in_unit_tests() else None),
+        OLD_MAIN: (old, new),
+        NEW_MAIN: (new, old),
+        NEW_ONLY: (new, None)
     }
     return d[use]
 
@@ -84,22 +84,22 @@ def do_contract_check(class_name, name, kind, use,
     now = datetime.utcfromtimestamp(time.time())
     p_info = info(p_res, p_exc, p_trace)
     s_info = info(s_res, s_exc, s_trace)
-    ow_res = p_res if old_is_primary(use) else s_res
-    ao_res = p_res if new_is_primary(use) else s_res
+    old_res = p_res if old_is_primary(use) else s_res
+    new_res = p_res if new_is_primary(use) else s_res
     diff = {
         "time": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "class": class_name,
         "name": name,
         "kind": kind,
-        "old-db": p_info if old_is_primary(use) else s_info,
+        "old-info": p_info if old_is_primary(use) else s_info,
         "old-repr": p_repr if old_is_primary(use) else s_repr,
         "old-args": p_args if old_is_primary(use) else s_args,
         "old-kwargs": p_kwargs if old_is_primary(use) else s_kwargs,
-        "new-db": p_info if new_is_primary(use) else s_info,
+        "new-info": p_info if new_is_primary(use) else s_info,
         "new-repr": p_repr if new_is_primary(use) else s_repr,
         "new-args": p_args if new_is_primary(use) else s_args,
         "new-kwargs": p_kwargs if new_is_primary(use) else s_kwargs,
-        "diff": diff_only(ow_res, ao_res)
+        "diff": diff_only(old_res, new_res)
     }
 
     if use is NEW_TEST:

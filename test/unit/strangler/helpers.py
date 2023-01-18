@@ -1,6 +1,6 @@
 import json
 import os
-from strangler import get_cc_log
+from strangler import get_strangler_log
 
 
 class ScopedEnvVar(object):
@@ -26,12 +26,12 @@ def raiser(s=None):
     raise RuntimeError(s)
 
 
-def no_cc_logging():
-    return get_cc_log() is None
+def no_strangler_logging():
+    return get_strangler_log() is None
 
 
-def check_cc_log(class_name, name, c_result, m_result):
-    check_log(get_cc_log(), class_name, name, c_result, m_result)
+def check_strangler_log(class_name, name, c_result, m_result):
+    check_log(get_strangler_log(), class_name, name, c_result, m_result)
 
 
 def check_exc_log(exc, class_name, name, c_result, m_result):

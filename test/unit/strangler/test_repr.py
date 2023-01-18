@@ -13,7 +13,7 @@ def test_011700(t):
     d = Diff()
 
     assert repr(d) == "123"
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011701(t):
@@ -26,7 +26,7 @@ def test_011701(t):
     s = Same()
 
     assert repr(s) == "5"
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011703(t):
@@ -41,7 +41,7 @@ def test_011703(t):
     with pytest.raises(StrangledDifference) as exc:
         repr(d)
     check_exc_log(exc.value, 'Diff', '__repr__', '69', '56')
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011704(t):
@@ -55,7 +55,7 @@ def test_011704(t):
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
         assert repr(d) == '23'
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011705(t):
@@ -68,7 +68,7 @@ def test_011705(t):
     s = Same()
 
     assert repr(s) == "42"
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011706(t):
@@ -81,7 +81,7 @@ def test_011706(t):
     d = Diff()
 
     assert repr(d) == "ccc"
-    check_cm_log('ccc', 'mmm')
+    check_log('ccc', 'mmm')
 
 
 def test_011707(t):
@@ -94,7 +94,7 @@ def test_011707(t):
     d = Diff()
 
     assert repr(d) == '45'
-    check_cm_log('not-set', '45')
+    check_log('not-set', '45')
 
 
 def test_011708(t):
@@ -107,7 +107,7 @@ def test_011708(t):
     s = Same()
 
     assert repr(s) == '7'
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011709(t):
@@ -120,13 +120,13 @@ def test_011709(t):
     d = Diff()
 
     assert repr(d) == "987"
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 # - - - - - - - - - - - - - - - - - - - - - - -
 
 
-def check_cm_log(c, m):
-    check_cc_log("Diff", "__repr__", c, m)
+def check_log(c, m):
+    check_strangler_log("Diff", "__repr__", c, m)
 
 
 class Repr:

@@ -13,7 +13,7 @@ def test_011400(t):
     d = Diff()
 
     assert len(d) == 8742
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011401(t):
@@ -26,7 +26,7 @@ def test_011401(t):
     s = Same()
 
     assert len(s) == 5
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011402(t):
@@ -41,7 +41,7 @@ def test_011402(t):
     with pytest.raises(StrangledDifference) as exc:
         len(d)
     check_exc_log(exc.value, 'Diff', '__len__', '69', '56')
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011403(t):
@@ -55,7 +55,7 @@ def test_011403(t):
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
         assert len(d) == 23
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011404(t):
@@ -68,7 +68,7 @@ def test_011404(t):
     s = Same()
 
     assert len(s) == 4228
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011405(t):
@@ -81,7 +81,7 @@ def test_011405(t):
     d = Diff()
 
     assert len(d) == 517
-    check_cm_log('517', '518')
+    check_log('517', '518')
 
 
 def test_011407(t):
@@ -94,7 +94,7 @@ def test_011407(t):
     d = Diff()
 
     assert len(d) == 45
-    check_cm_log('not-set', '45')
+    check_log('not-set', '45')
 
 
 def test_011408(t):
@@ -107,7 +107,7 @@ def test_011408(t):
     s = Same()
 
     assert len(s) == 7
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011409(t):
@@ -120,13 +120,13 @@ def test_011409(t):
     d = Diff()
 
     assert len(d) == 1212
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 # - - - - - - - - - - - - - - - - - - - - - - -
 
 
-def check_cm_log(c, m):
-    check_cc_log('Diff', '__len__', c, m)
+def check_log(c, m):
+    check_strangler_log('Diff', '__len__', c, m)
 
 
 class Len:

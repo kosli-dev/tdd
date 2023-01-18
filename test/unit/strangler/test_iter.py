@@ -13,7 +13,7 @@ def test_011300(t):
     d = Diff()
 
     assert ids(d) == [4, 6, 7]
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011301(t):
@@ -26,7 +26,7 @@ def test_011301(t):
     s = Same()
 
     assert ids(s) == [1, 6]
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011302(t):
@@ -41,7 +41,7 @@ def test_011302(t):
     with pytest.raises(StrangledDifference) as exc:
         ids(d)
     check_exc_log(exc.value, 'Diff', '__iter__', '[1, 6]', '[0]')
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011303(t):
@@ -55,7 +55,7 @@ def test_011303(t):
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
         assert ids(d) == [5, 8]
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011304(t):
@@ -68,7 +68,7 @@ def test_011304(t):
     s = Same()
 
     assert ids(s) == [60, 1]
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011305(t):
@@ -81,7 +81,7 @@ def test_011305(t):
     d = Diff()
 
     assert ids(d) == [10, 3]
-    check_cm_log('[10, 3]', '[1, 10]')
+    check_log('[10, 3]', '[1, 10]')
 
 
 def test_011306(t):
@@ -94,7 +94,7 @@ def test_011306(t):
     d = Diff()
 
     assert ids(d) == [30, 3, 9]
-    check_cm_log('[30, 3, 9]', '[1, 30]')
+    check_log('[30, 3, 9]', '[1, 30]')
 
 
 def test_011307(t):
@@ -107,7 +107,7 @@ def test_011307(t):
     d = Diff()
 
     assert ids(d) == [5, 3]
-    check_cm_log('[0, 9]', '[5, 3]')
+    check_log('[0, 9]', '[5, 3]')
 
 
 def test_011308(t):
@@ -120,7 +120,7 @@ def test_011308(t):
     d = Diff()
 
     assert ids(d) == [1, 9]
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 def test_011309(t):
@@ -133,13 +133,13 @@ def test_011309(t):
     d = Diff()
 
     assert ids(d) == [14, 26, 4]
-    assert no_cc_logging()
+    assert no_strangler_logging()
 
 
 # - - - - - - - - - - - - - - - - - - - - - - -
 
-def check_cm_log(c, m):
-    check_cc_log('Diff', '__iter__', c, m)
+def check_log(c, m):
+    check_strangler_log('Diff', '__iter__', c, m)
 
 
 def ids(c):
