@@ -1,7 +1,6 @@
 import pytest
 from strangler import *
 from .helpers import *
-# from helpers.unit.lib.scoped_env_var import ScopedEnvVar
 
 
 def test_18011110(t):

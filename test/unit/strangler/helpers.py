@@ -1,5 +1,23 @@
 import json
+import os
 from strangler import get_cc_log
+
+
+class ScopedEnvVar(object):
+
+    def __init__(self, name, value):
+        self.__name = name
+        self.__old_value = os.environ.get(name)
+        self.__new_value = value
+
+    def __enter__(self):
+        os.environ[self.__name] = self.__new_value
+
+    def __exit__(self, _type, _value, _traceback):
+        if self.__old_value is None:
+            os.environ.pop(self.__name)
+        else:
+            os.environ[self.__name] = self.__old_value
 
 
 def raiser(s=None):

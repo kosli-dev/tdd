@@ -1,9 +1,8 @@
 from datetime import datetime
 import json
-import os
 import time
 import traceback
-from lib import LockedDir, i_am_doing_the_migration, in_unit_tests
+from lib import LockedDir, in_unit_tests
 from lib.diff import diff_only
 from .switch import *
 from .log import set_cc_log
@@ -26,15 +25,6 @@ def strangled(cls, name, kind, use, c, m):
 
 def ps(class_name, kind, use, ow, ao):
     # Select primary and/or secondary
-    if class_is_in_migration(class_name):
-        if i_am_doing_the_migration():
-            if kind == "query":
-                return ow, None  # migrator must read from overwrite only
-            else:
-                return None, ao  # migrator must write to append only
-        else:
-            return ow, None  # server must not use Mongo
-
     d = {
         OLD_ONLY: (ow, None),
         NEW_TEST: (ow, ao if in_unit_tests() else None),
@@ -43,15 +33,6 @@ def ps(class_name, kind, use, ow, ao):
         NEW_ONLY: (ao, None)
     }
     return d[use]
-
-
-def class_is_in_migration(class_name):
-    filename = migration_marker_filename(class_name)
-    return os.path.exists(filename)
-
-
-def migration_marker_filename(class_name):
-    return f"/tmp/{class_name}.migration.marker"
 
 
 def call(class_name, kind, name, func):
@@ -84,7 +65,7 @@ def sync_check(class_name, name, kind, use, p_res, p_exc, p_trace, p_repr, p_arg
         do_contract_check(class_name, name, kind, use,
                           p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
                           s_res, s_exc, s_trace, s_repr, s_args, s_kwargs)
-    except StranglerDifference:
+    except StrangledDifference:
         raise
     except Exception:
         pass
@@ -123,7 +104,7 @@ def do_contract_check(class_name, name, kind, use,
 
     if use is NEW_TEST:
         if in_unit_tests():
-            raise StranglerDifference(diff)
+            raise StrangledDifference(diff)
         else:
             return
     else:

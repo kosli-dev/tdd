@@ -16,7 +16,7 @@ However, when use/getter/setter=NEW_TEST the behaviour of [2] is altered:
 When a Old/New difference is detected:
   - Don't log the difference to a file
   - if running unit-tests
-  -   raise StranglerDifference() [*]
+  -   raise StrangledDifference() [*]
   - else
   -   return [@]
 

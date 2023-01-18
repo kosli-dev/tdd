@@ -1,32 +1,32 @@
-from lib.contract_check import overwrite_is_on, append_is_on
-from lib.contract_check import OVERWRITE_ONLY, APPEND_TEST, OVERWRITE_MAIN, APPEND_MAIN, APPEND_ONLY 
+from strangler import old_is_on, new_is_on
+from strangler import OLD_ONLY, NEW_TEST, OLD_MAIN, NEW_MAIN, NEW_ONLY
 
 
 class Eg:
-    def __init__(self, ow, ap):
-        self.overwrite = ow
-        self.append = ap
+    def __init__(self, o, n):
+        self.old = o
+        self.new = n
 
 
 def test_eb760e00():
     """
-    overwrite_is_on() is False only for APPEND_ONLY
+    old_is_on() is False only for NEW_ONLY
     """
     eg = Eg(True, None)
-    assert overwrite_is_on(eg, OVERWRITE_ONLY)
-    assert overwrite_is_on(eg, APPEND_TEST)
-    assert overwrite_is_on(eg, OVERWRITE_MAIN)
-    assert overwrite_is_on(eg, APPEND_MAIN)
-    assert overwrite_is_on(eg, APPEND_ONLY) is False
+    assert old_is_on(eg, OLD_ONLY)
+    assert old_is_on(eg, NEW_TEST)
+    assert old_is_on(eg, OLD_MAIN)
+    assert old_is_on(eg, NEW_MAIN)
+    assert old_is_on(eg, NEW_ONLY) is False
 
 
 def test_eb760e01():
     """
-    append_is_on() is False only for OVERWRITE_ONLY
+    new_is_on() is False only for OLD_ONLY
     """
     eg = Eg(None, True)
-    assert append_is_on(eg, OVERWRITE_ONLY) is False
-    assert append_is_on(eg, APPEND_TEST)
-    assert append_is_on(eg, OVERWRITE_MAIN)
-    assert append_is_on(eg, APPEND_MAIN)
-    assert append_is_on(eg, APPEND_ONLY)
+    assert new_is_on(eg, OLD_ONLY) is False
+    assert new_is_on(eg, NEW_TEST)
+    assert new_is_on(eg, OLD_MAIN)
+    assert new_is_on(eg, NEW_MAIN)
+    assert new_is_on(eg, NEW_ONLY)
