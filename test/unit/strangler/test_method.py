@@ -1,17 +1,16 @@
 import pytest
-from lib.contract_check import *
-from lib.contract_check_decorators import contract_checked_method
+from strangler import *
 from .helpers import *
-from helpers.unit.lib.scoped_env_var import ScopedEnvVar
+# from helpers.unit.lib.scoped_env_var import ScopedEnvVar
 
 
 def test_18011500(t):
-    """OVERWRITE_ONLY"""
-    @contract_checked_method("f", use=OVERWRITE_ONLY, kind="query")
+    """OLD_ONLY"""
+    @strangled_method("f", use=OLD_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Func(lambda: 11)
-            self.append = None
+            self.old = Func(lambda: 11)
+            self.new = None
     d = Diff()
 
     assert d.f() == 11
@@ -19,12 +18,12 @@ def test_18011500(t):
 
 
 def test_18011501(t):
-    """APPEND_TEST On Same"""
-    @contract_checked_method("f", use=APPEND_TEST, kind="query")
+    """NEW_TEST On Same"""
+    @strangled_method("f", use=NEW_TEST, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Func(lambda: 27)
-            self.append = Func(lambda: 27)
+            self.old = Func(lambda: 27)
+            self.new = Func(lambda: 27)
     s = Same()
 
     assert s.f() == 27
@@ -32,27 +31,27 @@ def test_18011501(t):
 
 
 def test_18011502(t):
-    """APPEND_TEST On Different"""
-    @contract_checked_method("f", use=APPEND_TEST, kind="command")
+    """NEW_TEST On Different"""
+    @strangled_method("f", use=NEW_TEST, kind="command")
     class Diff:
         def __init__(self):
-            self.overwrite = Func(lambda: 27)
-            self.append = Func(lambda: raiser())
+            self.old = Func(lambda: 27)
+            self.new = Func(lambda: raiser())
     d = Diff()
 
-    with pytest.raises(ContractDifference) as exc:
+    with pytest.raises(StrangledDifference) as exc:
         d.f()
     check_exc_log(exc.value, 'Diff', 'f', '27', 'not-set')
     assert no_cc_logging()
 
 
 def test_18011503(t):
-    """APPEND_TEST Off Different"""
-    @contract_checked_method("f", use=APPEND_TEST, kind="query")
+    """NEW_TEST Off Different"""
+    @strangled_method("f", use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Func(lambda: 27)
-            self.append = Func(lambda: raiser())
+            self.old = Func(lambda: 27)
+            self.new = Func(lambda: raiser())
     d = Diff()
 
     with ScopedEnvVar('TEST_MODE', 'NOT-unit'):
@@ -61,12 +60,12 @@ def test_18011503(t):
 
 
 def test_18011504(t):
-    """OVERWRITE_MAIN Same"""
-    @contract_checked_method("f", use=OVERWRITE_MAIN, kind="query")
+    """OLD_MAIN Same"""
+    @strangled_method("f", use=OLD_MAIN, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Func(lambda: 42)
-            self.append = Func(lambda: 42)
+            self.old = Func(lambda: 42)
+            self.new = Func(lambda: 42)
     s = Same()
 
     assert s.f() == 42
@@ -74,12 +73,12 @@ def test_18011504(t):
 
 
 def test_18011505(t):
-    """OVERWRITE_MAIN Different"""
-    @contract_checked_method("f", use=OVERWRITE_MAIN, kind="query")
+    """OLD_MAIN Different"""
+    @strangled_method("f", use=OLD_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Func(lambda: 17)
-            self.append = Func(lambda: 18)
+            self.old = Func(lambda: 17)
+            self.new = Func(lambda: 18)
     d = Diff()
 
     assert d.f() == 17
@@ -87,12 +86,12 @@ def test_18011505(t):
 
 
 def test_18011506(t):
-    """APPEND_MAIN Different"""
-    @contract_checked_method("f", use=APPEND_MAIN, kind="query")
+    """NEW_MAIN Different"""
+    @strangled_method("f", use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Func(lambda: 17)
-            self.append = Func(lambda: 18)
+            self.old = Func(lambda: 17)
+            self.new = Func(lambda: 18)
     d = Diff()
 
     assert d.f() == 18
@@ -100,12 +99,12 @@ def test_18011506(t):
 
 
 def test_18011507(t):
-    """APPEND_ONLY"""
-    @contract_checked_method("f", use=APPEND_ONLY, kind="query")
+    """NEW_ONLY"""
+    @strangled_method("f", use=NEW_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = None
-            self.append = Func(lambda: "a")
+            self.old = None
+            self.new = Func(lambda: "a")
     d = Diff()
 
     assert d.f() == "a"
@@ -125,6 +124,3 @@ class Func:
 
     def f(self):
         return self.v()
-
-    def _reset(self):
-        pass

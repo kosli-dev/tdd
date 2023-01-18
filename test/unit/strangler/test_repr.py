@@ -1,17 +1,16 @@
 import pytest
-from lib.contract_check import *
-from lib.contract_check_decorators import contract_checked_method
+from strangler import *
 from .helpers import *
-from helpers.unit.lib.scoped_env_var import ScopedEnvVar
+# from helpers.unit.lib.scoped_env_var import ScopedEnvVar
 
 
 def test_18011700(t):
-    """OVERWRITE_ONLY"""
-    @contract_checked_method('__repr__', use=OVERWRITE_ONLY, kind="query")
+    """OLD_ONLY"""
+    @strangled_method('__repr__', use=OLD_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Repr(lambda: 123)
-            self.append = None
+            self.old = Repr(lambda: 123)
+            self.new = None
     d = Diff()
 
     assert repr(d) == "123"
@@ -19,12 +18,12 @@ def test_18011700(t):
 
 
 def test_18011701(t):
-    """APPEND_TEST On Same"""
-    @contract_checked_method('__repr__', use=APPEND_TEST, kind="query")
+    """NEW_TEST On Same"""
+    @strangled_method('__repr__', use=NEW_TEST, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Repr(lambda: 5)
-            self.append = Repr(lambda: 5)
+            self.old = Repr(lambda: 5)
+            self.new = Repr(lambda: 5)
     s = Same()
 
     assert repr(s) == "5"
@@ -32,27 +31,27 @@ def test_18011701(t):
 
 
 def test_18011703(t):
-    """APPEND_TEST On Different"""
-    @contract_checked_method('__repr__', use=APPEND_TEST, kind="query")
+    """NEW_TEST On Different"""
+    @strangled_method('__repr__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Repr(lambda: 69)
-            self.append = Repr(lambda: 56)
+            self.old = Repr(lambda: 69)
+            self.new = Repr(lambda: 56)
     d = Diff()
 
-    with pytest.raises(ContractDifference) as exc:
+    with pytest.raises(StrangledDifference) as exc:
         repr(d)
     check_exc_log(exc.value, 'Diff', '__repr__', '69', '56')
     assert no_cc_logging()
 
 
 def test_18011704(t):
-    """APPEND_TEST Off Different"""
-    @contract_checked_method('__repr__', use=APPEND_TEST, kind="query")
+    """NEW_TEST Off Different"""
+    @strangled_method('__repr__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Repr(lambda: 23)
-            self.append = Repr(lambda: raiser())
+            self.old = Repr(lambda: 23)
+            self.new = Repr(lambda: raiser())
     d = Diff()
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
@@ -61,12 +60,12 @@ def test_18011704(t):
 
 
 def test_18011705(t):
-    """OVERWRITE_MAIN Same"""
-    @contract_checked_method('__repr__', use=OVERWRITE_MAIN, kind="query")
+    """OLD_MAIN Same"""
+    @strangled_method('__repr__', use=OLD_MAIN, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Repr(lambda: 42)
-            self.append = Repr(lambda: 42)
+            self.old = Repr(lambda: 42)
+            self.new = Repr(lambda: 42)
     s = Same()
 
     assert repr(s) == "42"
@@ -74,12 +73,12 @@ def test_18011705(t):
 
 
 def test_18011706(t):
-    """OVERWRITE_MAIN Different"""
-    @contract_checked_method("__repr__", use=OVERWRITE_MAIN, kind="query")
+    """OLD_MAIN Different"""
+    @strangled_method("__repr__", use=OLD_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Repr(lambda: "ccc")
-            self.append = Repr(lambda: "mmm")
+            self.old = Repr(lambda: "ccc")
+            self.new = Repr(lambda: "mmm")
     d = Diff()
 
     assert repr(d) == "ccc"
@@ -87,12 +86,12 @@ def test_18011706(t):
 
 
 def test_18011707(t):
-    """APPEND_MAIN Different"""
-    @contract_checked_method('__repr__', use=APPEND_MAIN, kind="query")
+    """NEW_MAIN Different"""
+    @strangled_method('__repr__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Repr(lambda: raiser())
-            self.append = Repr(lambda: 45)
+            self.old = Repr(lambda: raiser())
+            self.new = Repr(lambda: 45)
     d = Diff()
 
     assert repr(d) == '45'
@@ -100,12 +99,12 @@ def test_18011707(t):
 
 
 def test_18011708(t):
-    """APPEND_MAIN Same"""
-    @contract_checked_method('__repr__', use=APPEND_MAIN, kind="query")
+    """NEW_MAIN Same"""
+    @strangled_method('__repr__', use=NEW_MAIN, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Repr(lambda: 7)
-            self.append = Repr(lambda: 7)
+            self.old = Repr(lambda: 7)
+            self.new = Repr(lambda: 7)
     s = Same()
 
     assert repr(s) == '7'
@@ -113,12 +112,12 @@ def test_18011708(t):
 
 
 def test_18011709(t):
-    """APPEND_ONLY"""
-    @contract_checked_method('__repr__', use=APPEND_ONLY, kind="query")
+    """NEW_ONLY"""
+    @strangled_method('__repr__', use=NEW_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = None
-            self.append = Repr(lambda: 987)
+            self.old = None
+            self.new = Repr(lambda: 987)
     d = Diff()
 
     assert repr(d) == "987"

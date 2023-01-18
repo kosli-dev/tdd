@@ -1,17 +1,16 @@
 import pytest
-from lib.contract_check import *
-from lib.contract_check_decorators import contract_checked_method
+from strangler import *
 from .helpers import *
-from helpers.unit.lib.scoped_env_var import ScopedEnvVar
+# from helpers.unit.lib.scoped_env_var import ScopedEnvVar
 
 
 def test_18011300(t):
-    """OVERWRITE_ONLY"""
-    @contract_checked_method('__iter__', use=OVERWRITE_ONLY, kind="query")
+    """OLD_ONLY"""
+    @strangled_method('__iter__', use=OLD_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Iter([4, 6, 7])
-            self.append = None
+            self.old = Iter([4, 6, 7])
+            self.new = None
     d = Diff()
 
     assert ids(d) == [4, 6, 7]
@@ -19,12 +18,12 @@ def test_18011300(t):
 
 
 def test_18011301(t):
-    """APPEND_TEST On Same"""
-    @contract_checked_method('__iter__', use=APPEND_TEST, kind="query")
+    """NEW_TEST On Same"""
+    @strangled_method('__iter__', use=NEW_TEST, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Iter([1, 6])
-            self.append = Iter([1, 6])
+            self.old = Iter([1, 6])
+            self.new = Iter([1, 6])
     s = Same()
 
     assert ids(s) == [1, 6]
@@ -32,27 +31,27 @@ def test_18011301(t):
 
 
 def test_18011302(t):
-    """APPEND_TEST On Different"""
-    @contract_checked_method('__iter__', use=APPEND_TEST, kind="query")
+    """NEW_TEST On Different"""
+    @strangled_method('__iter__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Iter([1, 6])
-            self.append = Iter([0])
+            self.old = Iter([1, 6])
+            self.new = Iter([0])
     d = Diff()
 
-    with pytest.raises(ContractDifference) as exc:
+    with pytest.raises(StrangledDifference) as exc:
         ids(d)
     check_exc_log(exc.value, 'Diff', '__iter__', '[1, 6]', '[0]')
     assert no_cc_logging()
 
 
 def test_18011303(t):
-    """APPEND_TEST Off Different"""
-    @contract_checked_method('__iter__', use=APPEND_TEST, kind="query")
+    """NEW_TEST Off Different"""
+    @strangled_method('__iter__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Iter([5, 8])
-            self.append = Iter([0])
+            self.old = Iter([5, 8])
+            self.new = Iter([0])
     d = Diff()
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
@@ -61,12 +60,12 @@ def test_18011303(t):
 
 
 def test_18011304(t):
-    """OVERWRITE_MAIN Same"""
-    @contract_checked_method('__iter__', use=OVERWRITE_MAIN, kind="query")
+    """OLD_MAIN Same"""
+    @strangled_method('__iter__', use=OLD_MAIN, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Iter([60, 1])
-            self.append = Iter([1, 60])
+            self.old = Iter([60, 1])
+            self.new = Iter([1, 60])
     s = Same()
 
     assert ids(s) == [60, 1]
@@ -74,12 +73,12 @@ def test_18011304(t):
 
 
 def test_18011305(t):
-    """OVERWRITE_MAIN Different - same number of elements"""
-    @contract_checked_method('__iter__', use=OVERWRITE_MAIN, kind="query")
+    """NEW_MAIN Different - same number of elements"""
+    @strangled_method('__iter__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Iter([10, 3])
-            self.append = Iter([1, 10])
+            self.old = Iter([10, 3])
+            self.new = Iter([1, 10])
     d = Diff()
 
     assert ids(d) == [10, 3]
@@ -87,12 +86,12 @@ def test_18011305(t):
 
 
 def test_18011306(t):
-    """OVERWRITE_MAIN Different - different number of elements"""
-    @contract_checked_method('__iter__', use=OVERWRITE_MAIN, kind="query")
+    """NEW_MAIN Different - different number of elements"""
+    @strangled_method('__iter__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Iter([30, 3, 9])
-            self.append = Iter([1, 30])
+            self.old = Iter([30, 3, 9])
+            self.new = Iter([1, 30])
     d = Diff()
 
     assert ids(d) == [30, 3, 9]
@@ -100,12 +99,12 @@ def test_18011306(t):
 
 
 def test_18011307(t):
-    """APPEND_MAIN Different"""
-    @contract_checked_method('__iter__', use=APPEND_MAIN, kind="query")
+    """NEW_MAIN Different"""
+    @strangled_method('__iter__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Iter([0, 9])
-            self.append = Iter([5, 3])
+            self.old = Iter([0, 9])
+            self.new = Iter([5, 3])
     d = Diff()
 
     assert ids(d) == [5, 3]
@@ -113,12 +112,12 @@ def test_18011307(t):
 
 
 def test_18011308(t):
-    """APPEND_MAIN Same"""
-    @contract_checked_method('__iter__', use=APPEND_MAIN, kind="query")
+    """NEW_MAIN Same"""
+    @strangled_method('__iter__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Iter([1, 9])
-            self.append = Iter([1, 9])
+            self.old = Iter([1, 9])
+            self.new = Iter([1, 9])
     d = Diff()
 
     assert ids(d) == [1, 9]
@@ -126,12 +125,12 @@ def test_18011308(t):
 
 
 def test_18011309(t):
-    """APPEND_ONLY"""
-    @contract_checked_method('__iter__', use=APPEND_ONLY, kind="query")
+    """NEW_ONLY"""
+    @strangled_method('__iter__', use=NEW_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = None
-            self.append = Iter([14, 26, 4])
+            self.old = None
+            self.new = Iter([14, 26, 4])
     d = Diff()
 
     assert ids(d) == [14, 26, 4]

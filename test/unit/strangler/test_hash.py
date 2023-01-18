@@ -1,6 +1,6 @@
 import pytest
 from strangler import *
-# from .helpers import *
+from .helpers import *
 # from helpers.unit.lib.scoped_env_var import ScopedEnvVar
 
 
@@ -10,7 +10,7 @@ def test_18011200(t):
     class Diff:
         def __init__(self):
             self.old = Hash(lambda: 8877)
-            self.append = None
+            self.new = None
     d = Diff()
 
     assert hash(d) == 8877
@@ -22,8 +22,8 @@ def test_18011201(t):
     @strangled_method('__hash__', use=NEW_TEST, kind="query")
     class Same:
         def __init__(self):
+            self.old = Hash(lambda: 5)
             self.new = Hash(lambda: 5)
-            self.append = Hash(lambda: 5)
     s = Same()
 
     assert hash(s) == 5
@@ -35,8 +35,8 @@ def test_18011202(t):
     @strangled_method('__hash__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.new = Hash(lambda: 69)
-            self.append = Hash(lambda: 56)
+            self.old = Hash(lambda: 69)
+            self.new = Hash(lambda: 56)
     d = Diff()
 
     with pytest.raises(StrangledDifference) as exc:
@@ -50,8 +50,8 @@ def test_18011203(t):
     @strangled_method('__hash__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.new = Hash(lambda: 23)
-            self.append = Hash(lambda: raiser())
+            self.old = Hash(lambda: 23)
+            self.new = Hash(lambda: raiser())
     d = Diff()
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
@@ -65,7 +65,7 @@ def test_18011204(t):
     class Same:
         def __init__(self):
             self.old = Hash(lambda: 42)
-            self.append = Hash(lambda: 42)
+            self.new = Hash(lambda: 42)
     s = Same()
 
     assert hash(s) == 42
@@ -78,7 +78,7 @@ def test_18011205(t):
     class Diff:
         def __init__(self):
             self.old = Hash(lambda: 51)
-            self.append = Hash(lambda: raiser())
+            self.new = Hash(lambda: raiser())
     d = Diff()
 
     assert hash(d) == 51
@@ -90,8 +90,8 @@ def test_18011206(t):
     @strangled_method('__hash__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.new = Hash(lambda: raiser())
-            self.append = Hash(lambda: 45)
+            self.old = Hash(lambda: raiser())
+            self.new = Hash(lambda: 45)
     d = Diff()
 
     assert hash(d) == 45
@@ -103,8 +103,8 @@ def test_18011207(t):
     @strangled_method('__hash__', use=NEW_MAIN, kind="query")
     class Same:
         def __init__(self):
+            self.old = Hash(lambda: 7)
             self.new = Hash(lambda: 7)
-            self.append = Hash(lambda: 7)
     s = Same()
 
     assert hash(s) == 7
@@ -116,8 +116,8 @@ def test_18011208(t):
     @strangled_method('__hash__', use=NEW_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.new = None
-            self.append = Hash(lambda: 1122)
+            self.old = None
+            self.new = Hash(lambda: 1122)
     d = Diff()
 
     assert hash(d) == 1122

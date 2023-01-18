@@ -1,17 +1,16 @@
 import pytest
-from lib.contract_check import *
-from lib.contract_check_decorators import contract_checked_property
+from strangler import *
 from .helpers import *
-from helpers.unit.lib.scoped_env_var import ScopedEnvVar
+# from helpers.unit.lib.scoped_env_var import ScopedEnvVar
 
 
 def test_18011600(t):
-    """OVERWRITE_ONLY"""
-    @contract_checked_property("p", getter=OVERWRITE_ONLY, setter=OVERWRITE_ONLY)
+    """OLD_ONLY"""
+    @strangled_property("p", getter=OLD_ONLY, setter=OLD_ONLY)
     class Diff:
         def __init__(self):
-            self.overwrite = Prop(lambda: 42)
-            self.append = None
+            self.old = Prop(lambda: 42)
+            self.new = None
     d = Diff()
 
     assert d.p == 42
@@ -22,12 +21,12 @@ def test_18011600(t):
 
 
 def test_18011601(t):
-    """APPEND_TEST On Same"""
-    @contract_checked_property("p", getter=APPEND_TEST, setter=APPEND_TEST)
+    """NEW_TEST On Same"""
+    @strangled_property("p", getter=NEW_TEST, setter=NEW_TEST)
     class Same:
         def __init__(self):
-            self.overwrite = Prop(lambda: 5)
-            self.append = Prop(lambda: 5)
+            self.old = Prop(lambda: 5)
+            self.new = Prop(lambda: 5)
     s = Same()
 
     assert s.p == 5
@@ -38,32 +37,32 @@ def test_18011601(t):
 
 
 def test_18011602(t):
-    """APPEND_TEST On Different"""
-    @contract_checked_property("p", getter=APPEND_TEST, setter=APPEND_TEST)
+    """NEW_TEST On Different"""
+    @strangled_property("p", getter=NEW_TEST, setter=NEW_TEST)
     class Diff:
         def __init__(self):
-            self.overwrite = Prop(lambda: raiser())
-            self.append = Prop(lambda: 6)
+            self.old = Prop(lambda: raiser())
+            self.new = Prop(lambda: 6)
 
     d = Diff()
-    with pytest.raises(ContractDifference) as exc:
+    with pytest.raises(StrangledDifference) as exc:
         d.p
     check_exc_log(exc.value, 'Diff', 'p', 'not-set', '6')
     assert no_cc_logging()
 
-    with pytest.raises(ContractDifference) as exc:
+    with pytest.raises(StrangledDifference) as exc:
         d.p = 42
     check_exc_log(exc.value, 'Diff', 'p', 'not-set', 'None')
     assert no_cc_logging()
 
 
 def test_18011603(t):
-    """APPEND_TEST Off Different"""
-    @contract_checked_property("p", getter=APPEND_TEST, setter=APPEND_TEST)
+    """NEW_TEST Off Different"""
+    @strangled_property("p", getter=NEW_TEST, setter=NEW_TEST)
     class Diff:
         def __init__(self):
-            self.overwrite = Prop(lambda: 5)
-            self.append = Prop(lambda: 6)
+            self.old = Prop(lambda: 5)
+            self.new = Prop(lambda: 6)
     d = Diff()
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
@@ -76,12 +75,12 @@ def test_18011603(t):
 
 
 def test_18011604(t):
-    """getter=OVERWRITE_MAIN Same"""
-    @contract_checked_property("p", getter=OVERWRITE_MAIN, setter=OVERWRITE_MAIN)
+    """getter=OLD_MAIN Same"""
+    @strangled_property("p", getter=OLD_MAIN, setter=OLD_MAIN)
     class Same:
         def __init__(self):
-            self.overwrite = Prop(lambda: "ccc")
-            self.append = Prop(lambda: "ccc")
+            self.old = Prop(lambda: "ccc")
+            self.new = Prop(lambda: "ccc")
     s = Same()
 
     assert s.p == "ccc"
@@ -92,12 +91,12 @@ def test_18011604(t):
 
 
 def test_18011605(t):
-    """getter=OVERWRITE_MAIN Different"""
-    @contract_checked_property("p", getter=OVERWRITE_MAIN, setter=OVERWRITE_MAIN)
+    """getter=OLD_MAIN Different"""
+    @strangled_property("p", getter=OLD_MAIN, setter=OLD_MAIN)
     class Diff:
         def __init__(self):
-            self.overwrite = Prop(lambda: "ccc")
-            self.append = Prop(lambda: raiser())
+            self.old = Prop(lambda: "ccc")
+            self.new = Prop(lambda: raiser())
     d = Diff()
 
     d.p
@@ -108,12 +107,12 @@ def test_18011605(t):
 
 
 def test_18011606(t):
-    """APPEND_MAIN Different"""
-    @contract_checked_property("p", getter=APPEND_MAIN, setter=APPEND_MAIN)
+    """NEW_MAIN Different"""
+    @strangled_property("p", getter=NEW_MAIN, setter=NEW_MAIN)
     class Diff:
         def __init__(self):
-            self.overwrite = Prop(lambda: raiser())
-            self.append = Prop(lambda: 45)
+            self.old = Prop(lambda: raiser())
+            self.new = Prop(lambda: 45)
     d = Diff()
 
     assert d.p == 45
@@ -124,12 +123,12 @@ def test_18011606(t):
 
 
 def test_18011607(t):
-    """APPEND_MAIN Same"""
-    @contract_checked_property("p", getter=APPEND_MAIN, setter=APPEND_MAIN)
+    """NEW_MAIN Same"""
+    @strangled_property("p", getter=NEW_MAIN, setter=NEW_MAIN)
     class Same:
         def __init__(self):
-            self.overwrite = Prop(lambda: 123)
-            self.append = Prop(lambda: 123)
+            self.old = Prop(lambda: 123)
+            self.new = Prop(lambda: 123)
     s = Same()
 
     assert s.p == 123
@@ -140,12 +139,12 @@ def test_18011607(t):
 
 
 def test_18011608(t):
-    """APPEND_ONLY"""
-    @contract_checked_property("p", getter=APPEND_ONLY, setter=APPEND_ONLY)
+    """NEW_ONLY"""
+    @strangled_property("p", getter=NEW_ONLY, setter=NEW_ONLY)
     class Diff:
         def __init__(self):
-            self.overwrite = None
-            self.append = Prop(lambda: 99)
+            self.old = None
+            self.new = Prop(lambda: 99)
     d = Diff()
 
     assert d.p == 99
@@ -168,6 +167,3 @@ class Prop:
     @p.setter
     def p(self, _value):
         self.v()
-
-    def _reset(self):
-        pass

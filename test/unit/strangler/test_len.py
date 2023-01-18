@@ -1,17 +1,16 @@
 import pytest
-from lib.contract_check import *
-from lib.contract_check_decorators import contract_checked_method
+from strangler import *
 from .helpers import *
-from helpers.unit.lib.scoped_env_var import ScopedEnvVar
+# from helpers.unit.lib.scoped_env_var import ScopedEnvVar
 
 
 def test_18011400(t):
-    """OVERWRITE_ONLY"""
-    @contract_checked_method('__len__', use=OVERWRITE_ONLY, kind="query")
+    """OLD_ONLY"""
+    @strangled_method('__len__', use=OLD_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Len(lambda: 8742)
-            self.append = None
+            self.old = Len(lambda: 8742)
+            self.new = None
     d = Diff()
 
     assert len(d) == 8742
@@ -19,12 +18,12 @@ def test_18011400(t):
 
 
 def test_18011401(t):
-    """APPEND_TEST On Same"""
-    @contract_checked_method('__len__', use=APPEND_TEST, kind="query")
+    """NEW_TEST On Same"""
+    @strangled_method('__len__', use=NEW_TEST, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Len(lambda: 5)
-            self.append = Len(lambda: 5)
+            self.old = Len(lambda: 5)
+            self.new = Len(lambda: 5)
     s = Same()
 
     assert len(s) == 5
@@ -32,27 +31,27 @@ def test_18011401(t):
 
 
 def test_18011402(t):
-    """APPEND_TEST On Different"""
-    @contract_checked_method('__len__', use=APPEND_TEST, kind="query")
+    """NEW_TEST On Different"""
+    @strangled_method('__len__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Len(lambda: 69)
-            self.append = Len(lambda: 56)
+            self.old = Len(lambda: 69)
+            self.new = Len(lambda: 56)
     d = Diff()
 
-    with pytest.raises(ContractDifference) as exc:
+    with pytest.raises(StrangledDifference) as exc:
         len(d)
     check_exc_log(exc.value, 'Diff', '__len__', '69', '56')
     assert no_cc_logging()
 
 
 def test_18011403(t):
-    """APPEND_TEST Off Different"""
-    @contract_checked_method('__len__', use=APPEND_TEST, kind="query")
+    """NEW_TEST Off Different"""
+    @strangled_method('__len__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Len(lambda: 23)
-            self.append = Len(lambda: raiser())
+            self.old = Len(lambda: 23)
+            self.new = Len(lambda: raiser())
     d = Diff()
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
@@ -61,12 +60,12 @@ def test_18011403(t):
 
 
 def test_18011404(t):
-    """OVERWRITE_MAIN Same"""
-    @contract_checked_method('__len__', use=OVERWRITE_MAIN, kind="query")
+    """OLD_MAIN Same"""
+    @strangled_method('__len__', use=OLD_MAIN, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Len(lambda: 4228)
-            self.append = Len(lambda: 4228)
+            self.old = Len(lambda: 4228)
+            self.new = Len(lambda: 4228)
     s = Same()
 
     assert len(s) == 4228
@@ -74,12 +73,12 @@ def test_18011404(t):
 
 
 def test_18011405(t):
-    """OVERWRITE_MAIN Different"""
-    @contract_checked_method('__len__', use=OVERWRITE_MAIN, kind="query")
+    """OLD_MAIN Different"""
+    @strangled_method('__len__', use=OLD_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Len(lambda: 517)
-            self.append = Len(lambda: 518)
+            self.old = Len(lambda: 517)
+            self.new = Len(lambda: 518)
     d = Diff()
 
     assert len(d) == 517
@@ -87,12 +86,12 @@ def test_18011405(t):
 
 
 def test_18011407(t):
-    """APPEND_MAIN Different"""
-    @contract_checked_method('__len__', use=APPEND_MAIN, kind="query")
+    """NEW_MAIN Different"""
+    @strangled_method('__len__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Len(lambda: raiser())
-            self.append = Len(lambda: 45)
+            self.old = Len(lambda: raiser())
+            self.new = Len(lambda: 45)
     d = Diff()
 
     assert len(d) == 45
@@ -100,12 +99,12 @@ def test_18011407(t):
 
 
 def test_18011408(t):
-    """APPEND_MAIN Same"""
-    @contract_checked_method('__len__', use=APPEND_MAIN, kind="query")
+    """NEW_MAIN Same"""
+    @strangled_method('__len__', use=NEW_MAIN, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Len(lambda: 7)
-            self.append = Len(lambda: 7)
+            self.old = Len(lambda: 7)
+            self.new = Len(lambda: 7)
     s = Same()
 
     assert len(s) == 7
@@ -113,12 +112,12 @@ def test_18011408(t):
 
 
 def test_18011409(t):
-    """APPEND_ONLY"""
-    @contract_checked_method('__len__', use=APPEND_ONLY, kind="query")
+    """NEW_ONLY"""
+    @strangled_method('__len__', use=NEW_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = None
-            self.append = Len(lambda: 1212)
+            self.old = None
+            self.new = Len(lambda: 1212)
     d = Diff()
 
     assert len(d) == 1212

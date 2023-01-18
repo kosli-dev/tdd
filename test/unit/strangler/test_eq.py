@@ -1,6 +1,6 @@
 import pytest
 from strangler import *
-# from .helpers import *
+from .helpers import *
 # from helpers.unit.lib.scoped_env_var import ScopedEnvVar
 
 
@@ -10,7 +10,7 @@ def test_18011110(t):
     class Diff:
         def __init__(self):
             self.old = Eq(lambda: True)
-            self.append = None
+            self.new = None
     d = Diff()
 
     assert d == d
@@ -22,8 +22,8 @@ def test_18011111(t):
     @strangled_method('__eq__', use=NEW_TEST, kind="query")
     class Same:
         def __init__(self):
+            self.old = Eq(lambda: True)
             self.new = Eq(lambda: True)
-            self.append = Eq(lambda: True)
     s = Same()
 
     assert s == s
@@ -35,8 +35,8 @@ def test_18011112(t):
     @strangled_method('__eq__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.new = Eq(lambda: True)
-            self.append = Eq(lambda: False)
+            self.old = Eq(lambda: True)
+            self.new = Eq(lambda: False)
     d = Diff()
 
     with pytest.raises(StrangledDifference) as exc:
@@ -50,8 +50,8 @@ def test_18011113(t):
     @strangled_method('__eq__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.new = Eq(lambda: True)
-            self.append = Eq(lambda: False)
+            self.old = Eq(lambda: True)
+            self.new = Eq(lambda: False)
     d = Diff()
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
@@ -64,8 +64,8 @@ def test_18011114(t):
     @strangled_method('__eq__', use=NEW_MAIN, kind="query")
     class Same:
         def __init__(self):
+            self.old = Eq(lambda: True)
             self.new = Eq(lambda: True)
-            self.append = Eq(lambda: True)
     s = Same()
 
     assert s == s
@@ -77,8 +77,8 @@ def test_18011115(t):
     @strangled_method('__eq__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.new = Eq(lambda: True)
-            self.append = Eq(lambda: False)
+            self.old = Eq(lambda: True)
+            self.new = Eq(lambda: False)
     d = Diff()
 
     assert d == d
@@ -90,8 +90,8 @@ def test_18011116(t):
     @strangled_method('__eq__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.new = Eq(lambda: True)
-            self.append = Eq(lambda: False)
+            self.old = Eq(lambda: True)
+            self.new = Eq(lambda: False)
     d = Diff()
 
     assert d != d
@@ -103,8 +103,8 @@ def test_18011117(t):
     @strangled_method('__eq__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
+            self.old = Eq(lambda: False)
             self.new = Eq(lambda: False)
-            self.append = Eq(lambda: False)
     d = Diff()
 
     assert d != d
@@ -116,8 +116,8 @@ def test_18011118(t):
     @strangled_method('__eq__', use=NEW_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.new = None
-            self.append = Eq(lambda: True)
+            self.old = None
+            self.new = Eq(lambda: True)
     d = Diff()
 
     assert d == d
