@@ -9,7 +9,7 @@ from .switch import *
 from .log import set_cc_log
 
 
-def contract_check(cls, name, kind, use, c, m):
+def strangled(cls, name, kind, use, c, m):
     """
     cls: eg User
     name: eg "login_id"
@@ -159,7 +159,13 @@ def log_difference(kind, diff):
                 f.write(json.dumps(diff, indent=2))
 
 
-class StranglerDifference(RuntimeError):
+class StrangledDifference(RuntimeError):
+
+    def __init__(self, info):
+        self.info = info
+
+    def __str__(self):
+        return json.dumps(self.info, indent=2)
 
     def __init__(self, info):
         self.info = info
@@ -168,7 +174,7 @@ class StranglerDifference(RuntimeError):
         return json.dumps(self.info, indent=2)
 
 
-STRANGLER_DEBUG_LOG_DIR = "/tmp/kosli_debug_logs"
-STRANGLER_DEBUG_LOG_QUERY_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/strangler.query.log"
-STRANGLER_DEBUG_LOG_COMMAND_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/strangler.command.log"
-STRANGLER_DEBUG_LOG_CREATE_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/strangler.create.log"
+STRANGLER_DEBUG_LOG_DIR = "/tmp/strangler_debug_logs"
+STRANGLER_DEBUG_LOG_QUERY_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/query.log"
+STRANGLER_DEBUG_LOG_COMMAND_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/command.log"
+STRANGLER_DEBUG_LOG_CREATE_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/create.log"

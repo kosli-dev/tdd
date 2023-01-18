@@ -1,4 +1,4 @@
-from .check import contract_check
+from .check import strangled
 from .switch import *
 
 
@@ -18,14 +18,14 @@ def check_setter(setter):
     setter is None or check_use(setter)
 
 
-def contract_checked_method(name, *, use, kind):
+def strangled_method(name, *, use, kind):
     check_use(use)
     check_kind(kind)
 
     if name == "__eq__":
-        return _contract_checked_eq(use=use)
+        return _strangled_eq(use=use)
     elif name == "__iter__":
-        return _contract_checked_iter(use=use)
+        return _strangled_iter(use=use)
     else:
         def decorator(cls):
             def func(target, *args, **kwargs):
@@ -35,7 +35,7 @@ def contract_checked_method(name, *, use, kind):
                         self.kwargs = kwargs
                         return getattr(obj, name)(*args, **kwargs)
 
-                return contract_check_f(cls, name, kind, use, target, Functor())
+                return strangled_f(cls, name, kind, use, target, Functor())
 
             setattr(cls, name, func)
             return cls
@@ -45,7 +45,7 @@ def contract_checked_method(name, *, use, kind):
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def contract_checked_property(name, *, getter, setter):
+def strangled_property(name, *, getter, setter):
     check_getter(getter)
     check_setter(setter)
 
@@ -56,7 +56,7 @@ def contract_checked_property(name, *, getter, setter):
                     self.args = []
                     self.kwargs = {}
                     return getattr(obj, name)
-            return contract_check_f(cls, name, "query", getter, target, Functor())
+            return strangled_f(cls, name, "query", getter, target, Functor())
 
         def set_value(target, value):
             class Functor:
@@ -64,7 +64,7 @@ def contract_checked_property(name, *, getter, setter):
                     self.args = [value]
                     self.kwargs = {}
                     setattr(obj, name, value)
-            return contract_check_f(cls, name, "command", setter, target, Functor())
+            return strangled_f(cls, name, "command", setter, target, Functor())
 
         setattr(cls, name, property(fget=get_value, fset=set_value if setter else None))
         return cls
@@ -74,7 +74,7 @@ def contract_checked_property(name, *, getter, setter):
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def _contract_checked_eq(*, use):
+def _strangled_eq(*, use):
 
     def decorator(cls):
         def checked_eq(lhs, rhs):
@@ -96,7 +96,7 @@ def _contract_checked_eq(*, use):
                 def _repr(self):
                     return repr(lhs.new)
 
-            return contract_check(cls, '__eq__', "query", use, Old(), New())
+            return strangled(cls, '__eq__', "query", use, Old(), New())
 
         setattr(cls, '__eq__', checked_eq)
         return cls
@@ -106,7 +106,7 @@ def _contract_checked_eq(*, use):
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def _contract_checked_iter(*, use):
+def _strangled_iter(*, use):
 
     def decorator(cls):
         def checked_iter(target):
@@ -130,7 +130,7 @@ def _contract_checked_iter(*, use):
                 def _repr(self):
                     return repr(target.new)
 
-            return contract_check(cls, '__iter__', "query", use, Old(), New())
+            return strangled(cls, '__iter__', "query", use, Old(), New())
 
         setattr(cls, '__iter__', checked_iter)
         return cls
@@ -220,7 +220,7 @@ class IterData:
                     self.append_ids.append(m['inner_id'])  # allowlist
 
 
-def contract_check_f(cls, name, kind, use, obj, f):
+def strangled_f(cls, name, kind, use, obj, f):
 
     class Old:
         def __call__(self):
@@ -242,4 +242,4 @@ def contract_check_f(cls, name, kind, use, obj, f):
         def _repr(self):
             return repr(obj.new)
 
-    return contract_check(cls, name, kind, use, Old(), New())
+    return strangled(cls, name, kind, use, Old(), New())

@@ -1,16 +1,15 @@
 import pytest
-from strangler.check import *
-from strangler.decorators import *
-from .helpers import *
-from helpers.unit.lib.scoped_env_var import ScopedEnvVar
+from strangler import *
+# from .helpers import *
+# from helpers.unit.lib.scoped_env_var import ScopedEnvVar
 
 
 def test_18011110(t):
-    """OVERWRITE_ONLY"""
-    @contract_checked_method('__eq__', use=OVERWRITE_ONLY, kind="query")
+    """OLD_ONLY"""
+    @strangled_method('__eq__', use=OLD_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Eq(lambda: True)
+            self.old = Eq(lambda: True)
             self.append = None
     d = Diff()
 
@@ -19,11 +18,11 @@ def test_18011110(t):
 
 
 def test_18011111(t):
-    """APPEND_TEST On Same"""
-    @contract_checked_method('__eq__', use=APPEND_TEST, kind="query")
+    """NEW_TEST On Same"""
+    @strangled_method('__eq__', use=NEW_TEST, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Eq(lambda: True)
+            self.new = Eq(lambda: True)
             self.append = Eq(lambda: True)
     s = Same()
 
@@ -32,26 +31,26 @@ def test_18011111(t):
 
 
 def test_18011112(t):
-    """APPEND_TEST On Different"""
-    @contract_checked_method('__eq__', use=APPEND_TEST, kind="query")
+    """NEW_TEST On Different"""
+    @strangled_method('__eq__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Eq(lambda: True)
+            self.new = Eq(lambda: True)
             self.append = Eq(lambda: False)
     d = Diff()
 
-    with pytest.raises(ContractDifference) as exc:
+    with pytest.raises(StrangledDifference) as exc:
         d == d
     check_exc_log(exc.value, "Diff", '__eq__', 'True', 'False')
     assert no_cc_logging()
 
 
 def test_18011113(t):
-    """APPEND_TEST Off Different"""
-    @contract_checked_method('__eq__', use=APPEND_TEST, kind="query")
+    """NEW_TEST Off Different"""
+    @strangled_method('__eq__', use=NEW_TEST, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Eq(lambda: True)
+            self.new = Eq(lambda: True)
             self.append = Eq(lambda: False)
     d = Diff()
 
@@ -61,11 +60,11 @@ def test_18011113(t):
 
 
 def test_18011114(t):
-    """OVERWRITE_MAIN Same"""
-    @contract_checked_method('__eq__', use=OVERWRITE_MAIN, kind="query")
+    """NEW_MAIN Same"""
+    @strangled_method('__eq__', use=NEW_MAIN, kind="query")
     class Same:
         def __init__(self):
-            self.overwrite = Eq(lambda: True)
+            self.new = Eq(lambda: True)
             self.append = Eq(lambda: True)
     s = Same()
 
@@ -74,11 +73,11 @@ def test_18011114(t):
 
 
 def test_18011115(t):
-    """OVERWRITE_MAIN Different"""
-    @contract_checked_method('__eq__', use=OVERWRITE_MAIN, kind="query")
+    """NEW_MAIN Different"""
+    @strangled_method('__eq__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Eq(lambda: True)
+            self.new = Eq(lambda: True)
             self.append = Eq(lambda: False)
     d = Diff()
 
@@ -87,11 +86,11 @@ def test_18011115(t):
 
 
 def test_18011116(t):
-    """APPEND_MAIN Different"""
-    @contract_checked_method('__eq__', use=APPEND_MAIN, kind="query")
+    """NEW_MAIN Different"""
+    @strangled_method('__eq__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Eq(lambda: True)
+            self.new = Eq(lambda: True)
             self.append = Eq(lambda: False)
     d = Diff()
 
@@ -100,11 +99,11 @@ def test_18011116(t):
 
 
 def test_18011117(t):
-    """APPEND_MAIN Same"""
-    @contract_checked_method('__eq__', use=APPEND_MAIN, kind="query")
+    """NEW_MAIN Same"""
+    @strangled_method('__eq__', use=NEW_MAIN, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = Eq(lambda: False)
+            self.new = Eq(lambda: False)
             self.append = Eq(lambda: False)
     d = Diff()
 
@@ -113,11 +112,11 @@ def test_18011117(t):
 
 
 def test_18011118(t):
-    """APPEND_ONLY"""
-    @contract_checked_method('__eq__', use=APPEND_ONLY, kind="query")
+    """NEW_ONLY"""
+    @strangled_method('__eq__', use=NEW_ONLY, kind="query")
     class Diff:
         def __init__(self):
-            self.overwrite = None
+            self.new = None
             self.append = Eq(lambda: True)
     d = Diff()
 
