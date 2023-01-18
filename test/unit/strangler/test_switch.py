@@ -2,13 +2,7 @@ from strangler import old_is_on, new_is_on
 from strangler import OLD_ONLY, NEW_TEST, OLD_MAIN, NEW_MAIN, NEW_ONLY
 
 
-class Eg:
-    def __init__(self, o, n):
-        self.old = o
-        self.new = n
-
-
-def test_eb760e00():
+def test_760e00():
     """
     old_is_on() is False only for NEW_ONLY
     """
@@ -20,7 +14,7 @@ def test_eb760e00():
     assert old_is_on(eg, NEW_ONLY) is False
 
 
-def test_eb760e01():
+def test_760e01():
     """
     new_is_on() is False only for OLD_ONLY
     """
@@ -30,3 +24,9 @@ def test_eb760e01():
     assert new_is_on(eg, OLD_MAIN)
     assert new_is_on(eg, NEW_MAIN)
     assert new_is_on(eg, NEW_ONLY)
+
+
+class Eg:
+    def __init__(self, o, n):
+        self.old = o
+        self.new = n

@@ -3,7 +3,7 @@ from strangler import *
 from .helpers import *
 
 
-def test_18011400(t):
+def test_011400(t):
     """OLD_ONLY"""
     @strangled_method('__len__', use=OLD_ONLY, kind="query")
     class Diff:
@@ -16,7 +16,7 @@ def test_18011400(t):
     assert no_cc_logging()
 
 
-def test_18011401(t):
+def test_011401(t):
     """NEW_TEST On Same"""
     @strangled_method('__len__', use=NEW_TEST, kind="query")
     class Same:
@@ -29,7 +29,7 @@ def test_18011401(t):
     assert no_cc_logging()
 
 
-def test_18011402(t):
+def test_011402(t):
     """NEW_TEST On Different"""
     @strangled_method('__len__', use=NEW_TEST, kind="query")
     class Diff:
@@ -44,7 +44,7 @@ def test_18011402(t):
     assert no_cc_logging()
 
 
-def test_18011403(t):
+def test_011403(t):
     """NEW_TEST Off Different"""
     @strangled_method('__len__', use=NEW_TEST, kind="query")
     class Diff:
@@ -58,7 +58,7 @@ def test_18011403(t):
     assert no_cc_logging()
 
 
-def test_18011404(t):
+def test_011404(t):
     """OLD_MAIN Same"""
     @strangled_method('__len__', use=OLD_MAIN, kind="query")
     class Same:
@@ -71,7 +71,7 @@ def test_18011404(t):
     assert no_cc_logging()
 
 
-def test_18011405(t):
+def test_011405(t):
     """OLD_MAIN Different"""
     @strangled_method('__len__', use=OLD_MAIN, kind="query")
     class Diff:
@@ -84,7 +84,7 @@ def test_18011405(t):
     check_cm_log('517', '518')
 
 
-def test_18011407(t):
+def test_011407(t):
     """NEW_MAIN Different"""
     @strangled_method('__len__', use=NEW_MAIN, kind="query")
     class Diff:
@@ -97,7 +97,7 @@ def test_18011407(t):
     check_cm_log('not-set', '45')
 
 
-def test_18011408(t):
+def test_011408(t):
     """NEW_MAIN Same"""
     @strangled_method('__len__', use=NEW_MAIN, kind="query")
     class Same:
@@ -110,7 +110,7 @@ def test_18011408(t):
     assert no_cc_logging()
 
 
-def test_18011409(t):
+def test_011409(t):
     """NEW_ONLY"""
     @strangled_method('__len__', use=NEW_ONLY, kind="query")
     class Diff:

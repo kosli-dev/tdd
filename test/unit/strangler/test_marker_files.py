@@ -5,7 +5,7 @@ from lib.contract_check_decorators import contract_checked_method
 from .helpers import *
 
 
-def test_2500da00():
+def test_00da00():
     """
     When use=APPEND_MAIN is True
     it drops back to NOT checking mongo when

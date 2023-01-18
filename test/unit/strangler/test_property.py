@@ -3,7 +3,7 @@ from strangler import *
 from .helpers import *
 
 
-def test_18011600(t):
+def test_011600(t):
     """OLD_ONLY"""
     @strangled_property("p", getter=OLD_ONLY, setter=OLD_ONLY)
     class Diff:
@@ -19,7 +19,7 @@ def test_18011600(t):
     assert no_cc_logging()
 
 
-def test_18011601(t):
+def test_011601(t):
     """NEW_TEST On Same"""
     @strangled_property("p", getter=NEW_TEST, setter=NEW_TEST)
     class Same:
@@ -35,7 +35,7 @@ def test_18011601(t):
     assert no_cc_logging()
 
 
-def test_18011602(t):
+def test_011602(t):
     """NEW_TEST On Different"""
     @strangled_property("p", getter=NEW_TEST, setter=NEW_TEST)
     class Diff:
@@ -55,7 +55,7 @@ def test_18011602(t):
     assert no_cc_logging()
 
 
-def test_18011603(t):
+def test_011603(t):
     """NEW_TEST Off Different"""
     @strangled_property("p", getter=NEW_TEST, setter=NEW_TEST)
     class Diff:
@@ -73,7 +73,7 @@ def test_18011603(t):
     assert no_cc_logging()
 
 
-def test_18011604(t):
+def test_011604(t):
     """getter=OLD_MAIN Same"""
     @strangled_property("p", getter=OLD_MAIN, setter=OLD_MAIN)
     class Same:
@@ -89,7 +89,7 @@ def test_18011604(t):
     assert no_cc_logging()
 
 
-def test_18011605(t):
+def test_011605(t):
     """getter=OLD_MAIN Different"""
     @strangled_property("p", getter=OLD_MAIN, setter=OLD_MAIN)
     class Diff:
@@ -105,7 +105,7 @@ def test_18011605(t):
     check_cc_log("Diff", 'p', 'None', 'not-set')
 
 
-def test_18011606(t):
+def test_011606(t):
     """NEW_MAIN Different"""
     @strangled_property("p", getter=NEW_MAIN, setter=NEW_MAIN)
     class Diff:
@@ -121,7 +121,7 @@ def test_18011606(t):
     check_cc_log('Diff', 'p', 'not-set', 'None')
 
 
-def test_18011607(t):
+def test_011607(t):
     """NEW_MAIN Same"""
     @strangled_property("p", getter=NEW_MAIN, setter=NEW_MAIN)
     class Same:
@@ -137,7 +137,7 @@ def test_18011607(t):
     assert no_cc_logging()
 
 
-def test_18011608(t):
+def test_011608(t):
     """NEW_ONLY"""
     @strangled_property("p", getter=NEW_ONLY, setter=NEW_ONLY)
     class Diff:

@@ -3,7 +3,7 @@ from strangler import *
 from .helpers import *
 
 
-def test_18011200(t):
+def test_011200(t):
     """OLD_ONLY"""
     @strangled_method('__hash__', use=OLD_ONLY, kind="query")
     class Diff:
@@ -16,7 +16,7 @@ def test_18011200(t):
     assert no_cc_logging()
 
 
-def test_18011201(t):
+def test_011201(t):
     """NEW_TEST On Same"""
     @strangled_method('__hash__', use=NEW_TEST, kind="query")
     class Same:
@@ -29,7 +29,7 @@ def test_18011201(t):
     assert no_cc_logging()
 
 
-def test_18011202(t):
+def test_011202(t):
     """NEW_TEST On Different"""
     @strangled_method('__hash__', use=NEW_TEST, kind="query")
     class Diff:
@@ -44,7 +44,7 @@ def test_18011202(t):
     assert no_cc_logging()
 
 
-def test_18011203(t):
+def test_011203(t):
     """NEW_TEST Off Different"""
     @strangled_method('__hash__', use=NEW_TEST, kind="query")
     class Diff:
@@ -58,7 +58,7 @@ def test_18011203(t):
     assert no_cc_logging()
 
 
-def test_18011204(t):
+def test_011204(t):
     """OLD_MAIN Same"""
     @strangled_method('__hash__', use=OLD_MAIN, kind="query")
     class Same:
@@ -71,7 +71,7 @@ def test_18011204(t):
     assert no_cc_logging()
 
 
-def test_18011205(t):
+def test_011205(t):
     """OLD_MAIN Different"""
     @strangled_method('__hash__', use=OLD_MAIN, kind="query")
     class Diff:
@@ -84,7 +84,7 @@ def test_18011205(t):
     check_cm_log('51', 'not-set')
 
 
-def test_18011206(t):
+def test_011206(t):
     """NEW_MAIN Different"""
     @strangled_method('__hash__', use=NEW_MAIN, kind="query")
     class Diff:
@@ -97,7 +97,7 @@ def test_18011206(t):
     check_cm_log('not-set', '45')
 
 
-def test_18011207(t):
+def test_011207(t):
     """NEW_MAIN Same"""
     @strangled_method('__hash__', use=NEW_MAIN, kind="query")
     class Same:
@@ -110,7 +110,7 @@ def test_18011207(t):
     assert no_cc_logging()
 
 
-def test_18011208(t):
+def test_011208(t):
     """NEW_ONLY"""
     @strangled_method('__hash__', use=NEW_ONLY, kind="query")
     class Diff:
