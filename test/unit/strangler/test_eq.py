@@ -1,6 +1,6 @@
 import pytest
-from lib.contract_check import *
-from lib.contract_check_decorators import *
+from strangler.check import *
+from strangler.decorators import *
 from .helpers import *
 from helpers.unit.lib.scoped_env_var import ScopedEnvVar
 

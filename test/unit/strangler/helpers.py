@@ -1,5 +1,5 @@
 import json
-from lib import get_cc_log
+from strangler import get_cc_log
 
 
 def raiser(s=None):

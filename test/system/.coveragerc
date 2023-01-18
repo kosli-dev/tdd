@@ -8,6 +8,7 @@ source=/${XY_CONTAINER_ROOT_DIR}/source
 parallel=True
 branch=True
 omit =
+  source/strangler/**
   source/sitecustomize.py
   source/gunicorn_config.py
   source/gunicorn_coverage.py

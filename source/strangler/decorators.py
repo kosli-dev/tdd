@@ -1,5 +1,5 @@
-from lib import contract_check
-from .contract_check_switch import *
+from .check import contract_check
+from .switch import *
 
 
 def check_kind(kind):
@@ -7,7 +7,7 @@ def check_kind(kind):
 
 
 def check_use(use):
-    assert use in [OVERWRITE_ONLY, APPEND_TEST, OVERWRITE_MAIN, APPEND_MAIN, APPEND_ONLY]
+    assert use in [OLD_ONLY, NEW_TEST, OLD_MAIN, NEW_MAIN, NEW_ONLY]
 
 
 def check_getter(getter):
@@ -16,15 +16,6 @@ def check_getter(getter):
 
 def check_setter(setter):
     setter is None or check_use(setter)
-
-# - - - - - - - - - - - - - - - -
-# Code below contains sections for turning off
-# contract checking when use/getter/setter is APPEND_ONLY
-# It is commented out as it causes a single integration-test failure
-# of test_1f213cc2 ??? To repeat this failure --random-order-seed=139390
-# ...14th Jan 2023...
-# This failure no longer occurs so the sections mentioned are now
-# commented out.
 
 
 def contract_checked_method(name, *, use, kind):
@@ -35,15 +26,6 @@ def contract_checked_method(name, *, use, kind):
         return _contract_checked_eq(use=use)
     elif name == "__iter__":
         return _contract_checked_iter(use=use)
-    # elif use is APPEND_ONLY:
-    #     def decorator(cls):
-    #         def func(target, *args, **kwargs):
-    #             result = getattr(target.append, name)(*args, **kwargs)
-    #             if kind != "query":
-    #                 target.append._reset(name)
-    #             return result
-    #         setattr(cls, name, func)
-    #         return cls
     else:
         def decorator(cls):
             def func(target, *args, **kwargs):
@@ -66,18 +48,6 @@ def contract_checked_method(name, *, use, kind):
 def contract_checked_property(name, *, getter, setter):
     check_getter(getter)
     check_setter(setter)
-
-    # if getter is APPEND_ONLY and (setter is None or setter is APPEND_ONLY):
-    #     def decorator(cls):
-    #         def get_value(target):
-    #             return getattr(target.append, name)
-    #
-    #         def set_value(target, value):
-    #             setattr(target.append, name, value)
-    #             target.append._reset()
-    #         setattr(cls, name, property(fget=get_value, fset=set_value if setter else None))
-    #         return cls
-    # else:
 
     def decorator(cls):
         def get_value(target):
@@ -106,35 +76,27 @@ def contract_checked_property(name, *, getter, setter):
 
 def _contract_checked_eq(*, use):
 
-    # if use is APPEND_ONLY:
-    #     def decorator(cls):
-    #         def checked_eq(lhs, rhs):
-    #             return lhs.append == rhs.append
-    #         setattr(cls, '__eq__', checked_eq)
-    #         return cls
-    # else:
-
     def decorator(cls):
         def checked_eq(lhs, rhs):
-            class OW:
+            class Old:
                 def __call__(self):
                     self.args = []
                     self.kwargs = {}
-                    return lhs.overwrite == rhs.overwrite
+                    return lhs.old == rhs.old
 
                 def _repr(self):
-                    return repr(lhs.overwrite)
+                    return repr(lhs.old)
 
-            class AO:
+            class New:
                 def __call__(self):
                     self.args = []
                     self.kwargs = {}
-                    return lhs.append == rhs.append
+                    return lhs.new == rhs.new
 
                 def _repr(self):
-                    return repr(lhs.append)
+                    return repr(lhs.new)
 
-            return contract_check(cls, '__eq__', "query", use, OW(), AO())
+            return contract_check(cls, '__eq__', "query", use, Old(), New())
 
         setattr(cls, '__eq__', checked_eq)
         return cls
@@ -146,38 +108,29 @@ def _contract_checked_eq(*, use):
 
 def _contract_checked_iter(*, use):
 
-    # if use is APPEND_ONLY:
-    #     def decorator(cls):
-    #         def unchecked_iter(target):
-    #             return iter(target.append)
-    #
-    #         setattr(cls, '__iter__', unchecked_iter)
-    #         return cls
-    # else:
-
     def decorator(cls):
         def checked_iter(target):
             data = IterData(target, use)
 
-            class OW:
+            class Old:
                 def __call__(self):
                     self.args = []
                     self.kwargs = {}
-                    return iter(IterFor(data, "overwrite"))
+                    return iter(IterFor(data, "old"))
 
                 def _repr(self):
-                    return repr(target.overwrite)
+                    return repr(target.old)
 
-            class AO:
+            class New:
                 def __call__(self):
                     self.args = []
                     self.kwargs = {}
-                    return iter(IterFor(data, "append"))
+                    return iter(IterFor(data, "new"))
 
                 def _repr(self):
-                    return repr(target.append)
+                    return repr(target.new)
 
-            return contract_check(cls, '__iter__', "query", use, OW(), AO())
+            return contract_check(cls, '__iter__', "query", use, Old(), New())
 
         setattr(cls, '__iter__', checked_iter)
         return cls
@@ -189,43 +142,43 @@ class IterFor:
     def __init__(self, data, oa):
         self.data = data
         self.oa = oa
-        self.overwrite_index = 0
-        self.append_index = 0
+        self.old_index = 0
+        self.new_index = 0
 
     def __eq__(self, other):
         return isinstance(other, IterFor) and \
             self.data.target is other.data.target and \
-            sorted(self.data.overwrite_ids) == sorted(self.data.append_ids)
+            sorted(self.data.old_ids) == sorted(self.data.new_ids)
 
     def __iter__(self):
         return self
 
     def __str__(self):
-        assert self.oa in ["overwrite", "append"]
-        if self.oa == "overwrite":
-            return f"{self.data.overwrite_ids}"
+        assert self.oa in ["old", "new"]
+        if self.oa == "old":
+            return f"{self.data.old_ids}"
         else:
-            return f"{self.data.append_ids}"
+            return f"{self.data.new_ids}"
 
     def __next__(self):
-        assert self.oa in ["overwrite", "append"]
-        if self.oa == "overwrite":
-            return self._next_overwrite()
+        assert self.oa in ["old", "new"]
+        if self.oa == "old":
+            return self._next_old()
         else:
-            return self._next_append()
+            return self._next_new()
 
-    def _next_overwrite(self):
-        if self.overwrite_index < len(self.data.overwrite):
-            result = self.data.overwrite[self.overwrite_index]
-            self.overwrite_index += 1
+    def _next_old(self):
+        if self.old_index < len(self.data.old):
+            result = self.data.old[self.old_index]
+            self.old_index += 1
             return result
         else:
             raise StopIteration
 
-    def _next_append(self):
-        if self.append_index < len(self.data.append):
-            result = self.data.append[self.append_index]
-            self.append_index += 1
+    def _next_new(self):
+        if self.new_index < len(self.data.new):
+            result = self.data.new[self.new_index]
+            self.new_index += 1
             return result
         else:
             raise StopIteration
@@ -242,7 +195,7 @@ class IterData:
     def __init__(self, target, use):
         from model import EnvironmentEvents
         self.target = target
-        if overwrite_is_on(target, use):
+        if old_is_on(target, use):
             self.overwrite_ids = []
             self.overwrite = []
             for c in target.overwrite:
@@ -254,7 +207,7 @@ class IterData:
                 else:
                     self.overwrite_ids.append(c['inner_id'])  # allowlist
 
-        if append_is_on(target, use):
+        if new_is_on(target, use):
             self.append_ids = []
             self.append = []
             for m in target.append:
@@ -269,32 +222,24 @@ class IterData:
 
 def contract_check_f(cls, name, kind, use, obj, f):
 
-    class OW:
+    class Old:
         def __call__(self):
-            result = f(obj.overwrite)
+            result = f(obj.old)
             self.args = f.args
             self.kwargs = f.kwargs
             return result
 
-        @staticmethod
-        def _reset():
-            obj.overwrite._reset()
-
         def _repr(self):
-            return repr(obj.overwrite)
+            return repr(obj.old)
 
-    class AO:
+    class New:
         def __call__(self):
-            result = f(obj.append)
+            result = f(obj.new)
             self.args = f.args
             self.kwargs = f.kwargs
             return result
 
-        @staticmethod
-        def _reset():
-            obj.append._reset()
-
         def _repr(self):
-            return repr(obj.append)
+            return repr(obj.new)
 
-    return contract_check(cls, name, kind, use, OW(), AO())
+    return contract_check(cls, name, kind, use, Old(), New())
