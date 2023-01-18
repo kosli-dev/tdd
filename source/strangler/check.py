@@ -5,10 +5,10 @@ import traceback
 from lib import LockedDir, in_unit_tests
 from lib.diff import diff_only
 from .switch import *
-from .log import set_cc_log
+from .log import set_strangler_log
 
 
-def strangled(cls, name, kind, use, c, m):
+def strangled(cls, name, kind, use, old, new):
     """
     cls: eg User
     name: eg "login_id"
@@ -16,7 +16,7 @@ def strangled(cls, name, kind, use, c, m):
     use: eg OLD_MAIN
     """
     class_name = cls.__name__
-    primary, secondary = ps(class_name, kind, use, c, m)
+    primary, secondary = ps(class_name, kind, use, old, new)
     p_res, p_exc, p_trace, p_repr, p_args, p_kwargs = call(class_name, kind, name, primary)
     if secondary is not None:
         sync_check(class_name, name, kind, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary)
@@ -127,7 +127,7 @@ def info(res, exc, trace):
 
 
 def log_difference(kind, diff):
-    set_cc_log(diff)
+    set_strangler_log(diff)
     with LockedDir(STRANGLER_DEBUG_LOG_DIR):
         if kind == "query":
             with open(STRANGLER_DEBUG_LOG_QUERY_PATH, "a") as f:
