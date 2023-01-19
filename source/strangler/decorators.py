@@ -126,9 +126,10 @@ def _strangled_iter(*, use):
 
 
 class IterFor:
-    def __init__(self, data, oa):
+    def __init__(self, data, use):
         self.data = data
-        self.oa = oa
+        assert use in ["old", "new"]
+        self.use = use
         self.old_index = 0
         self.new_index = 0
 
@@ -141,15 +142,13 @@ class IterFor:
         return self
 
     def __str__(self):
-        assert self.oa in ["old", "new"]
-        if self.oa == "old":
+        if self.use == "old":
             return f"{self.data.old}"
         else:
             return f"{self.data.new}"
 
     def __next__(self):
-        assert self.oa in ["old", "new"]
-        if self.oa == "old":
+        if self.use == "old":
             return self._next_old()
         else:
             return self._next_new()
