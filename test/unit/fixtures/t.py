@@ -1,9 +1,19 @@
-import pytest, re
+import pytest
+import re
+from strangler.log import set_strangler_log
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def t(request):
-    yield T(request)
+    """
+    Yields a T fixture for every test function.
+    For example
+      def test_e61960(t):
+          assert t.id == "e61960"
+        ...
+    """
+    with T(request) as t:
+        yield t
 
 
 class T:
@@ -16,14 +26,21 @@ class T:
         self.id = prefix        # eg 'e61960'
         self.n = tally(prefix)  # eg 0
 
+    def __enter__(self):
+        set_strangler_log(None)
+        return self
+
+    def __exit__(self, exc_type, _exc_value, _exc_traceback):
+        pass
+
 
 def tally(key):
-    if key in IDS:
-        n = IDS[key]
+    if key in _IDS:
+        n = _IDS[key]
     else:
-        n = IDS[key] = 0
-    IDS[key] += 1
+        n = _IDS[key] = 0
+    _IDS[key] += 1
     return n + 1
 
 
-IDS = {}
+_IDS = {}

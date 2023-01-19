@@ -1,9 +1,10 @@
 from datetime import datetime
 import json
+import threading
 import time
 import traceback
-from lib import LockedDir, in_unit_tests
-from lib.diff import diff_only
+from .in_unit_tests import in_unit_tests
+# from lib.diff import diff_only
 from .switch import *
 from .log import set_strangler_log
 
@@ -97,7 +98,7 @@ def do_strangler_check(class_name, name, use,
         "new-repr": p_repr if new_is_primary(use) else s_repr,
         "new-args": p_args if new_is_primary(use) else s_args,
         "new-kwargs": p_kwargs if new_is_primary(use) else s_kwargs,
-        "diff": diff_only(old_res, new_res)
+        # "diff": diff_only(old_res, new_res)
     }
 
     if use is NEW_TEST:
@@ -126,9 +127,8 @@ def info(res, exc, trace):
 
 def log_difference(diff):
     set_strangler_log(diff)
-    with LockedDir(STRANGLER_DEBUG_LOG_DIR):
-        with open(STRANGLER_DEBUG_LOG_PATH, "a") as f:
-            f.write(json.dumps(diff, indent=2))
+    with open(strangler_log_filename(), "a") as f:
+        f.write(json.dumps(diff, indent=2))
 
 
 class StrangledDifference(RuntimeError):
@@ -146,5 +146,8 @@ class StrangledDifference(RuntimeError):
         return json.dumps(self.info, indent=2)
 
 
-STRANGLER_DEBUG_LOG_DIR = "/tmp/strangler_debug_logs"
-STRANGLER_DEBUG_LOG_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/log"
+def strangler_log_filename():
+    return f"{STRANGLER_LOG_DIR}/log"
+
+
+STRANGLER_LOG_DIR = "/tmp/strangler_logs"

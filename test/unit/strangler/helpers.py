@@ -1,6 +1,8 @@
 import json
 import os
+import shutil
 from strangler import get_strangler_log
+from strangler.check import strangler_log_filename, STRANGLER_LOG_DIR
 
 
 class ScopedEnvVar(object):
@@ -20,28 +22,36 @@ class ScopedEnvVar(object):
             os.environ[self.__name] = self.__old_value
 
 
-def raiser(s=None):
-    if s is None:
-        s = "xyzzy"
-    raise RuntimeError(s)
+def raiser():
+    raise RuntimeError()
+
+
+def remake_strangler_log_dir():
+    shutil.rmtree(STRANGLER_LOG_DIR, ignore_errors=True)
+    os.mkdir(STRANGLER_LOG_DIR)
+
+
+def strangler_log_file_exists():
+    return os.path.exists(strangler_log_filename())
 
 
 def no_strangler_logging():
     return get_strangler_log() is None
 
 
-def check_strangler_log(class_name, name, c_result, m_result):
-    check_log(get_strangler_log(), class_name, name, c_result, m_result)
+def check_strangler_log(class_name, name, old_result, new_result):
+    check_log(class_name, name, old_result, new_result)
 
 
-def check_exc_log(exc, class_name, name, c_result, m_result):
-    check_log(exc.info, class_name, name, c_result, m_result)
+def check_exc_log(exc, class_name, name, old_result, new_result):
+    check_log(exc.info, class_name, name, old_result, new_result)
 
 
-def check_log(log, class_name, name, c_result, m_result):
+def check_log(class_name, name, old_result, new_result):
+    log = get_strangler_log()
     diagnostic = json.dumps(log, indent=2)
     assert log["class"] == class_name, diagnostic
     assert log["name"] == name, diagnostic
-    assert log["overwrite-db"]["result"] == c_result, diagnostic
-    assert log["append-db"]["result"] == m_result, diagnostic
+    assert log["old-info"]["result"] == old_result, diagnostic
+    assert log["new-info"]["result"] == new_result, diagnostic
 

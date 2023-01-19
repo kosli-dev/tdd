@@ -2,8 +2,6 @@ import pytest
 from strangler import *
 from .helpers import *
 import json
-import os
-import shutil
 
 
 def test_d96700(t):
@@ -19,13 +17,12 @@ def test_d96700(t):
             self.new = FuncF(lambda: 18)
 
     d = Different()
-    shutil.rmtree(STRANGLER_DEBUG_LOG_DIR)
-    os.mkdir(STRANGLER_DEBUG_LOG_DIR)
+    remake_strangler_log_dir()
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
         d.f()
+
     assert no_strangler_logging()
-    assert not os.path.exists(STRANGLER_DEBUG_LOG_PATH)
 
 
 def test_d96701(t):
@@ -42,19 +39,18 @@ def test_d96701(t):
             self.new = FuncF(lambda: 28)
 
     d = Different()
-    shutil.rmtree(STRANGLER_DEBUG_LOG_DIR)
-    os.mkdir(STRANGLER_DEBUG_LOG_DIR)
+    remake_strangler_log_dir()
 
     with pytest.raises(StrangledDifference) as exc:
         d.f()
     check_exc_log(exc.value, 'Different', 'f', '27', '28')
     assert no_strangler_logging()
-    assert not os.path.exists(STRANGLER_DEBUG_LOG_PATH)
 
 
 def test_d96702(t):
     """
     When use=NEW_TEST is not True
+    a StrangledDifference is NOT raised
     differences are logged to a file.
     """
     @strangled_method("f", use=OLD_MAIN)
@@ -64,15 +60,14 @@ def test_d96702(t):
             self.new = FuncF(lambda: 38)
 
     d = Different()
-    shutil.rmtree(STRANGLER_DEBUG_LOG_DIR)
-    os.mkdir(STRANGLER_DEBUG_LOG_DIR)
+    remake_strangler_log_dir()
 
     d.f()
-    assert os.path.exists(STRANGLER_DEBUG_LOG_PATH)
-    with open(STRANGLER_DEBUG_LOG_PATH, "r") as file:
+    assert strangler_log_file_exists()
+    with open(strangler_log_filename(), "r") as file:
         log = json.loads(file.read())
-        assert log["overwrite-db"]["result"] == '37'
-        assert log["append-db"]["result"] == '38'
+        assert log["old-info"]["result"] == '37'
+        assert log["new-info"]["result"] == '38'
 
 
 class FuncF:
