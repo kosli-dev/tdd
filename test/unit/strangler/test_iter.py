@@ -164,7 +164,15 @@ class Iter:
 
 
 class II:
+
     def __init__(self, value):
         self.id = value
 
+    def __repr__(self):
+        return f"{self.id}"
 
+    def __eq__(self, other):
+        return isinstance(other, II) and self.id == other.id
+
+    def __lt__(self, other):
+        return isinstance(other, II) and self.id < other.id
