@@ -72,8 +72,8 @@ def test_011304(t):
 
 
 def test_011305(t):
-    """NEW_MAIN Different - same number of elements"""
-    @strangled_method('__iter__', use=NEW_MAIN)
+    """OLD_MAIN Different - same number of elements"""
+    @strangled_method('__iter__', use=OLD_MAIN)
     class Diff:
         def __init__(self):
             self.old = Iter([10, 3])
@@ -85,8 +85,8 @@ def test_011305(t):
 
 
 def test_011306(t):
-    """NEW_MAIN Different - different number of elements"""
-    @strangled_method('__iter__', use=NEW_MAIN)
+    """OLD_MAIN Different - different number of elements"""
+    @strangled_method('__iter__', use=OLD_MAIN)
     class Diff:
         def __init__(self):
             self.old = Iter([30, 3, 9])
