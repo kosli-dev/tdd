@@ -130,9 +130,9 @@ def check_log(c, m):
 
 
 class Eq:
-    def __init__(self, v):
-        self.v = v
+    def __init__(self, f):
+        self.f = f
 
     def __eq__(self, _other):
-        return self.v()
+        return self.f()
 

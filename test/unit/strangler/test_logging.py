@@ -17,8 +17,6 @@ def test_d96700(t):
             self.new = FuncF(lambda: 18)
 
     d = Different()
-    remake_strangler_log_dir()
-
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
         d.f()
 
@@ -39,10 +37,9 @@ def test_d96701(t):
             self.new = FuncF(lambda: 28)
 
     d = Different()
-    remake_strangler_log_dir()
-
     with pytest.raises(StrangledDifference) as exc:
         d.f()
+
     check_exc_log(exc.value, 'Different', 'f', '27', '28')
     assert no_strangler_logging()
 
@@ -60,9 +57,8 @@ def test_d96702(t):
             self.new = FuncF(lambda: 38)
 
     d = Different()
-    remake_strangler_log_dir()
-
     d.f()
+
     assert strangler_log_file_exists()
     with open(strangler_log_filename(), "r") as file:
         log = json.loads(file.read())

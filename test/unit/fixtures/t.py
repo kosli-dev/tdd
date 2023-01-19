@@ -1,6 +1,7 @@
 import pytest
 import re
 from strangler.log import set_strangler_log
+from test.unit.strangler.helpers import strangler_log_file_delete
 
 
 @pytest.fixture(autouse=True)
@@ -28,6 +29,7 @@ class T:
 
     def __enter__(self):
         set_strangler_log(None)
+        strangler_log_file_delete()
         return self
 
     def __exit__(self, exc_type, _exc_value, _exc_traceback):

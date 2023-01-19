@@ -1,6 +1,6 @@
+import contextlib
 import json
 import os
-import shutil
 from strangler import get_strangler_log
 from strangler.check import strangler_log_filename, STRANGLER_LOG_DIR
 
@@ -26,9 +26,9 @@ def raiser():
     raise RuntimeError()
 
 
-def remake_strangler_log_dir():
-    shutil.rmtree(STRANGLER_LOG_DIR, ignore_errors=True)
-    os.mkdir(STRANGLER_LOG_DIR)
+def strangler_log_file_delete():
+    with contextlib.suppress(FileNotFoundError):
+        os.remove(strangler_log_filename())
 
 
 def strangler_log_file_exists():
