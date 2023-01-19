@@ -46,7 +46,7 @@ def call(func):
         f_exc = exc
         f_trace = traceback.format_exc()
     try:
-        f_repr = func._repr()
+        f_repr = func.repr
         f_args = func.args
         f_kwargs = func.kwargs
     except Exception:

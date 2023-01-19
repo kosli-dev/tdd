@@ -75,21 +75,17 @@ def _strangled_eq(*, use):
         def checked_eq(lhs, rhs):
             class Old:
                 def __call__(self):
+                    self.repr = repr(lhs.old)
                     self.args = []
                     self.kwargs = {}
                     return lhs.old == rhs.old
 
-                def _repr(self):
-                    return repr(lhs.old)
-
             class New:
                 def __call__(self):
+                    self.repr = repr(lhs.new)
                     self.args = []
                     self.kwargs = {}
                     return lhs.new == rhs.new
-
-                def _repr(self):
-                    return repr(lhs.new)
 
             return strangled(cls, '__eq__', use, Old(), New())
 
@@ -109,21 +105,17 @@ def _strangled_iter(*, use):
 
             class Old:
                 def __call__(self):
+                    self.repr = repr(target.old)
                     self.args = []
                     self.kwargs = {}
                     return iter(IterFor(data, "old"))
 
-                def _repr(self):
-                    return repr(target.old)
-
             class New:
                 def __call__(self):
+                    self.repr = repr(target.new)
                     self.args = []
                     self.kwargs = {}
                     return iter(IterFor(data, "new"))
-
-                def _repr(self):
-                    return repr(target.new)
 
             return strangled(cls, '__iter__', use, Old(), New())
 
@@ -199,21 +191,17 @@ def strangled_f(cls, name, use, obj, f):
     class Old:
         def __call__(self):
             result = f(obj.old)
+            self.repr = repr(obj.old)
             self.args = f.args
             self.kwargs = f.kwargs
             return result
-
-        def _repr(self):
-            return repr(obj.old)
 
     class New:
         def __call__(self):
             result = f(obj.new)
+            self.repr = repr(obj.new)
             self.args = f.args
             self.kwargs = f.kwargs
             return result
-
-        def _repr(self):
-            return repr(obj.new)
 
     return strangled(cls, name, use, Old(), New())
