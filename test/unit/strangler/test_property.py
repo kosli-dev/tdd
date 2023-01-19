@@ -99,10 +99,10 @@ def test_011605(t):
     d = Diff()
 
     d.p
-    check_log("Diff", 'p', 'ccc', 'not-set')
+    check_strangler_log("Diff", 'p', 'ccc', 'not-set')
 
     d.p = "anything"
-    check_log("Diff", 'p', 'None', 'not-set')
+    check_strangler_log("Diff", 'p', 'None', 'not-set')
 
 
 def test_011606(t):
@@ -115,10 +115,10 @@ def test_011606(t):
     d = Diff()
 
     assert d.p == 45
-    check_log('Diff', 'p', 'not-set', '45')
+    check_strangler_log('Diff', 'p', 'not-set', '45')
 
     d.p = "anything"
-    check_log('Diff', 'p', 'not-set', 'None')
+    check_strangler_log('Diff', 'p', 'not-set', 'None')
 
 
 def test_011607(t):
