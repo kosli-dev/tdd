@@ -143,7 +143,7 @@ class IterFor:
     def __eq__(self, other):
         return isinstance(other, IterFor) and \
             self.data.target is other.data.target and \
-            sorted(self.data.old_ids) == sorted(self.data.new_ids)
+            sorted(self.data.old) == sorted(self.data.new)
 
     def __iter__(self):
         return self
@@ -151,9 +151,9 @@ class IterFor:
     def __str__(self):
         assert self.oa in ["old", "new"]
         if self.oa == "old":
-            return f"{self.data.old_ids}"
+            return f"{self.data.old}"
         else:
-            return f"{self.data.new_ids}"
+            return f"{self.data.new}"
 
     def __next__(self):
         assert self.oa in ["old", "new"]
@@ -180,39 +180,18 @@ class IterFor:
 
 
 class IterData:
-    """
-    Relies on the target having an inner_id property.
-    Probably not needed if the iterated objects have
-    __eq__ but good enough, and all I could think of
-    at the time.
-    """
 
     def __init__(self, target, use):
-        from model import EnvironmentEvents
         self.target = target
         if old_is_on(target, use):
-            self.old_ids = []
             self.old = []
-            for c in target.old:
-                self.old.append(c)
-                if hasattr(c, 'inner_id'):
-                    self.old_ids.append(c.inner_id)
-                elif isinstance(target, EnvironmentEvents):
-                    self.old_ids.append("Fake")
-                else:
-                    self.old_ids.append(c['inner_id'])  # allowlist
+            for obj in target.old:
+                self.old.append(obj)
 
         if new_is_on(target, use):
-            self.new_ids = []
             self.new = []
-            for m in target.new:
-                self.new.append(m)
-                if hasattr(m, 'inner_id'):
-                    self.new_ids.append(m.inner_id)
-                elif isinstance(target, EnvironmentEvents):
-                    self.new_ids.append("Fake")
-                else:
-                    self.new_ids.append(m['inner_id'])  # allowlist
+            for obj in target.new:
+                self.new.append(obj)
 
 
 def strangled_f(cls, name, use, obj, f):

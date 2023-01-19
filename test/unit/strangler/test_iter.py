@@ -143,7 +143,7 @@ def check_log(c, m):
 
 
 def ids(c):
-    return [o.inner_id for o in c]
+    return [o.id for o in c]
 
 
 class Iter:
@@ -165,6 +165,6 @@ class Iter:
 
 class II:
     def __init__(self, value):
-        self.inner_id = value
+        self.id = value
 
 

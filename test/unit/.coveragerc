@@ -4,7 +4,6 @@ source=${XY_CONTAINER_ROOT_DIR}/source
 branch=True
 omit =
     **/__init__.py
-    source/strangler/**
     source/api/**
     source/app/**
     source/xy.py
