@@ -4,7 +4,7 @@ from .helpers import *
 import json
 
 
-def test_d96700(t):
+def test_d96700():
     """
     When use=NEW_TEST is True
     and NOT running unit-tests
@@ -23,7 +23,7 @@ def test_d96700(t):
     assert no_strangler_logging()
 
 
-def test_d96701(t):
+def test_d96701():
     """
     When use=NEW_TEST is True
     and running unit-tests
@@ -44,7 +44,7 @@ def test_d96701(t):
     assert no_strangler_logging()
 
 
-def test_d96702(t):
+def test_d96702():
     """
     When use=NEW_TEST is not True
     a StrangledDifference is NOT raised

@@ -3,7 +3,7 @@ from strangler import *
 from .helpers import *
 
 
-def test_011200(t):
+def test_011200():
     """OLD_ONLY"""
     @strangled_method('__hash__', use=OLD_ONLY)
     class Diff:
@@ -16,7 +16,7 @@ def test_011200(t):
     assert no_strangler_logging()
 
 
-def test_011201(t):
+def test_011201():
     """NEW_TEST On Same"""
     @strangled_method('__hash__', use=NEW_TEST)
     class Same:
@@ -29,7 +29,7 @@ def test_011201(t):
     assert no_strangler_logging()
 
 
-def test_011202(t):
+def test_011202():
     """NEW_TEST On Different"""
     @strangled_method('__hash__', use=NEW_TEST)
     class Diff:
@@ -44,7 +44,7 @@ def test_011202(t):
     assert no_strangler_logging()
 
 
-def test_011203(t):
+def test_011203():
     """NEW_TEST Off Different"""
     @strangled_method('__hash__', use=NEW_TEST)
     class Diff:
@@ -58,7 +58,7 @@ def test_011203(t):
     assert no_strangler_logging()
 
 
-def test_011204(t):
+def test_011204():
     """OLD_MAIN Same"""
     @strangled_method('__hash__', use=OLD_MAIN)
     class Same:
@@ -71,7 +71,7 @@ def test_011204(t):
     assert no_strangler_logging()
 
 
-def test_011205(t):
+def test_011205():
     """OLD_MAIN Different"""
     @strangled_method('__hash__', use=OLD_MAIN)
     class Diff:
@@ -84,7 +84,7 @@ def test_011205(t):
     check_log('51', 'not-set')
 
 
-def test_011206(t):
+def test_011206():
     """NEW_MAIN Different"""
     @strangled_method('__hash__', use=NEW_MAIN)
     class Diff:
@@ -97,7 +97,7 @@ def test_011206(t):
     check_log('not-set', '45')
 
 
-def test_011207(t):
+def test_011207():
     """NEW_MAIN Same"""
     @strangled_method('__hash__', use=NEW_MAIN)
     class Same:
@@ -110,7 +110,7 @@ def test_011207(t):
     assert no_strangler_logging()
 
 
-def test_011208(t):
+def test_011208():
     """NEW_ONLY"""
     @strangled_method('__hash__', use=NEW_ONLY)
     class Diff:
@@ -121,9 +121,6 @@ def test_011208(t):
 
     assert hash(d) == 1122
     assert no_strangler_logging()
-
-
-# - - - - - - - - - - - - - - - - - - - - - - -
 
 
 def check_log(c, m):

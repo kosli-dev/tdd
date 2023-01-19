@@ -3,7 +3,7 @@ from strangler import *
 from .helpers import *
 
 
-def test_011110(t):
+def test_011110():
     """OLD_ONLY"""
     @strangled_method('__eq__', use=OLD_ONLY)
     class Diff:
@@ -16,7 +16,7 @@ def test_011110(t):
     assert no_strangler_logging()
 
 
-def test_011111(t):
+def test_011111():
     """NEW_TEST On Same"""
     @strangled_method('__eq__', use=NEW_TEST)
     class Same:
@@ -29,7 +29,7 @@ def test_011111(t):
     assert no_strangler_logging()
 
 
-def test_011112(t):
+def test_011112():
     """NEW_TEST On Different"""
     @strangled_method('__eq__', use=NEW_TEST)
     class Diff:
@@ -44,7 +44,7 @@ def test_011112(t):
     assert no_strangler_logging()
 
 
-def test_011113(t):
+def test_011113():
     """NEW_TEST Off Different"""
     @strangled_method('__eq__', use=NEW_TEST)
     class Diff:
@@ -58,7 +58,7 @@ def test_011113(t):
     assert no_strangler_logging()
 
 
-def test_011114(t):
+def test_011114():
     """NEW_MAIN Same"""
     @strangled_method('__eq__', use=NEW_MAIN)
     class Same:
@@ -71,7 +71,7 @@ def test_011114(t):
     assert no_strangler_logging()
 
 
-def test_011115(t):
+def test_011115():
     """NEW_MAIN Different"""
     @strangled_method('__eq__', use=NEW_MAIN)
     class Diff:
@@ -84,7 +84,7 @@ def test_011115(t):
     check_log('True', 'False')
 
 
-def test_011116(t):
+def test_011116():
     """NEW_MAIN Different"""
     @strangled_method('__eq__', use=NEW_MAIN)
     class Diff:
@@ -97,7 +97,7 @@ def test_011116(t):
     check_log('True', 'False')
 
 
-def test_011117(t):
+def test_011117():
     """NEW_MAIN Same"""
     @strangled_method('__eq__', use=NEW_MAIN)
     class Diff:
@@ -110,7 +110,7 @@ def test_011117(t):
     assert no_strangler_logging()
 
 
-def test_011118(t):
+def test_011118():
     """NEW_ONLY"""
     @strangled_method('__eq__', use=NEW_ONLY)
     class Diff:
@@ -121,8 +121,6 @@ def test_011118(t):
 
     assert d == d
     assert no_strangler_logging()
-
-# - - - - - - - - - - - - - - - - - - - - - - -
 
 
 def check_log(old, new):

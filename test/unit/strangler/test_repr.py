@@ -3,7 +3,7 @@ from strangler import *
 from .helpers import *
 
 
-def test_011700(t):
+def test_011700():
     """OLD_ONLY"""
     @strangled_method('__repr__', use=OLD_ONLY)
     class Diff:
@@ -16,7 +16,7 @@ def test_011700(t):
     assert no_strangler_logging()
 
 
-def test_011701(t):
+def test_011701():
     """NEW_TEST On Same"""
     @strangled_method('__repr__', use=NEW_TEST)
     class Same:
@@ -29,7 +29,7 @@ def test_011701(t):
     assert no_strangler_logging()
 
 
-def test_011703(t):
+def test_011703():
     """NEW_TEST On Different"""
     @strangled_method('__repr__', use=NEW_TEST)
     class Diff:
@@ -44,7 +44,7 @@ def test_011703(t):
     assert no_strangler_logging()
 
 
-def test_011704(t):
+def test_011704():
     """NEW_TEST Off Different"""
     @strangled_method('__repr__', use=NEW_TEST)
     class Diff:
@@ -58,7 +58,7 @@ def test_011704(t):
     assert no_strangler_logging()
 
 
-def test_011705(t):
+def test_011705():
     """OLD_MAIN Same"""
     @strangled_method('__repr__', use=OLD_MAIN)
     class Same:
@@ -71,7 +71,7 @@ def test_011705(t):
     assert no_strangler_logging()
 
 
-def test_011706(t):
+def test_011706():
     """OLD_MAIN Different"""
     @strangled_method("__repr__", use=OLD_MAIN)
     class Diff:
@@ -84,7 +84,7 @@ def test_011706(t):
     check_log('ccc', 'mmm')
 
 
-def test_011707(t):
+def test_011707():
     """NEW_MAIN Different"""
     @strangled_method('__repr__', use=NEW_MAIN)
     class Diff:
@@ -97,7 +97,7 @@ def test_011707(t):
     check_log('not-set', '45')
 
 
-def test_011708(t):
+def test_011708():
     """NEW_MAIN Same"""
     @strangled_method('__repr__', use=NEW_MAIN)
     class Same:
@@ -110,7 +110,7 @@ def test_011708(t):
     assert no_strangler_logging()
 
 
-def test_011709(t):
+def test_011709():
     """NEW_ONLY"""
     @strangled_method('__repr__', use=NEW_ONLY)
     class Diff:
@@ -121,8 +121,6 @@ def test_011709(t):
 
     assert repr(d) == "987"
     assert no_strangler_logging()
-
-# - - - - - - - - - - - - - - - - - - - - - - -
 
 
 def check_log(c, m):

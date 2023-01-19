@@ -3,7 +3,7 @@ from strangler import *
 from .helpers import *
 
 
-def test_011400(t):
+def test_011400():
     """OLD_ONLY"""
     @strangled_method('__len__', use=OLD_ONLY)
     class Diff:
@@ -16,7 +16,7 @@ def test_011400(t):
     assert no_strangler_logging()
 
 
-def test_011401(t):
+def test_011401():
     """NEW_TEST On Same"""
     @strangled_method('__len__', use=NEW_TEST)
     class Same:
@@ -29,7 +29,7 @@ def test_011401(t):
     assert no_strangler_logging()
 
 
-def test_011402(t):
+def test_011402():
     """NEW_TEST On Different"""
     @strangled_method('__len__', use=NEW_TEST)
     class Diff:
@@ -44,7 +44,7 @@ def test_011402(t):
     assert no_strangler_logging()
 
 
-def test_011403(t):
+def test_011403():
     """NEW_TEST Off Different"""
     @strangled_method('__len__', use=NEW_TEST)
     class Diff:
@@ -58,7 +58,7 @@ def test_011403(t):
     assert no_strangler_logging()
 
 
-def test_011404(t):
+def test_011404():
     """OLD_MAIN Same"""
     @strangled_method('__len__', use=OLD_MAIN)
     class Same:
@@ -71,7 +71,7 @@ def test_011404(t):
     assert no_strangler_logging()
 
 
-def test_011405(t):
+def test_011405():
     """OLD_MAIN Different"""
     @strangled_method('__len__', use=OLD_MAIN)
     class Diff:
@@ -84,7 +84,7 @@ def test_011405(t):
     check_log('517', '518')
 
 
-def test_011407(t):
+def test_011407():
     """NEW_MAIN Different"""
     @strangled_method('__len__', use=NEW_MAIN)
     class Diff:
@@ -97,7 +97,7 @@ def test_011407(t):
     check_log('not-set', '45')
 
 
-def test_011408(t):
+def test_011408():
     """NEW_MAIN Same"""
     @strangled_method('__len__', use=NEW_MAIN)
     class Same:
@@ -110,7 +110,7 @@ def test_011408(t):
     assert no_strangler_logging()
 
 
-def test_011409(t):
+def test_011409():
     """NEW_ONLY"""
     @strangled_method('__len__', use=NEW_ONLY)
     class Diff:
@@ -121,8 +121,6 @@ def test_011409(t):
 
     assert len(d) == 1212
     assert no_strangler_logging()
-
-# - - - - - - - - - - - - - - - - - - - - - - -
 
 
 def check_log(c, m):

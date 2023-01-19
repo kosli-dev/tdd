@@ -3,7 +3,7 @@ from strangler import *
 from .helpers import *
 
 
-def test_011300(t):
+def test_011300():
     """OLD_ONLY"""
     @strangled_method('__iter__', use=OLD_ONLY)
     class Diff:
@@ -16,7 +16,7 @@ def test_011300(t):
     assert no_strangler_logging()
 
 
-def test_011301(t):
+def test_011301():
     """NEW_TEST On Same"""
     @strangled_method('__iter__', use=NEW_TEST)
     class Same:
@@ -29,7 +29,7 @@ def test_011301(t):
     assert no_strangler_logging()
 
 
-def test_011302(t):
+def test_011302():
     """NEW_TEST On Different"""
     @strangled_method('__iter__', use=NEW_TEST)
     class Diff:
@@ -44,7 +44,7 @@ def test_011302(t):
     assert no_strangler_logging()
 
 
-def test_011303(t):
+def test_011303():
     """NEW_TEST Off Different"""
     @strangled_method('__iter__', use=NEW_TEST)
     class Diff:
@@ -58,7 +58,7 @@ def test_011303(t):
     assert no_strangler_logging()
 
 
-def test_011304(t):
+def test_011304():
     """OLD_MAIN Same"""
     @strangled_method('__iter__', use=OLD_MAIN)
     class Same:
@@ -71,7 +71,7 @@ def test_011304(t):
     assert no_strangler_logging()
 
 
-def test_011305(t):
+def test_011305():
     """OLD_MAIN Different - same number of elements"""
     @strangled_method('__iter__', use=OLD_MAIN)
     class Diff:
@@ -84,7 +84,7 @@ def test_011305(t):
     check_log('[10, 3]', '[1, 10]')
 
 
-def test_011306(t):
+def test_011306():
     """OLD_MAIN Different - different number of elements"""
     @strangled_method('__iter__', use=OLD_MAIN)
     class Diff:
@@ -97,7 +97,7 @@ def test_011306(t):
     check_log('[30, 3, 9]', '[1, 30]')
 
 
-def test_011307(t):
+def test_011307():
     """NEW_MAIN Different"""
     @strangled_method('__iter__', use=NEW_MAIN)
     class Diff:
@@ -110,7 +110,7 @@ def test_011307(t):
     check_log('[0, 9]', '[5, 3]')
 
 
-def test_011308(t):
+def test_011308():
     """NEW_MAIN Same"""
     @strangled_method('__iter__', use=NEW_MAIN)
     class Diff:
@@ -123,7 +123,7 @@ def test_011308(t):
     assert no_strangler_logging()
 
 
-def test_011309(t):
+def test_011309():
     """NEW_ONLY"""
     @strangled_method('__iter__', use=NEW_ONLY)
     class Diff:
@@ -135,8 +135,6 @@ def test_011309(t):
     assert ids(d) == [14, 26, 4]
     assert no_strangler_logging()
 
-
-# - - - - - - - - - - - - - - - - - - - - - - -
 
 def check_log(c, m):
     check_strangler_log('Diff', '__iter__', c, m)
