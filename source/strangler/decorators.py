@@ -1,4 +1,4 @@
-from .check import strangled
+from .strangled import strangled
 from .switch import *
 
 

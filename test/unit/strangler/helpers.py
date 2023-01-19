@@ -2,7 +2,7 @@ import contextlib
 import json
 import os
 from strangler import get_strangler_log
-from strangler.check import strangler_log_filename, STRANGLER_LOG_DIR
+from strangler.strangled import strangler_log_filename, STRANGLER_LOG_DIR
 
 
 class ScopedEnvVar(object):
