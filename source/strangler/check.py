@@ -147,7 +147,7 @@ class StrangledDifference(RuntimeError):
 
 
 def strangler_log_filename():
-    return f"{STRANGLER_LOG_DIR}/log"
+    return f"{STRANGLER_LOG_DIR}/log.{threading.get_ident()}"
 
 
 STRANGLER_LOG_DIR = "/tmp/strangler_logs"
