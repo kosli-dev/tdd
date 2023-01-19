@@ -16,14 +16,17 @@ def strangled(cls, name, use, old, new):
     use: eg OLD_MAIN
     """
     class_name = cls.__name__
-    primary, secondary = ps(class_name, use, old, new)
-    p_res, p_exc, p_trace, p_repr, p_args, p_kwargs = call(class_name, name, primary)
+    primary, secondary = ps(use, old, new)
+    p_res, p_exc, p_trace, p_repr, p_args, p_kwargs = call(primary)
     if secondary is not None:
-        check(class_name, name, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary)
+        s_res, s_exc, s_trace, s_repr, s_args, s_kwargs = call(secondary)
+        do_strangler_check(class_name, name, use,
+                           p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
+                           s_res, s_exc, s_trace, s_repr, s_args, s_kwargs)
     return result_or_raise(p_res, p_exc)
 
 
-def ps(class_name, use, old, new):
+def ps(use, old, new):
     # Select primary and/or secondary
     d = {
         OLD_ONLY: (old, None),
@@ -35,7 +38,7 @@ def ps(class_name, use, old, new):
     return d[use]
 
 
-def call(class_name, name, func):
+def call(func):
     f_res, f_exc, f_trace, f_repr, f_args, f_kwargs = "not-set", None, "", "not-set", None, None
     try:
         f_res = func()
@@ -56,19 +59,6 @@ def result_or_raise(res, exc):
         return res
     else:
         raise exc
-
-
-def check(class_name, name, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary):
-    s_res, s_exc, s_trace, s_repr, s_args, s_kwargs = call(class_name, name, secondary)
-    # noinspection PyBroadException
-    try:
-        do_strangler_check(class_name, name, use,
-                           p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
-                           s_res, s_exc, s_trace, s_repr, s_args, s_kwargs)
-    except StrangledDifference:
-        raise
-    except Exception:
-        pass
 
 
 def do_strangler_check(class_name, name, use,
@@ -147,7 +137,4 @@ class StrangledDifference(RuntimeError):
 
 
 def strangler_log_filename():
-    return f"{STRANGLER_LOG_DIR}/log.{threading.get_ident()}"
-
-
-STRANGLER_LOG_DIR = "/tmp/strangler_logs"
+    return f"/tmp/strangler_logs/log.{threading.get_ident()}"

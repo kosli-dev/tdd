@@ -2,4 +2,5 @@ import os
 
 
 def in_unit_tests():
-    return os.environ.get('TEST_MODE') == 'unit'
+    test_mode = os.environ.get('TEST_MODE')
+    return test_mode == 'unit'

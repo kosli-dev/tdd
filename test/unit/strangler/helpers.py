@@ -2,24 +2,24 @@ import contextlib
 import json
 import os
 from strangler import get_strangler_log
-from strangler.strangled import strangler_log_filename, STRANGLER_LOG_DIR
+from strangler.strangled import strangler_log_filename
 
 
 class ScopedEnvVar(object):
 
     def __init__(self, name, value):
-        self.__name = name
-        self.__old_value = os.environ.get(name)
-        self.__new_value = value
+        self.name = name
+        self.old_value = os.environ.get(name)
+        self.new_value = value
 
     def __enter__(self):
-        os.environ[self.__name] = self.__new_value
+        os.environ[self.name] = self.new_value
 
     def __exit__(self, _type, _value, _traceback):
-        if self.__old_value is None:
-            os.environ.pop(self.__name)
+        if self.old_value is None:
+            os.environ.pop(self.name)
         else:
-            os.environ[self.__name] = self.__old_value
+            os.environ[self.name] = self.old_value
 
 
 def raiser():

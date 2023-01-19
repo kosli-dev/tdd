@@ -38,9 +38,9 @@ NEW_ONLY = (None, True, "new")    # 5th - New call only, returns New
 
 def old_is_on(obj, use):
     """Returns True if Old call is made."""
-    return hasattr(obj, 'old') and obj.old is not None and use[0] is not None
+    return obj.old is not None and use[0] is not None
 
 
 def new_is_on(obj, use):
     """Returns True if New call is made."""
-    return hasattr(obj, 'new') and obj.new is not None and use[1] is not None
+    return obj.new is not None and use[1] is not None
