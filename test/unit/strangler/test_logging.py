@@ -14,7 +14,7 @@ def test_d96700(t):
     class Different:
         def __init__(self):
             self.old = FuncF(lambda: 17)
-            self.new = FuncF(lambda: 18)
+            self.new = None
 
     d = Different()
     with ScopedEnvVar('TEST_MODE', 'not-unit'):

@@ -50,7 +50,7 @@ def test_011113(t):
     class Diff:
         def __init__(self):
             self.old = Eq(lambda: True)
-            self.new = Eq(lambda: False)
+            self.new = None
     d = Diff()
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
