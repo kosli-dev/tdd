@@ -19,7 +19,7 @@ def strangled(cls, name, use, old, new):
     primary, secondary = ps(class_name, use, old, new)
     p_res, p_exc, p_trace, p_repr, p_args, p_kwargs = call(class_name, name, primary)
     if secondary is not None:
-        sync_check(class_name, name, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary)
+        check(class_name, name, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary)
     return result_or_raise(p_res, p_exc)
 
 
@@ -58,7 +58,7 @@ def result_or_raise(res, exc):
         raise exc
 
 
-def sync_check(class_name, name, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary):
+def check(class_name, name, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary):
     s_res, s_exc, s_trace, s_repr, s_args, s_kwargs = call(class_name, name, secondary)
     # noinspection PyBroadException
     try:
