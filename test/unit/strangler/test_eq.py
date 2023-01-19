@@ -80,7 +80,7 @@ def test_011115(t):
             self.new = Eq(lambda: False)
     d = Diff()
 
-    assert d == d
+    assert d != d
     check_log('True', 'False')
 
 
@@ -125,8 +125,8 @@ def test_011118(t):
 # - - - - - - - - - - - - - - - - - - - - - - -
 
 
-def check_log(c, m):
-    check_strangler_log('Diff', '__eq__', c, m)
+def check_log(old, new):
+    check_strangler_log('Diff', '__eq__', old, new)
 
 
 class Eq:
