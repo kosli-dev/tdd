@@ -5,7 +5,7 @@ from .helpers import *
 
 def test_011500(t):
     """OLD_ONLY"""
-    @strangled_method("f", use=OLD_ONLY, kind="query")
+    @strangled_method("f", use=OLD_ONLY)
     class Diff:
         def __init__(self):
             self.old = Func(lambda: 11)
@@ -18,7 +18,7 @@ def test_011500(t):
 
 def test_011501(t):
     """NEW_TEST On Same"""
-    @strangled_method("f", use=NEW_TEST, kind="query")
+    @strangled_method("f", use=NEW_TEST)
     class Same:
         def __init__(self):
             self.old = Func(lambda: 27)
@@ -31,7 +31,7 @@ def test_011501(t):
 
 def test_011502(t):
     """NEW_TEST On Different"""
-    @strangled_method("f", use=NEW_TEST, kind="command")
+    @strangled_method("f", use=NEW_TEST)
     class Diff:
         def __init__(self):
             self.old = Func(lambda: 27)
@@ -46,7 +46,7 @@ def test_011502(t):
 
 def test_011503(t):
     """NEW_TEST Off Different"""
-    @strangled_method("f", use=NEW_TEST, kind="query")
+    @strangled_method("f", use=NEW_TEST)
     class Diff:
         def __init__(self):
             self.old = Func(lambda: 27)
@@ -60,7 +60,7 @@ def test_011503(t):
 
 def test_011504(t):
     """OLD_MAIN Same"""
-    @strangled_method("f", use=OLD_MAIN, kind="query")
+    @strangled_method("f", use=OLD_MAIN)
     class Same:
         def __init__(self):
             self.old = Func(lambda: 42)
@@ -73,7 +73,7 @@ def test_011504(t):
 
 def test_011505(t):
     """OLD_MAIN Different"""
-    @strangled_method("f", use=OLD_MAIN, kind="query")
+    @strangled_method("f", use=OLD_MAIN)
     class Diff:
         def __init__(self):
             self.old = Func(lambda: 17)
@@ -86,7 +86,7 @@ def test_011505(t):
 
 def test_011506(t):
     """NEW_MAIN Different"""
-    @strangled_method("f", use=NEW_MAIN, kind="query")
+    @strangled_method("f", use=NEW_MAIN)
     class Diff:
         def __init__(self):
             self.old = Func(lambda: 17)
@@ -99,7 +99,7 @@ def test_011506(t):
 
 def test_011507(t):
     """NEW_ONLY"""
-    @strangled_method("f", use=NEW_ONLY, kind="query")
+    @strangled_method("f", use=NEW_ONLY)
     class Diff:
         def __init__(self):
             self.old = None

@@ -5,7 +5,7 @@ from .helpers import *
 
 def test_011110(t):
     """OLD_ONLY"""
-    @strangled_method('__eq__', use=OLD_ONLY, kind="query")
+    @strangled_method('__eq__', use=OLD_ONLY)
     class Diff:
         def __init__(self):
             self.old = Eq(lambda: True)
@@ -18,7 +18,7 @@ def test_011110(t):
 
 def test_011111(t):
     """NEW_TEST On Same"""
-    @strangled_method('__eq__', use=NEW_TEST, kind="query")
+    @strangled_method('__eq__', use=NEW_TEST)
     class Same:
         def __init__(self):
             self.old = Eq(lambda: True)
@@ -31,7 +31,7 @@ def test_011111(t):
 
 def test_011112(t):
     """NEW_TEST On Different"""
-    @strangled_method('__eq__', use=NEW_TEST, kind="query")
+    @strangled_method('__eq__', use=NEW_TEST)
     class Diff:
         def __init__(self):
             self.old = Eq(lambda: True)
@@ -46,7 +46,7 @@ def test_011112(t):
 
 def test_011113(t):
     """NEW_TEST Off Different"""
-    @strangled_method('__eq__', use=NEW_TEST, kind="query")
+    @strangled_method('__eq__', use=NEW_TEST)
     class Diff:
         def __init__(self):
             self.old = Eq(lambda: True)
@@ -60,7 +60,7 @@ def test_011113(t):
 
 def test_011114(t):
     """NEW_MAIN Same"""
-    @strangled_method('__eq__', use=NEW_MAIN, kind="query")
+    @strangled_method('__eq__', use=NEW_MAIN)
     class Same:
         def __init__(self):
             self.old = Eq(lambda: True)
@@ -73,7 +73,7 @@ def test_011114(t):
 
 def test_011115(t):
     """NEW_MAIN Different"""
-    @strangled_method('__eq__', use=NEW_MAIN, kind="query")
+    @strangled_method('__eq__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
             self.old = Eq(lambda: True)
@@ -86,7 +86,7 @@ def test_011115(t):
 
 def test_011116(t):
     """NEW_MAIN Different"""
-    @strangled_method('__eq__', use=NEW_MAIN, kind="query")
+    @strangled_method('__eq__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
             self.old = Eq(lambda: True)
@@ -99,7 +99,7 @@ def test_011116(t):
 
 def test_011117(t):
     """NEW_MAIN Same"""
-    @strangled_method('__eq__', use=NEW_MAIN, kind="query")
+    @strangled_method('__eq__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
             self.old = Eq(lambda: False)
@@ -112,7 +112,7 @@ def test_011117(t):
 
 def test_011118(t):
     """NEW_ONLY"""
-    @strangled_method('__eq__', use=NEW_ONLY, kind="query")
+    @strangled_method('__eq__', use=NEW_ONLY)
     class Diff:
         def __init__(self):
             self.old = None

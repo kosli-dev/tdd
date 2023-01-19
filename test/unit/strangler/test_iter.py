@@ -5,7 +5,7 @@ from .helpers import *
 
 def test_011300(t):
     """OLD_ONLY"""
-    @strangled_method('__iter__', use=OLD_ONLY, kind="query")
+    @strangled_method('__iter__', use=OLD_ONLY)
     class Diff:
         def __init__(self):
             self.old = Iter([4, 6, 7])
@@ -18,7 +18,7 @@ def test_011300(t):
 
 def test_011301(t):
     """NEW_TEST On Same"""
-    @strangled_method('__iter__', use=NEW_TEST, kind="query")
+    @strangled_method('__iter__', use=NEW_TEST)
     class Same:
         def __init__(self):
             self.old = Iter([1, 6])
@@ -31,7 +31,7 @@ def test_011301(t):
 
 def test_011302(t):
     """NEW_TEST On Different"""
-    @strangled_method('__iter__', use=NEW_TEST, kind="query")
+    @strangled_method('__iter__', use=NEW_TEST)
     class Diff:
         def __init__(self):
             self.old = Iter([1, 6])
@@ -46,7 +46,7 @@ def test_011302(t):
 
 def test_011303(t):
     """NEW_TEST Off Different"""
-    @strangled_method('__iter__', use=NEW_TEST, kind="query")
+    @strangled_method('__iter__', use=NEW_TEST)
     class Diff:
         def __init__(self):
             self.old = Iter([5, 8])
@@ -60,7 +60,7 @@ def test_011303(t):
 
 def test_011304(t):
     """OLD_MAIN Same"""
-    @strangled_method('__iter__', use=OLD_MAIN, kind="query")
+    @strangled_method('__iter__', use=OLD_MAIN)
     class Same:
         def __init__(self):
             self.old = Iter([60, 1])
@@ -73,7 +73,7 @@ def test_011304(t):
 
 def test_011305(t):
     """NEW_MAIN Different - same number of elements"""
-    @strangled_method('__iter__', use=NEW_MAIN, kind="query")
+    @strangled_method('__iter__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
             self.old = Iter([10, 3])
@@ -86,7 +86,7 @@ def test_011305(t):
 
 def test_011306(t):
     """NEW_MAIN Different - different number of elements"""
-    @strangled_method('__iter__', use=NEW_MAIN, kind="query")
+    @strangled_method('__iter__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
             self.old = Iter([30, 3, 9])
@@ -99,7 +99,7 @@ def test_011306(t):
 
 def test_011307(t):
     """NEW_MAIN Different"""
-    @strangled_method('__iter__', use=NEW_MAIN, kind="query")
+    @strangled_method('__iter__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
             self.old = Iter([0, 9])
@@ -112,7 +112,7 @@ def test_011307(t):
 
 def test_011308(t):
     """NEW_MAIN Same"""
-    @strangled_method('__iter__', use=NEW_MAIN, kind="query")
+    @strangled_method('__iter__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
             self.old = Iter([1, 9])
@@ -125,7 +125,7 @@ def test_011308(t):
 
 def test_011309(t):
     """NEW_ONLY"""
-    @strangled_method('__iter__', use=NEW_ONLY, kind="query")
+    @strangled_method('__iter__', use=NEW_ONLY)
     class Diff:
         def __init__(self):
             self.old = None

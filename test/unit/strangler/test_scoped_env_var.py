@@ -1,5 +1,5 @@
 import os
-from .scoped_env_var import ScopedEnvVar
+from .helpers import ScopedEnvVar
 
 
 def test_4512ed():

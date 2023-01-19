@@ -2,10 +2,6 @@ from .check import strangled
 from .switch import *
 
 
-def check_kind(kind):
-    assert kind in ["create", "command", "query"]
-
-
 def check_use(use):
     assert use in [OLD_ONLY, NEW_TEST, OLD_MAIN, NEW_MAIN, NEW_ONLY]
 
@@ -18,9 +14,8 @@ def check_setter(setter):
     setter is None or check_use(setter)
 
 
-def strangled_method(name, *, use, kind):
+def strangled_method(name, *, use):
     check_use(use)
-    check_kind(kind)
 
     if name == "__eq__":
         return _strangled_eq(use=use)
@@ -35,7 +30,7 @@ def strangled_method(name, *, use, kind):
                         self.kwargs = kwargs
                         return getattr(obj, name)(*args, **kwargs)
 
-                return strangled_f(cls, name, kind, use, target, Functor())
+                return strangled_f(cls, name, use, target, Functor())
 
             setattr(cls, name, func)
             return cls
@@ -56,7 +51,7 @@ def strangled_property(name, *, getter, setter):
                     self.args = []
                     self.kwargs = {}
                     return getattr(obj, name)
-            return strangled_f(cls, name, "query", getter, target, Functor())
+            return strangled_f(cls, name, getter, target, Functor())
 
         def set_value(target, value):
             class Functor:
@@ -64,7 +59,7 @@ def strangled_property(name, *, getter, setter):
                     self.args = [value]
                     self.kwargs = {}
                     setattr(obj, name, value)
-            return strangled_f(cls, name, "command", setter, target, Functor())
+            return strangled_f(cls, name, setter, target, Functor())
 
         setattr(cls, name, property(fget=get_value, fset=set_value if setter else None))
         return cls
@@ -96,7 +91,7 @@ def _strangled_eq(*, use):
                 def _repr(self):
                     return repr(lhs.new)
 
-            return strangled(cls, '__eq__', "query", use, Old(), New())
+            return strangled(cls, '__eq__', use, Old(), New())
 
         setattr(cls, '__eq__', checked_eq)
         return cls
@@ -130,7 +125,7 @@ def _strangled_iter(*, use):
                 def _repr(self):
                     return repr(target.new)
 
-            return strangled(cls, '__iter__', "query", use, Old(), New())
+            return strangled(cls, '__iter__', use, Old(), New())
 
         setattr(cls, '__iter__', checked_iter)
         return cls
@@ -196,31 +191,31 @@ class IterData:
         from model import EnvironmentEvents
         self.target = target
         if old_is_on(target, use):
-            self.overwrite_ids = []
-            self.overwrite = []
-            for c in target.overwrite:
-                self.overwrite.append(c)
+            self.old_ids = []
+            self.old = []
+            for c in target.old:
+                self.old.append(c)
                 if hasattr(c, 'inner_id'):
-                    self.overwrite_ids.append(c.inner_id)
+                    self.old_ids.append(c.inner_id)
                 elif isinstance(target, EnvironmentEvents):
-                    self.overwrite_ids.append("Fake")
+                    self.old_ids.append("Fake")
                 else:
-                    self.overwrite_ids.append(c['inner_id'])  # allowlist
+                    self.old_ids.append(c['inner_id'])  # allowlist
 
         if new_is_on(target, use):
-            self.append_ids = []
-            self.append = []
-            for m in target.append:
-                self.append.append(m)
+            self.new_ids = []
+            self.new = []
+            for m in target.new:
+                self.new.append(m)
                 if hasattr(m, 'inner_id'):
-                    self.append_ids.append(m.inner_id)
+                    self.new_ids.append(m.inner_id)
                 elif isinstance(target, EnvironmentEvents):
-                    self.append_ids.append("Fake")
+                    self.new_ids.append("Fake")
                 else:
-                    self.append_ids.append(m['inner_id'])  # allowlist
+                    self.new_ids.append(m['inner_id'])  # allowlist
 
 
-def strangled_f(cls, name, kind, use, obj, f):
+def strangled_f(cls, name, use, obj, f):
 
     class Old:
         def __call__(self):
@@ -242,4 +237,4 @@ def strangled_f(cls, name, kind, use, obj, f):
         def _repr(self):
             return repr(obj.new)
 
-    return strangled(cls, name, kind, use, Old(), New())
+    return strangled(cls, name, use, Old(), New())

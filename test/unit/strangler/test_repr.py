@@ -5,7 +5,7 @@ from .helpers import *
 
 def test_011700(t):
     """OLD_ONLY"""
-    @strangled_method('__repr__', use=OLD_ONLY, kind="query")
+    @strangled_method('__repr__', use=OLD_ONLY)
     class Diff:
         def __init__(self):
             self.old = Repr(lambda: 123)
@@ -18,7 +18,7 @@ def test_011700(t):
 
 def test_011701(t):
     """NEW_TEST On Same"""
-    @strangled_method('__repr__', use=NEW_TEST, kind="query")
+    @strangled_method('__repr__', use=NEW_TEST)
     class Same:
         def __init__(self):
             self.old = Repr(lambda: 5)
@@ -31,7 +31,7 @@ def test_011701(t):
 
 def test_011703(t):
     """NEW_TEST On Different"""
-    @strangled_method('__repr__', use=NEW_TEST, kind="query")
+    @strangled_method('__repr__', use=NEW_TEST)
     class Diff:
         def __init__(self):
             self.old = Repr(lambda: 69)
@@ -46,7 +46,7 @@ def test_011703(t):
 
 def test_011704(t):
     """NEW_TEST Off Different"""
-    @strangled_method('__repr__', use=NEW_TEST, kind="query")
+    @strangled_method('__repr__', use=NEW_TEST)
     class Diff:
         def __init__(self):
             self.old = Repr(lambda: 23)
@@ -60,7 +60,7 @@ def test_011704(t):
 
 def test_011705(t):
     """OLD_MAIN Same"""
-    @strangled_method('__repr__', use=OLD_MAIN, kind="query")
+    @strangled_method('__repr__', use=OLD_MAIN)
     class Same:
         def __init__(self):
             self.old = Repr(lambda: 42)
@@ -73,7 +73,7 @@ def test_011705(t):
 
 def test_011706(t):
     """OLD_MAIN Different"""
-    @strangled_method("__repr__", use=OLD_MAIN, kind="query")
+    @strangled_method("__repr__", use=OLD_MAIN)
     class Diff:
         def __init__(self):
             self.old = Repr(lambda: "ccc")
@@ -86,7 +86,7 @@ def test_011706(t):
 
 def test_011707(t):
     """NEW_MAIN Different"""
-    @strangled_method('__repr__', use=NEW_MAIN, kind="query")
+    @strangled_method('__repr__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
             self.old = Repr(lambda: raiser())
@@ -99,7 +99,7 @@ def test_011707(t):
 
 def test_011708(t):
     """NEW_MAIN Same"""
-    @strangled_method('__repr__', use=NEW_MAIN, kind="query")
+    @strangled_method('__repr__', use=NEW_MAIN)
     class Same:
         def __init__(self):
             self.old = Repr(lambda: 7)
@@ -112,7 +112,7 @@ def test_011708(t):
 
 def test_011709(t):
     """NEW_ONLY"""
-    @strangled_method('__repr__', use=NEW_ONLY, kind="query")
+    @strangled_method('__repr__', use=NEW_ONLY)
     class Diff:
         def __init__(self):
             self.old = None

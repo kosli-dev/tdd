@@ -5,7 +5,7 @@ from .helpers import *
 
 def test_011400(t):
     """OLD_ONLY"""
-    @strangled_method('__len__', use=OLD_ONLY, kind="query")
+    @strangled_method('__len__', use=OLD_ONLY)
     class Diff:
         def __init__(self):
             self.old = Len(lambda: 8742)
@@ -18,7 +18,7 @@ def test_011400(t):
 
 def test_011401(t):
     """NEW_TEST On Same"""
-    @strangled_method('__len__', use=NEW_TEST, kind="query")
+    @strangled_method('__len__', use=NEW_TEST)
     class Same:
         def __init__(self):
             self.old = Len(lambda: 5)
@@ -31,7 +31,7 @@ def test_011401(t):
 
 def test_011402(t):
     """NEW_TEST On Different"""
-    @strangled_method('__len__', use=NEW_TEST, kind="query")
+    @strangled_method('__len__', use=NEW_TEST)
     class Diff:
         def __init__(self):
             self.old = Len(lambda: 69)
@@ -46,7 +46,7 @@ def test_011402(t):
 
 def test_011403(t):
     """NEW_TEST Off Different"""
-    @strangled_method('__len__', use=NEW_TEST, kind="query")
+    @strangled_method('__len__', use=NEW_TEST)
     class Diff:
         def __init__(self):
             self.old = Len(lambda: 23)
@@ -60,7 +60,7 @@ def test_011403(t):
 
 def test_011404(t):
     """OLD_MAIN Same"""
-    @strangled_method('__len__', use=OLD_MAIN, kind="query")
+    @strangled_method('__len__', use=OLD_MAIN)
     class Same:
         def __init__(self):
             self.old = Len(lambda: 4228)
@@ -73,7 +73,7 @@ def test_011404(t):
 
 def test_011405(t):
     """OLD_MAIN Different"""
-    @strangled_method('__len__', use=OLD_MAIN, kind="query")
+    @strangled_method('__len__', use=OLD_MAIN)
     class Diff:
         def __init__(self):
             self.old = Len(lambda: 517)
@@ -86,7 +86,7 @@ def test_011405(t):
 
 def test_011407(t):
     """NEW_MAIN Different"""
-    @strangled_method('__len__', use=NEW_MAIN, kind="query")
+    @strangled_method('__len__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
             self.old = Len(lambda: raiser())
@@ -99,7 +99,7 @@ def test_011407(t):
 
 def test_011408(t):
     """NEW_MAIN Same"""
-    @strangled_method('__len__', use=NEW_MAIN, kind="query")
+    @strangled_method('__len__', use=NEW_MAIN)
     class Same:
         def __init__(self):
             self.old = Len(lambda: 7)
@@ -112,7 +112,7 @@ def test_011408(t):
 
 def test_011409(t):
     """NEW_ONLY"""
-    @strangled_method('__len__', use=NEW_ONLY, kind="query")
+    @strangled_method('__len__', use=NEW_ONLY)
     class Diff:
         def __init__(self):
             self.old = None

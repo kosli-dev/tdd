@@ -8,22 +8,21 @@ from .switch import *
 from .log import set_strangler_log
 
 
-def strangled(cls, name, kind, use, old, new):
+def strangled(cls, name, use, old, new):
     """
     cls: eg User
     name: eg "login_id"
-    kind: eg "query"
     use: eg OLD_MAIN
     """
     class_name = cls.__name__
-    primary, secondary = ps(class_name, kind, use, old, new)
-    p_res, p_exc, p_trace, p_repr, p_args, p_kwargs = call(class_name, kind, name, primary)
+    primary, secondary = ps(class_name, use, old, new)
+    p_res, p_exc, p_trace, p_repr, p_args, p_kwargs = call(class_name, name, primary)
     if secondary is not None:
-        sync_check(class_name, name, kind, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary)
+        sync_check(class_name, name, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary)
     return result_or_raise(p_res, p_exc)
 
 
-def ps(class_name, kind, use, old, new):
+def ps(class_name, use, old, new):
     # Select primary and/or secondary
     d = {
         OLD_ONLY: (old, None),
@@ -35,7 +34,7 @@ def ps(class_name, kind, use, old, new):
     return d[use]
 
 
-def call(class_name, kind, name, func):
+def call(class_name, name, func):
     f_res, f_exc, f_trace, f_repr, f_args, f_kwargs = "not-set", None, "", "not-set", None, None
     try:
         f_res = func()
@@ -58,22 +57,22 @@ def result_or_raise(res, exc):
         raise exc
 
 
-def sync_check(class_name, name, kind, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary):
-    s_res, s_exc, s_trace, s_repr, s_args, s_kwargs = call(class_name, kind, name, secondary)
+def sync_check(class_name, name, use, p_res, p_exc, p_trace, p_repr, p_args, p_kwargs, secondary):
+    s_res, s_exc, s_trace, s_repr, s_args, s_kwargs = call(class_name, name, secondary)
     # noinspection PyBroadException
     try:
-        do_contract_check(class_name, name, kind, use,
-                          p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
-                          s_res, s_exc, s_trace, s_repr, s_args, s_kwargs)
+        do_strangler_check(class_name, name, use,
+                           p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
+                           s_res, s_exc, s_trace, s_repr, s_args, s_kwargs)
     except StrangledDifference:
         raise
     except Exception:
         pass
 
 
-def do_contract_check(class_name, name, kind, use,
-                      p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
-                      s_res, s_exc, s_trace, s_repr, s_args, s_kwargs):
+def do_strangler_check(class_name, name, use,
+                       p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
+                       s_res, s_exc, s_trace, s_repr, s_args, s_kwargs):
     if p_exc is None and s_exc is None:  # neither raised
         if p_res == s_res:
             return                       # ok
@@ -90,7 +89,6 @@ def do_contract_check(class_name, name, kind, use,
         "time": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "class": class_name,
         "name": name,
-        "kind": kind,
         "old-info": p_info if old_is_primary(use) else s_info,
         "old-repr": p_repr if old_is_primary(use) else s_repr,
         "old-args": p_args if old_is_primary(use) else s_args,
@@ -108,7 +106,7 @@ def do_contract_check(class_name, name, kind, use,
         else:
             return
     else:
-        log_difference(kind, diff)
+        log_difference(diff)
 
 
 def old_is_primary(use):
@@ -126,18 +124,11 @@ def info(res, exc, trace):
     }
 
 
-def log_difference(kind, diff):
+def log_difference(diff):
     set_strangler_log(diff)
     with LockedDir(STRANGLER_DEBUG_LOG_DIR):
-        if kind == "query":
-            with open(STRANGLER_DEBUG_LOG_QUERY_PATH, "a") as f:
-                f.write(json.dumps(diff, indent=2))
-        if kind == "command":
-            with open(STRANGLER_DEBUG_LOG_COMMAND_PATH, "a") as f:
-                f.write(json.dumps(diff, indent=2))
-        if kind == "create":
-            with open(STRANGLER_DEBUG_LOG_CREATE_PATH, "a") as f:
-                f.write(json.dumps(diff, indent=2))
+        with open(STRANGLER_DEBUG_LOG_PATH, "a") as f:
+            f.write(json.dumps(diff, indent=2))
 
 
 class StrangledDifference(RuntimeError):
@@ -156,6 +147,4 @@ class StrangledDifference(RuntimeError):
 
 
 STRANGLER_DEBUG_LOG_DIR = "/tmp/strangler_debug_logs"
-STRANGLER_DEBUG_LOG_QUERY_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/query.log"
-STRANGLER_DEBUG_LOG_COMMAND_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/command.log"
-STRANGLER_DEBUG_LOG_CREATE_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/create.log"
+STRANGLER_DEBUG_LOG_PATH = f"{STRANGLER_DEBUG_LOG_DIR}/log"

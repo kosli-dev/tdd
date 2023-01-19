@@ -12,7 +12,7 @@ def test_d96700(t):
     and NOT running unit-tests
     differences are NOT logged to a file.
     """
-    @strangled_method("f", use=NEW_TEST, kind="query")
+    @strangled_method("f", use=NEW_TEST)
     class Different:
         def __init__(self):
             self.old = FuncF(lambda: 17)
@@ -24,8 +24,8 @@ def test_d96700(t):
 
     with ScopedEnvVar('TEST_MODE', 'not-unit'):
         d.f()
-    assert get_cc_log() is None
-    assert not os.path.exists(STRANGLER_DEBUG_LOG_QUERY_PATH)
+    assert no_strangler_logging()
+    assert not os.path.exists(STRANGLER_DEBUG_LOG_PATH)
 
 
 def test_d96701(t):
@@ -35,7 +35,7 @@ def test_d96701(t):
     a StrangledDifference is raised
     and differences are NOT logged to a file
     """
-    @strangled_method("f", use=NEW_TEST, kind="query")
+    @strangled_method("f", use=NEW_TEST)
     class Different:
         def __init__(self):
             self.old = FuncF(lambda: 27)
@@ -48,8 +48,8 @@ def test_d96701(t):
     with pytest.raises(StrangledDifference) as exc:
         d.f()
     check_exc_log(exc.value, 'Different', 'f', '27', '28')
-    assert get_cc_log() is None
-    assert not os.path.exists(STRANGLER_DEBUG_LOG_QUERY_PATH)
+    assert no_strangler_logging()
+    assert not os.path.exists(STRANGLER_DEBUG_LOG_PATH)
 
 
 def test_d96702(t):
@@ -57,7 +57,7 @@ def test_d96702(t):
     When use=NEW_TEST is not True
     differences are logged to a file.
     """
-    @strangled_method("f", use=OLD_MAIN, kind="query")
+    @strangled_method("f", use=OLD_MAIN)
     class Different:
         def __init__(self):
             self.old = FuncF(lambda: 37)
@@ -68,8 +68,8 @@ def test_d96702(t):
     os.mkdir(STRANGLER_DEBUG_LOG_DIR)
 
     d.f()
-    assert os.path.exists(STRANGLER_DEBUG_LOG_QUERY_PATH)
-    with open(STRANGLER_DEBUG_LOG_QUERY_PATH, "r") as file:
+    assert os.path.exists(STRANGLER_DEBUG_LOG_PATH)
+    with open(STRANGLER_DEBUG_LOG_PATH, "r") as file:
         log = json.loads(file.read())
         assert log["overwrite-db"]["result"] == '37'
         assert log["append-db"]["result"] == '38'
