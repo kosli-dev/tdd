@@ -40,15 +40,14 @@ def no_strangler_logging():
 
 
 def check_strangler_log(class_name, name, old_result, new_result):
-    check_log(class_name, name, old_result, new_result)
+    check_log(get_strangler_log(), class_name, name, old_result, new_result)
 
 
 def check_exc_log(exc, class_name, name, old_result, new_result):
     check_log(exc.info, class_name, name, old_result, new_result)
 
 
-def check_log(class_name, name, old_result, new_result):
-    log = get_strangler_log()
+def check_log(log, class_name, name, old_result, new_result):
     diagnostic = json.dumps(log, indent=2)
     assert log["class"] == class_name, diagnostic
     assert log["name"] == name, diagnostic
