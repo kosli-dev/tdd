@@ -143,7 +143,7 @@ def _strangled_iter(*, use):
                     return repr(target.old)
 
                 def __call__(self):
-                    return iter(IterFor(data, "old"))
+                    return IterFor(data, "old")
 
             class New:
                 def __init__(self):
@@ -154,7 +154,7 @@ def _strangled_iter(*, use):
                     return repr(target.new)
 
                 def __call__(self):
-                    return iter(IterFor(data, "new"))
+                    return IterFor(data, "new")
 
             return strangled(cls, '__iter__', use, Old(), New())
 
