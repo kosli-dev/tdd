@@ -10,6 +10,8 @@ def test_4512ed():
     assert os.environ.get(name) is None
     with ScopedEnvVar(name, "42"):
         assert os.environ.get(name) == "42"
+        assert os.environ[name] == "42"
+
     assert os.environ.get(name) is None
 
 
@@ -23,4 +25,5 @@ def test_4512ee():
     assert os.environ.get(name) == "HelloWorld"
     with ScopedEnvVar(name, "42"):
         assert os.environ.get(name) == "42"
+        assert os.environ[name] == "42"
     assert os.environ.get(name) == "HelloWorld"
