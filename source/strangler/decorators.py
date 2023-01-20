@@ -2,18 +2,6 @@ from .strangled import strangled
 from .switch import *
 
 
-def check_use(use):
-    assert use in [OLD_ONLY, NEW_TEST, OLD_MAIN, NEW_MAIN, NEW_ONLY]
-
-
-def check_getter(getter):
-    getter is None or check_use(getter)
-
-
-def check_setter(setter):
-    setter is None or check_use(setter)
-
-
 def strangled_method(name, *, use):
     check_use(use)
 
@@ -60,7 +48,7 @@ def strangled_property(name, *, getter, setter):
         def set_value(target, value):
             class Functor:
                 def __init__(self):
-                    self.args = []
+                    self.args = [value]
                     self.kwargs = {}
 
                 def __call__(self, obj):
@@ -72,8 +60,37 @@ def strangled_property(name, *, getter, setter):
 
     return decorator
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+def strangled_f(cls, name, use, obj, f):
+
+    class Old:
+        def __init__(self):
+            self.args = f.args
+            self.kwargs = f.kwargs
+
+        def __repr__(self):
+            return repr(obj.old)
+
+        def __call__(self):
+            return f(obj.old)
+
+    class New:
+        def __init__(self):
+            self.args = f.args
+            self.kwargs = f.kwargs
+
+        def __repr__(self):
+            return repr(obj.new)
+
+        def __call__(self):
+            return f(obj.new)
+
+    return strangled(cls, name, use, Old(), New())
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 def _strangled_eq(*, use):
 
@@ -207,28 +224,13 @@ class IterData:
                 self.new.append(obj)
 
 
-def strangled_f(cls, name, use, obj, f):
+def check_use(use):
+    assert use in [OLD_ONLY, NEW_TEST, OLD_MAIN, NEW_MAIN, NEW_ONLY]
 
-    class Old:
-        def __init__(self):
-            self.args = f.args
-            self.kwargs = f.kwargs
 
-        def __repr__(self):
-            return repr(obj.old)
+def check_getter(getter):
+    getter is None or check_use(getter)
 
-        def __call__(self):
-            return f(obj.old)
 
-    class New:
-        def __init__(self):
-            self.args = f.args
-            self.kwargs = f.kwargs
-
-        def __repr__(self):
-            return repr(obj.new)
-
-        def __call__(self):
-            return f(obj.new)
-
-    return strangled(cls, name, use, Old(), New())
+def check_setter(setter):
+    setter is None or check_use(setter)
