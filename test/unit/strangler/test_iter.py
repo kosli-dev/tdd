@@ -63,11 +63,11 @@ def test_011304():
     @strangled_method('__iter__', use=OLD_MAIN)
     class Same:
         def __init__(self):
-            self.old = Iter([60, 1])
+            self.old = Iter([1, 60])
             self.new = Iter([1, 60])
     s = Same()
 
-    assert ids(s) == [60, 1]
+    assert ids(s) == [1, 60]
     assert no_strangler_logging()
 
 

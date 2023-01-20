@@ -175,7 +175,7 @@ class IterFor:
     def __eq__(self, other):
         return isinstance(other, IterFor) and \
             self.data.target is other.data.target and \
-            sorted(self.data.old) == sorted(self.data.new)
+            self.data.old == self.data.new
 
     def __iter__(self):
         return self
