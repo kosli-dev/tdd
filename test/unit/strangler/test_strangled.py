@@ -61,6 +61,31 @@ def test_bba0d2():
         d.f()
 
 
+def test_bba0d3():
+    """
+    StrangledException __str__ prints indented json
+    """
+    @strangled_method("f", use=NEW_TEST)
+    class Different:
+        def __init__(self):
+            self.old = FuncF(lambda: 42)
+            self.new = FuncF(lambda: 43)
+
+    d = Different()
+    with pytest.raises(StrangledDifference) as exc:
+        d.f()
+    s = f"{exc.value}"
+    info = json.loads(s)
+    assert info["old-info"] == {
+        "result": '42',
+        "exception": ["None", ""]
+    }
+    assert info["new-info"] == {
+        "result": '43',
+        "exception": ["None", ""]
+    }
+
+
 class FuncF:
     def __init__(self, v):
         self.v = v

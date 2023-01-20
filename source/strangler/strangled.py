@@ -33,7 +33,7 @@ def ps(use, old, new):
     # Select primary and/or secondary
     d = {
         OLD_ONLY: (old, None),
-        NEW_TEST: (old, new if in_unit_tests() else None),
+        NEW_TEST: (old, new),  # See [1]
         OLD_MAIN: (old, new),
         NEW_MAIN: (new, old),
         NEW_ONLY: (new, None)
@@ -67,11 +67,11 @@ def do_strangler_check(class_name, name, use,
                        p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
                        s_res, s_exc, s_trace, s_repr, s_args, s_kwargs):
     if p_exc is None and s_exc is None:  # neither raised
-        if p_res == s_res:
+        if p_res == s_res:               # TODO: could raise
             return                       # ok
 
     if p_exc is not None and s_exc is not None:
-        return                           # both raised, ok
+        return                           # both raised TODO: same exception?
 
     now = datetime.utcfromtimestamp(time.time())
     p_info = info(p_res, p_exc, p_trace)
@@ -93,7 +93,7 @@ def do_strangler_check(class_name, name, use,
         # "diff": diff_only(old_res, new_res)
     }
 
-    if use is NEW_TEST:
+    if use is NEW_TEST:  # [1]
         if in_unit_tests():
             raise StrangledDifference(diff)
         else:
