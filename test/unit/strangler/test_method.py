@@ -110,8 +110,8 @@ def test_011507():
     assert no_strangler_logging()
 
 
-def check_log(c, m):
-    check_strangler_log('Diff', 'f', c, m)
+def check_log(old, new):
+    check_strangler_log('Diff', 'f', old, new)
 
 
 class Func:

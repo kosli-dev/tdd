@@ -136,8 +136,8 @@ def test_011309():
     assert no_strangler_logging()
 
 
-def check_log(c, m):
-    check_strangler_log('Diff', '__iter__', c, m)
+def check_log(old, new):
+    check_strangler_log('Diff', '__iter__', old, new)
 
 
 def ids(c):
