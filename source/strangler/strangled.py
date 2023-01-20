@@ -136,4 +136,5 @@ class StrangledDifference(RuntimeError):
 
 
 def strangler_log_filename():
-    return f"/tmp/strangler_logs/log.{threading.get_ident()}"
+    tid = threading.get_ident()
+    return f"/tmp/strangler_logs/log.{tid}"
