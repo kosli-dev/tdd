@@ -77,11 +77,11 @@ def test_011305():
     class Diff:
         def __init__(self):
             self.old = Iter([10, 3])
-            self.new = Iter([1, 10])
+            self.new = Iter([3, 10])
     d = Diff()
 
     assert ids(d) == [10, 3]
-    check_log('[10, 3]', '[1, 10]')
+    check_log('[10, 3]', '[3, 10]')
 
 
 def test_011306():
@@ -89,12 +89,12 @@ def test_011306():
     @strangled_method('__iter__', use=OLD_MAIN)
     class Diff:
         def __init__(self):
-            self.old = Iter([30, 3, 9])
+            self.old = Iter([1, 30, 9])
             self.new = Iter([1, 30])
     d = Diff()
 
-    assert ids(d) == [30, 3, 9]
-    check_log('[30, 3, 9]', '[1, 30]')
+    assert ids(d) == [1, 30, 9]
+    check_log('[1, 30, 9]', '[1, 30]')
 
 
 def test_011307():
@@ -102,12 +102,12 @@ def test_011307():
     @strangled_method('__iter__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
-            self.old = Iter([0, 9])
-            self.new = Iter([5, 3])
+            self.old = Iter([0])
+            self.new = Iter([0, 3])
     d = Diff()
 
-    assert ids(d) == [5, 3]
-    check_log('[0, 9]', '[5, 3]')
+    assert ids(d) == [0, 3]
+    check_log('[0]', '[0, 3]')
 
 
 def test_011308():
