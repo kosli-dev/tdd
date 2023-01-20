@@ -42,7 +42,10 @@ def ps(use, old, new):
 
 
 def call(func):
-    f_res, f_exc, f_trace, f_repr, f_args, f_kwargs = "not-set", None, "", "not-set", None, None
+    f_res = "not-set"
+    f_exc = None
+    f_trace = ""
+    f_repr = "not-set"
     try:
         f_res = func()
     except Exception as exc:
