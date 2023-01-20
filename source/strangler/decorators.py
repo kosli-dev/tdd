@@ -25,9 +25,11 @@ def strangled_method(name, *, use):
         def decorator(cls):
             def func(target, *args, **kwargs):
                 class Functor:
-                    def __call__(self, obj):
+                    def __init__(self):
                         self.args = args
                         self.kwargs = kwargs
+
+                    def __call__(self, obj):
                         return getattr(obj, name)(*args, **kwargs)
 
                 return strangled_f(cls, name, use, target, Functor())
@@ -47,17 +49,21 @@ def strangled_property(name, *, getter, setter):
     def decorator(cls):
         def get_value(target):
             class Functor:
-                def __call__(self, obj):
+                def __init__(self):
                     self.args = []
                     self.kwargs = {}
+
+                def __call__(self, obj):
                     return getattr(obj, name)
             return strangled_f(cls, name, getter, target, Functor())
 
         def set_value(target, value):
             class Functor:
-                def __call__(self, obj):
-                    self.args = [value]
+                def __init__(self):
+                    self.args = []
                     self.kwargs = {}
+
+                def __call__(self, obj):
                     setattr(obj, name, value)
             return strangled_f(cls, name, setter, target, Functor())
 
@@ -74,17 +80,25 @@ def _strangled_eq(*, use):
     def decorator(cls):
         def checked_eq(lhs, rhs):
             class Old:
-                def __call__(self):
-                    self.repr = repr(lhs.old)
+                def __init__(self):
                     self.args = []
                     self.kwargs = {}
+
+                def __repr__(self):
+                    return repr(lhs.old)
+
+                def __call__(self):
                     return lhs.old == rhs.old
 
             class New:
-                def __call__(self):
-                    self.repr = repr(lhs.new)
+                def __init__(self):
                     self.args = []
                     self.kwargs = {}
+
+                def __repr__(self):
+                    return repr(lhs.new)
+
+                def __call__(self):
                     return lhs.new == rhs.new
 
             return strangled(cls, '__eq__', use, Old(), New())
@@ -104,17 +118,25 @@ def _strangled_iter(*, use):
             data = IterData(target, use)
 
             class Old:
-                def __call__(self):
-                    self.repr = repr(target.old)
+                def __init__(self):
                     self.args = []
                     self.kwargs = {}
+
+                def __repr__(self):
+                    return repr(target.old)
+
+                def __call__(self):
                     return iter(IterFor(data, "old"))
 
             class New:
-                def __call__(self):
-                    self.repr = repr(target.new)
+                def __init__(self):
                     self.args = []
                     self.kwargs = {}
+
+                def __repr__(self):
+                    return repr(target.new)
+
+                def __call__(self):
                     return iter(IterFor(data, "new"))
 
             return strangled(cls, '__iter__', use, Old(), New())
@@ -188,19 +210,25 @@ class IterData:
 def strangled_f(cls, name, use, obj, f):
 
     class Old:
-        def __call__(self):
-            result = f(obj.old)
-            self.repr = repr(obj.old)
+        def __init__(self):
             self.args = f.args
             self.kwargs = f.kwargs
-            return result
+
+        def __repr__(self):
+            return repr(obj.old)
+
+        def __call__(self):
+            return f(obj.old)
 
     class New:
-        def __call__(self):
-            result = f(obj.new)
-            self.repr = repr(obj.new)
+        def __init__(self):
             self.args = f.args
             self.kwargs = f.kwargs
-            return result
+
+        def __repr__(self):
+            return repr(obj.new)
+
+        def __call__(self):
+            return f(obj.new)
 
     return strangled(cls, name, use, Old(), New())

@@ -23,7 +23,10 @@ def strangled(cls, name, use, old, new):
         do_strangler_check(class_name, name, use,
                            p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
                            s_res, s_exc, s_trace, s_repr, s_args, s_kwargs)
-    return result_or_raise(p_res, p_exc)
+    if p_exc is None:
+        return p_res
+    else:
+        raise p_exc
 
 
 def ps(use, old, new):
@@ -45,20 +48,16 @@ def call(func):
     except Exception as exc:
         f_exc = exc
         f_trace = traceback.format_exc()
+
+    f_args = func.args
+    f_kwargs = func.kwargs
+    # noinspection PyBroadException
     try:
-        f_repr = func.repr
-        f_args = func.args
-        f_kwargs = func.kwargs
+        f_repr = repr(func)
     except Exception:
         pass
+
     return f_res, f_exc, f_trace, f_repr, f_args, f_kwargs
-
-
-def result_or_raise(res, exc):
-    if exc is None:
-        return res
-    else:
-        raise exc
 
 
 def do_strangler_check(class_name, name, use,
