@@ -9,7 +9,7 @@ A public demo repo of
 - the web server scores the [XY Business Game](https://leanpub.com/experientiallearning4sampleexercises) by [Jerry Weinberg](http://jonjagger.blogspot.com/p/jerry-weinberg.html)  
 
 The following blog posts link to this repo:
-- Get Python system-test coverage faster by restarting your server
+- [Get Python system-test coverage faster by restarting your server](https://www.kosli.com/blog/getting-python-integration-test-coverage-without-killing-your-gunicorn-server/)
 - ...
 - ...
 
