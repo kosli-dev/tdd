@@ -18,7 +18,8 @@ def strangled_method(name, *, use):
                         self.kwargs = kwargs
 
                     def __call__(self, obj):
-                        return getattr(obj, name)(*args, **kwargs)
+                        f = getattr(obj, name)
+                        return f(*args, **kwargs)
 
                 return strangled_f(cls, name, use, target, Functor())
 
@@ -143,7 +144,7 @@ def _strangled_iter(*, use):
                     return repr(target.old)
 
                 def __call__(self):
-                    return IterFor(data, "old")
+                    return IterFor(data, data.old)
 
             class New:
                 def __init__(self):
@@ -154,7 +155,7 @@ def _strangled_iter(*, use):
                     return repr(target.new)
 
                 def __call__(self):
-                    return IterFor(data, "new")
+                    return IterFor(data, data.new)
 
             return strangled(cls, '__iter__', use, Old(), New())
 
@@ -165,43 +166,22 @@ def _strangled_iter(*, use):
 
 
 class IterFor:
-    def __init__(self, data, use):
+    def __init__(self, data, seq):
         self.data = data
-        assert use in ["old", "new"]
-        self.use = use
-        self.old_index = 0
-        self.new_index = 0
+        self.index = -1
+        self.seq = seq
 
     def __eq__(self, other):
-        return isinstance(other, IterFor) and \
-            self.data.target is other.data.target and \
-            self.data.old == self.data.new
+        return isinstance(other, IterFor) \
+               and self.data.old == self.data.new
 
     def __repr__(self):
-        if self.use == "old":
-            return f"{self.data.old}"
-        else:
-            return f"{self.data.new}"
+        return f"{self.seq}"
 
     def __next__(self):
-        if self.use == "old":
-            return self._next_old()
-        else:
-            return self._next_new()
-
-    def _next_old(self):
-        if self.old_index < len(self.data.old):
-            result = self.data.old[self.old_index]
-            self.old_index += 1
-            return result
-        else:
-            raise StopIteration
-
-    def _next_new(self):
-        if self.new_index < len(self.data.new):
-            result = self.data.new[self.new_index]
-            self.new_index += 1
-            return result
+        self.index += 1
+        if self.index < len(self.seq):
+            return self.seq[self.index]
         else:
             raise StopIteration
 
@@ -209,16 +189,10 @@ class IterFor:
 class IterData:
 
     def __init__(self, target, use):
-        self.target = target
         if old_is_on(target, use):
-            self.old = []
-            for obj in target.old:
-                self.old.append(obj)
-
+            self.old = [obj for obj in target.old]
         if new_is_on(target, use):
-            self.new = []
-            for obj in target.new:
-                self.new.append(obj)
+            self.new = [obj for obj in target.new]
 
 
 def check_use(use):
