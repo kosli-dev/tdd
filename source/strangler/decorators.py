@@ -177,10 +177,7 @@ class IterFor:
             self.data.target is other.data.target and \
             self.data.old == self.data.new
 
-    def __iter__(self):
-        return self
-
-    def __str__(self):
+    def __repr__(self):
         if self.use == "old":
             return f"{self.data.old}"
         else:

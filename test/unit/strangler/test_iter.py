@@ -171,6 +171,3 @@ class II:
 
     def __eq__(self, other):
         return isinstance(other, II) and self.id == other.id
-
-    def __lt__(self, other):
-        return isinstance(other, II) and self.id < other.id
