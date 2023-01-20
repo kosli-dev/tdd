@@ -8,17 +8,14 @@ use/getter/setter are Tuples with 3 elements
   [0] controls if the New call is made
   [1] controls if the Old call is made
   [2] controls which is 'main' if Old and New calls are being made:
-        - when Old is 'main', return/raise the Old result/exception.
-        - when New is 'main', return/raise the New result/exception.
-        - log any difference to a file.
-
-However, when use/getter/setter=NEW_TEST the behaviour of [2] is altered:
-When a Old/New difference is detected:
-  - Don't log the difference to a file
-  - if running unit-tests
-  -   raise StrangledDifference() [*]
-  - else
-  -   return [@]
+      if Old/New calls exhibit different behaviour
+          if use is NEW_TEST:
+              if running-unit-tests:
+                  raise StrangledDifference(...) # [*]
+              else:
+                  return # [@]
+          else:
+              log difference to a file.
 
 [*] Makes unit-testing the strangler-checking code much easier.
 [@] On staging and production, we want NEW_TEST differences to be
@@ -29,11 +26,11 @@ When a Old/New difference is detected:
 
 # Steps in moving from Old to New...
 
-OLD_ONLY = (True, None, "old")    # 1st - Old call only, returns Old
-NEW_TEST = (True, 'test', "old")  # 2nd - both called, returns Old (See above)
-OLD_MAIN = (True, True, "old")    # 3rd - both called, returns Old
-NEW_MAIN = (True, True, "new")    # 4th - both called, returns New
-NEW_ONLY = (None, True, "new")    # 5th - New call only, returns New
+OLD_ONLY = (True, None, "old")  # 1st - Old call only, returns Old
+NEW_TEST = (True, 'nt', "old")  # 2nd - both called, returns Old (See above)
+OLD_MAIN = (True, True, "old")  # 3rd - both called, returns Old
+NEW_MAIN = (True, True, "new")  # 4th - both called, returns New
+NEW_ONLY = (None, True, "new")  # 5th - New call only, returns New
 
 
 def old_is_on(obj, use):

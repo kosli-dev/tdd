@@ -26,6 +26,16 @@ def test_760e01():
     assert new_is_on(eg, NEW_ONLY)
 
 
+def test_760e02():
+    """
+    Five switches must all be unique.
+    """
+    unique = set()
+    for s in [OLD_ONLY, NEW_TEST, OLD_MAIN, NEW_MAIN, NEW_ONLY]:
+        unique.add(s)
+    assert len(unique) == 5
+
+
 class Eg:
     def __init__(self, o, n):
         self.old = o
