@@ -66,22 +66,26 @@ def call(func):
 def strangled_check(class_name, name, use,
                     p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
                     s_res, s_exc, s_trace, s_repr, s_args, s_kwargs):
+    diagnostic = None
     if p_exc is None and s_exc is None:  # neither raised
         try:
             if p_res == s_res:
                 return
         except Exception as exc:
-            raise StranglingException("p_res == s_res") from exc
+            diagnostic = "\n".join([
+                "'if p_res == s_res:' raised...",
+                str(exc)
+            ])
 
     if p_exc is not None and s_exc is not None:  # both raised
         if type(p_exc) is type(s_exc):
             return
         else:
-            msg = "\n".join([
+            diagnostic = "\n".join([
+                "'type(p_exc) is type(s_exc)' is False...",
                 f"type(p_exc) is {type(p_exc).__name__}",
                 f"type(s_exc) is {type(s_exc).__name__}"
             ])
-            raise StranglingException(msg)
 
     now = datetime.utcfromtimestamp(time.time())
     p_info = info(p_res, p_exc, p_trace)
@@ -102,6 +106,8 @@ def strangled_check(class_name, name, use,
         "new-kwargs": p_kwargs if new_is_primary(use) else s_kwargs,
         # "diff": diff_only(old_res, new_res)
     }
+    if diagnostic:
+        diff["diagnostic"] = diagnostic
 
     if use is NEW_TEST:  # [1]
         if in_unit_tests():
@@ -140,14 +146,8 @@ def strangler_log_filename():
 
 class StrangledDifference(RuntimeError):
 
-    def __init__(self, info):
-        self.info = info
-
-    def __str__(self):
-        return json.dumps(self.info, indent=2)
-
-    def __init__(self, info):
-        self.info = info
+    def __init__(self, diff):
+        self.diff = diff
 
     def __str__(self):
         return json.dumps(self.info, indent=2)

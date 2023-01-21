@@ -94,17 +94,21 @@ def test_bba0d4():
     but the (p_res == s_res) comparison raises an exception
     then map that exception to a custom StranglingException.
     """
-    @strangled_method("f", use=NEW_MAIN)
+    @strangled_method("f", use=NEW_TEST)
     class Different:
         def __init__(self):
             self.old = FuncF(lambda: EqRaiser(42))
             self.new = FuncF(lambda: EqRaiser(42))
 
     d = Different()
-    with pytest.raises(StranglingException) as exc:
+    with pytest.raises(StrangledDifference) as exc:
         d.f()
 
-    assert str(exc.value) == "p_res == s_res"
+    expected = "\n".join([
+        "'if p_res == s_res:' raised...",
+        'oops'
+    ])
+    assert exc.value.diff["diagnostic"] == expected
 
 
 def test_bba0d5():
@@ -113,21 +117,22 @@ def test_bba0d5():
     but the exceptions are of different types
     then raise a custom StranglingException.
     """
-    @strangled_method("f", use=NEW_MAIN)
+    @strangled_method("f", use=NEW_TEST)
     class Different:
         def __init__(self):
             self.old = FuncF(lambda: raiser(NameError()))
             self.new = FuncF(lambda: raiser(RuntimeError()))
 
     d = Different()
-    with pytest.raises(StranglingException) as exc:
+    with pytest.raises(StrangledDifference) as exc:
         d.f()
 
     expected = "\n".join([
-        "type(p_exc) is RuntimeError",
-        "type(s_exc) is NameError"
+        "'type(p_exc) is type(s_exc)' is False...",
+        "type(p_exc) is NameError",
+        "type(s_exc) is RuntimeError"
     ])
-    assert str(exc.value) == expected
+    assert str(exc.value.diff["diagnostic"]) == expected
 
 
 def test_bba0d6():

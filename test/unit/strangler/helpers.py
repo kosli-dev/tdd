@@ -47,7 +47,7 @@ def check_strangler_log(class_name, name, old_result, new_result):
 
 
 def check_exc_log(exc, class_name, name, old_result, new_result):
-    check_log(exc.info, class_name, name, old_result, new_result)
+    check_log(exc.diff, class_name, name, old_result, new_result)
 
 
 def check_log(log, class_name, name, old_result, new_result):
