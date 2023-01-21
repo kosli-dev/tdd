@@ -87,27 +87,33 @@ def strangled_check(class_name, name, use,
                 f"type(s_exc) is {type(s_exc).__name__}"
             ])
 
+    def old(use, p, s):
+        return p if old_is_primary(use) else s
+
+    def new(use, p, s):
+        return p if new_is_primary(use) else s
+
     now = datetime.utcfromtimestamp(time.time())
     p_info = info(p_res, p_exc, p_trace)
     s_info = info(s_res, s_exc, s_trace)
-    old_res = p_res if old_is_primary(use) else s_res
-    new_res = p_res if new_is_primary(use) else s_res
+    # old_res = old(use, p_res, s_res)
+    # new_res = new(use, p_res, s_res)
     diff = {
         "time": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "class": class_name,
         "name": name,
         # "diff": diff_only(old_res, new_res)
         "old": {
-            "repr": p_repr if old_is_primary(use) else s_repr,
-            "args": p_args if old_is_primary(use) else s_args,
-            "kwargs": p_kwargs if old_is_primary(use) else s_kwargs,
-            "info": p_info if old_is_primary(use) else s_info
+            "repr": old(use, p_repr, s_repr),
+            "args": old(use, p_args, s_args),
+            "kwargs": old(use, p_kwargs, s_kwargs),
+            "info": old(use, p_info, s_info)
         },
         "new": {
-            "repr": p_repr if new_is_primary(use) else s_repr,
-            "args": p_args if new_is_primary(use) else s_args,
-            "kwargs": p_kwargs if new_is_primary(use) else s_kwargs,
-            "info": p_info if new_is_primary(use) else s_info
+            "repr": new(use, p_repr, s_repr),
+            "args": new(use, p_args, s_args),
+            "kwargs": new(use, p_kwargs, s_kwargs),
+            "info": new(use, p_info, s_info)
         }
     }
     if diagnostic:
