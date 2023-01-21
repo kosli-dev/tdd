@@ -45,7 +45,6 @@ def call(func):
     f_res = "not-set"
     f_exc = None
     f_trace = ""
-    f_repr = "not-set"
     try:
         f_res = func()
     except Exception as exc:
@@ -54,11 +53,10 @@ def call(func):
 
     f_args = func.args
     f_kwargs = func.kwargs
-    # noinspection PyBroadException
     try:
         f_repr = repr(func)
-    except Exception:
-        pass
+    except Exception as exc:
+        f_repr = str(exc)
 
     return f_res, f_exc, f_trace, f_repr, f_args, f_kwargs
 
