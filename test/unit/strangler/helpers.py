@@ -54,6 +54,6 @@ def check_log(log, class_name, name, old_result, new_result):
     diagnostic = json.dumps(log, indent=2)
     assert log["class"] == class_name, diagnostic
     assert log["name"] == name, diagnostic
-    assert log["old"]["info"]["result"] == old_result, diagnostic
-    assert log["new"]["info"]["result"] == new_result, diagnostic
+    assert log["old"]["result"] == old_result, diagnostic
+    assert log["new"]["result"] == new_result, diagnostic
 

@@ -62,8 +62,8 @@ def test_d96702():
     assert strangler_log_file_exists()
     with open(strangler_log_filename(), "r") as file:
         log = json.loads(file.read())
-        assert log["old"]["info"]["result"] == '37'
-        assert log["new"]["info"]["result"] == '38'
+        assert log["old"]["result"] == '37'
+        assert log["new"]["result"] == '38'
 
 
 class FuncF:

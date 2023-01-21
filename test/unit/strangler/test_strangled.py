@@ -78,14 +78,11 @@ def test_bba0d3():
         d.f()
     s = f"{exc.value}"
     info = json.loads(s)
-    assert info["old"]["info"] == {
-        "result": '42',
-        "exception": ["None", ""]
-    }
-    assert info["new"]["info"] == {
-        "result": '43',
-        "exception": ["None", ""]
-    }
+    assert info["old"]["result"] == '42'
+    assert info["old"]["exception"] == "None"
+
+    assert info["new"]["result"] == '43'
+    assert info["new"]["exception"] == "None"
 
 
 def test_bba0d4():

@@ -107,8 +107,6 @@ def strangled_check(class_name, name, use,
         diagnostic = f"{primary()} {raised(p_exc)}, {secondary()} {raised(s_exc)}"
 
     now = datetime.utcfromtimestamp(time.time())
-    p_info = info(p_res, p_exc, p_trace)
-    s_info = info(s_res, s_exc, s_trace)
     # old_res = old(p_res, s_res)
     # new_res = new(p_res, s_res)
     diff = {
@@ -122,14 +120,18 @@ def strangled_check(class_name, name, use,
             "repr": old(p_repr, s_repr),
             "args": old(p_args, s_args),
             "kwargs": old(p_kwargs, s_kwargs),
-            "info": old(p_info, s_info)
+            "result": f"{old(p_res, s_res)}",
+            "exception": f"{old(p_exc, s_exc)}",
+            "trace": old(p_trace, s_trace).split("\n")
         },
         "new": {
             "is": new("primary", "secondary"),
             "repr": new(p_repr, s_repr),
             "args": new(p_args, s_args),
             "kwargs": new(p_kwargs, s_kwargs),
-            "info": new(p_info, s_info)
+            "result": f"{new(p_res, s_res)}",
+            "exception": f"{new(p_exc, s_exc)}",
+            "trace": new(p_trace, s_trace).split("\n")
         }
     }
 
@@ -148,13 +150,6 @@ def old_is_primary(use):
 
 def new_is_primary(use):
     return use[2] == "new"
-
-
-def info(res, exc, trace):
-    return {
-        "result": f"{res}",
-        "exception": [f"{exc}"] + trace.split("\n")
-    }
 
 
 def log_difference(diff):
