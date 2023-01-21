@@ -166,10 +166,4 @@ class StrangledDifference(RuntimeError):
         self.diff = diff
 
     def __str__(self):
-        return json.dumps(self.info, indent=2)
-
-
-class StranglingException(RuntimeError):
-
-    def __init__(self, msg):
-        super().__init__(msg)
+        return json.dumps(self.diff, indent=2)
