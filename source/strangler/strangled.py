@@ -91,7 +91,7 @@ def strangled_check(class_name, name, use,
             return
         else:
             diagnostic = "\n".join([
-                "'type(p_exc) is type(s_exc)' --> False...",
+                "type(p_exc) != type(s_exc)",
                 f"type(p_exc) is {type(p_exc).__name__}",
                 f"type(s_exc) is {type(s_exc).__name__}"
             ])

@@ -128,7 +128,7 @@ def test_bba0d5():
         d.f()
 
     expected = "\n".join([
-        "'type(p_exc) is type(s_exc)' --> False...",
+        "type(p_exc) != type(s_exc)",
         "type(p_exc) is NameError",
         "type(s_exc) is RuntimeError"
     ])
