@@ -20,9 +20,9 @@ def strangled(cls, name, use, old, new):
     p_res, p_exc, p_trace, p_repr, p_args, p_kwargs = call(primary)
     if secondary is not None:
         s_res, s_exc, s_trace, s_repr, s_args, s_kwargs = call(secondary)
-        do_strangler_check(class_name, name, use,
-                           p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
-                           s_res, s_exc, s_trace, s_repr, s_args, s_kwargs)
+        strangled_check(class_name, name, use,
+                        p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
+                        s_res, s_exc, s_trace, s_repr, s_args, s_kwargs)
     if p_exc is None:
         return p_res
     else:
@@ -63,15 +63,25 @@ def call(func):
     return f_res, f_exc, f_trace, f_repr, f_args, f_kwargs
 
 
-def do_strangler_check(class_name, name, use,
-                       p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
-                       s_res, s_exc, s_trace, s_repr, s_args, s_kwargs):
+def strangled_check(class_name, name, use,
+                    p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
+                    s_res, s_exc, s_trace, s_repr, s_args, s_kwargs):
     if p_exc is None and s_exc is None:  # neither raised
-        if p_res == s_res:               # TODO: could raise
-            return                       # ok
+        try:
+            if p_res == s_res:
+                return
+        except Exception as exc:
+            raise StranglingException("p_res == s_res") from exc
 
-    if p_exc is not None and s_exc is not None:
-        return                           # both raised TODO: same exception?
+    if p_exc is not None and s_exc is not None:  # both raised
+        if type(p_exc) is type(s_exc):
+            return
+        else:
+            msg = "\n".join([
+                f"type(p_exc) is {type(p_exc).__name__}",
+                f"type(s_exc) is {type(s_exc).__name__}"
+            ])
+            raise StranglingException(msg)
 
     now = datetime.utcfromtimestamp(time.time())
     p_info = info(p_res, p_exc, p_trace)
@@ -123,6 +133,11 @@ def log_difference(diff):
         f.write(json.dumps(diff, indent=2))
 
 
+def strangler_log_filename():
+    tid = threading.get_ident()
+    return f"/tmp/strangler_logs/log.{tid}"
+
+
 class StrangledDifference(RuntimeError):
 
     def __init__(self, info):
@@ -138,6 +153,7 @@ class StrangledDifference(RuntimeError):
         return json.dumps(self.info, indent=2)
 
 
-def strangler_log_filename():
-    tid = threading.get_ident()
-    return f"/tmp/strangler_logs/log.{tid}"
+class StranglingException(RuntimeError):
+
+    def __init__(self, msg):
+        super().__init__(msg)
