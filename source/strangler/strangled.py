@@ -66,13 +66,6 @@ def call(func):
 def strangled_check(class_name, name, use,
                     p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
                     s_res, s_exc, s_trace, s_repr, s_args, s_kwargs):
-
-    def old(p, s):
-        return p if old_is_primary(use) else s
-
-    def new(p, s):
-        return p if new_is_primary(use) else s
-
     diagnostic = None
     neither_raised = p_exc is None and s_exc is None
     both_raised = p_exc is not None and s_exc is not None
@@ -105,6 +98,12 @@ def strangled_check(class_name, name, use,
         def raised(ex):
             return "raised" if ex is not None else "did not raise"
         diagnostic = f"{primary()} {raised(p_exc)}, {secondary()} {raised(s_exc)}"
+
+    def old(p, s):
+        return p if old_is_primary(use) else s
+
+    def new(p, s):
+        return p if new_is_primary(use) else s
 
     now = datetime.utcfromtimestamp(time.time())
     # old_res = old(p_res, s_res)
