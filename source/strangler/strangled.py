@@ -66,8 +66,18 @@ def call(func):
 def strangled_check(class_name, name, use,
                     p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
                     s_res, s_exc, s_trace, s_repr, s_args, s_kwargs):
+
+    def old(p, s):
+        return p if old_is_primary(use) else s
+
+    def new(p, s):
+        return p if new_is_primary(use) else s
+
     diagnostic = None
-    if p_exc is None and s_exc is None:  # neither raised
+    neither_raised = p_exc is None and s_exc is None
+    both_raised = p_exc is not None and s_exc is not None
+
+    if neither_raised:
         try:
             if p_res == s_res:
                 return
@@ -76,48 +86,52 @@ def strangled_check(class_name, name, use,
                 "'if p_res == s_res:' raised...",
                 str(exc)
             ])
-
-    if p_exc is not None and s_exc is not None:  # both raised
+    elif both_raised:
         if type(p_exc) is type(s_exc):
             return
         else:
             diagnostic = "\n".join([
-                "'type(p_exc) is type(s_exc)' is False...",
+                "'type(p_exc) is type(s_exc)' --> False...",
                 f"type(p_exc) is {type(p_exc).__name__}",
                 f"type(s_exc) is {type(s_exc).__name__}"
             ])
+    else:
+        def primary():
+            return "old" if old_is_primary(use) else "new"
 
-    def old(use, p, s):
-        return p if old_is_primary(use) else s
+        def secondary():
+            return "old" if new_is_primary(use) else "old"
 
-    def new(use, p, s):
-        return p if new_is_primary(use) else s
+        def raised(ex):
+            return "raised" if ex is not None else "did not raise"
+        diagnostic = f"{primary()} {raised(p_exc)}, {secondary()} {raised(s_exc)}"
 
     now = datetime.utcfromtimestamp(time.time())
     p_info = info(p_res, p_exc, p_trace)
     s_info = info(s_res, s_exc, s_trace)
-    # old_res = old(use, p_res, s_res)
-    # new_res = new(use, p_res, s_res)
+    # old_res = old(p_res, s_res)
+    # new_res = new(p_res, s_res)
     diff = {
         "time": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "class": class_name,
         "name": name,
+        "diagnostic": diagnostic,
         # "diff": diff_only(old_res, new_res)
         "old": {
-            "repr": old(use, p_repr, s_repr),
-            "args": old(use, p_args, s_args),
-            "kwargs": old(use, p_kwargs, s_kwargs),
-            "info": old(use, p_info, s_info)
+            "is": old("primary", "secondary"),
+            "repr": old(p_repr, s_repr),
+            "args": old(p_args, s_args),
+            "kwargs": old(p_kwargs, s_kwargs),
+            "info": old(p_info, s_info)
         },
         "new": {
-            "repr": new(use, p_repr, s_repr),
-            "args": new(use, p_args, s_args),
-            "kwargs": new(use, p_kwargs, s_kwargs),
-            "info": new(use, p_info, s_info)
+            "is": new("primary", "secondary"),
+            "repr": new(p_repr, s_repr),
+            "args": new(p_args, s_args),
+            "kwargs": new(p_kwargs, s_kwargs),
+            "info": new(p_info, s_info)
         }
     }
-    if diagnostic:
-        diff["diagnostic"] = diagnostic
 
     if use is NEW_TEST:  # [1]
         if in_unit_tests():
