@@ -42,14 +42,14 @@ def ps(use, old, new):
 
 
 def call(func):
-    f_res = "not-set"
-    f_exc = None
-    f_trace = ""
     try:
+        f_exc = None
+        f_trace = ""
         f_res = func()
     except Exception as exc:
         f_exc = exc
         f_trace = traceback.format_exc()
+        f_res = "not-set"
 
     f_args = func.args
     f_kwargs = func.kwargs
