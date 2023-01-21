@@ -96,15 +96,19 @@ def strangled_check(class_name, name, use,
         "time": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "class": class_name,
         "name": name,
-        "old-info": p_info if old_is_primary(use) else s_info,
-        "old-repr": p_repr if old_is_primary(use) else s_repr,
-        "old-args": p_args if old_is_primary(use) else s_args,
-        "old-kwargs": p_kwargs if old_is_primary(use) else s_kwargs,
-        "new-info": p_info if new_is_primary(use) else s_info,
-        "new-repr": p_repr if new_is_primary(use) else s_repr,
-        "new-args": p_args if new_is_primary(use) else s_args,
-        "new-kwargs": p_kwargs if new_is_primary(use) else s_kwargs,
         # "diff": diff_only(old_res, new_res)
+        "old": {
+            "repr": p_repr if old_is_primary(use) else s_repr,
+            "args": p_args if old_is_primary(use) else s_args,
+            "kwargs": p_kwargs if old_is_primary(use) else s_kwargs,
+            "info": p_info if old_is_primary(use) else s_info
+        },
+        "new": {
+            "repr": p_repr if new_is_primary(use) else s_repr,
+            "args": p_args if new_is_primary(use) else s_args,
+            "kwargs": p_kwargs if new_is_primary(use) else s_kwargs,
+            "info": p_info if new_is_primary(use) else s_info
+        }
     }
     if diagnostic:
         diff["diagnostic"] = diagnostic
