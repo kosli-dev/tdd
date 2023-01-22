@@ -102,10 +102,10 @@ def test_bba0d4():
         d.f()
 
     expected = "\n".join([
-        "'if p_res == s_res:' raised...",
+        "old(p_res) == new(s_res) --> raised",
         'oops'
     ])
-    assert exc.value.diff["diagnostic"] == expected
+    assert exc.value.diff["summary"] == expected
 
 
 def test_bba0d5():
@@ -125,11 +125,11 @@ def test_bba0d5():
         d.f()
 
     expected = "\n".join([
-        "type(p_exc) != type(s_exc)",
+        "type(old(p_exc)) != type(new(s_exc))",
         "type(p_exc) is NameError",
         "type(s_exc) is RuntimeError"
     ])
-    assert str(exc.value.diff["diagnostic"]) == expected
+    assert str(exc.value.diff["summary"]) == expected
 
 
 def test_bba0d6():

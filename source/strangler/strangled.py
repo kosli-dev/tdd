@@ -64,7 +64,12 @@ def call(func):
 def strangled_check(class_name, name, use,
                     p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
                     s_res, s_exc, s_trace, s_repr, s_args, s_kwargs):
-    diagnostic = None
+
+    if old_is_primary(use):
+        primary, secondary = "old", "new"
+    else:
+        primary, secondary = "new", "old"
+
     neither_raised = p_exc is None and s_exc is None
     both_raised = p_exc is not None and s_exc is not None
 
@@ -72,30 +77,26 @@ def strangled_check(class_name, name, use,
         try:
             if p_res == s_res:
                 return
+            else:
+                summary = f"{primary}(p_res) == {secondary}(s_res) --> False"
         except Exception as exc:
-            diagnostic = "\n".join([
-                "'if p_res == s_res:' raised...",
+            summary = "\n".join([
+                f"{primary}(p_res) == {secondary}(s_res) --> raised",
                 str(exc)
             ])
     elif both_raised:
         if type(p_exc) is type(s_exc):
             return
         else:
-            diagnostic = "\n".join([
-                "type(p_exc) != type(s_exc)",
+            summary = "\n".join([
+                f"type({primary}(p_exc)) != type({secondary}(s_exc))",
                 f"type(p_exc) is {type(p_exc).__name__}",
                 f"type(s_exc) is {type(s_exc).__name__}"
             ])
     else:
-        def primary():
-            return "old" if old_is_primary(use) else "new"
-
-        def secondary():
-            return "old" if new_is_primary(use) else "old"
-
         def raised(ex):
             return "raised" if ex is not None else "did not raise"
-        diagnostic = f"{primary()} {raised(p_exc)}, {secondary()} {raised(s_exc)}"
+        summary = f"{primary} {raised(p_exc)}, {secondary} {raised(s_exc)}"
 
     def old(p, s):
         return p if old_is_primary(use) else s
@@ -107,10 +108,10 @@ def strangled_check(class_name, name, use,
     # old_res = old(p_res, s_res)
     # new_res = new(p_res, s_res)
     diff = {
+        "summary": summary,
         "time": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "class": class_name,
         "name": name,
-        "diagnostic": diagnostic,
         # "diff": diff_only(old_res, new_res)
         "old": {
             "is": old("primary", "secondary"),
