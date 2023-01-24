@@ -132,13 +132,9 @@ def squad_decision(letter):
 
 
 def well_formed(goes):
-    def all_strings():
-        return all(isinstance(go, str) for go in goes)
-
-    def all_len_5():
-        return all(len(go) == 5 for go in goes)
-
-    return all_strings() and all_len_5()
+    all_strings = all(isinstance(go, str) for go in goes)
+    all_len_5 = all(len(go) == 5 for go in goes)
+    return all_strings and all_len_5
 
 
 def squad_multipliers(letters, are_words, is_sentence, is_profound):
