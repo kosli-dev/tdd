@@ -23,7 +23,7 @@ def strangled(cls, name, use, old, new):
         n["is"] = "primary" if new_is_primary(use) else "secondary"
 
     if use[0] and use[1]:
-        strangled_check(cls.__name__, name, o, n)
+        strangled_check(cls, name, o, n)
 
     c = o if old_is_primary(use) else n
     if c["exception"] is None:
@@ -59,7 +59,7 @@ def call(func):
     }
 
 
-def strangled_check(class_name, name, old, new):
+def strangled_check(cls, name, old, new):
     o_exc = old["exception"]
     n_exc = new["exception"]
     neither_raised = all(exc is None for exc in [o_exc, n_exc])
@@ -103,7 +103,7 @@ def strangled_check(class_name, name, old, new):
     diff = {
         "summary": summary,
         "time": now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "class": class_name,
+        "class": cls.__name__,
         "name": name,
         # "diff": diff_only(old_res, new_res)
         "old": enhanced(old),
