@@ -33,7 +33,6 @@ def ps(use, old, new):
     # Select primary and/or secondary
     d = {
         OLD_ONLY: (old, None),
-        NEW_TEST: (old, new),  # See [1]
         OLD_MAIN: (old, new),
         NEW_MAIN: (new, old),
         NEW_ONLY: (new, None)
@@ -133,11 +132,8 @@ def strangled_check(class_name, name, use,
         }
     }
 
-    if use is NEW_TEST:  # [1]
-        if in_unit_tests():
-            raise StrangledDifference(diff)
-        else:
-            return
+    if in_unit_tests():
+        raise StrangledDifference(diff)
     else:
         log_difference(diff)
 

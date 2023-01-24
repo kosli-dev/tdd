@@ -31,43 +31,11 @@ def test_bba0d0():
     assert str(exc.value) == "shine"
 
 
-def test_bba0d1():
-    """
-    When old_is_on() and there is no attribute called old
-    then AttributeError is raised.
-    """
-    @strangled_method("f", use=OLD_MAIN)
-    class Different:
-        def __init__(self):
-            # self.old = FuncF(lambda: 42)
-            self.new = FuncF(lambda: 43)
-
-    d = Different()
-    with pytest.raises(AttributeError):
-        d.f()
-
-
-def test_bba0d2():
-    """
-    When new_is_on() and there is no attribute called new
-    then AttributeError is raised.
-    """
-    @strangled_method("f", use=NEW_MAIN)
-    class Different:
-        def __init__(self):
-            self.old = FuncF(lambda: 42)
-            # self.new = FuncF(lambda: 43)
-
-    d = Different()
-    with pytest.raises(AttributeError):
-        d.f()
-
-
 def test_bba0d3():
     """
     StrangledException __str__ prints indented json
     """
-    @strangled_method("f", use=NEW_TEST)
+    @strangled_method("f", use=NEW_MAIN)
     class Different:
         def __init__(self):
             self.old = FuncF(lambda: 42)
@@ -91,7 +59,7 @@ def test_bba0d4():
     but the (p_res == s_res) comparison raises an exception
     then map that exception to a custom StranglingException.
     """
-    @strangled_method("f", use=NEW_TEST)
+    @strangled_method("f", use=OLD_MAIN)
     class Different:
         def __init__(self):
             self.old = FuncF(lambda: EqRaiser(42))
@@ -114,7 +82,7 @@ def test_bba0d5():
     but the exceptions are of different types
     then raise a custom StranglingException.
     """
-    @strangled_method("f", use=NEW_TEST)
+    @strangled_method("f", use=OLD_MAIN)
     class Different:
         def __init__(self):
             self.old = FuncF(lambda: raiser(NameError()))

@@ -196,7 +196,7 @@ class IterData:
 
 
 def check_use(use):
-    assert use in [OLD_ONLY, NEW_TEST, OLD_MAIN, NEW_MAIN, NEW_ONLY]
+    assert use in [OLD_ONLY, OLD_MAIN, NEW_MAIN, NEW_ONLY]
 
 
 def check_getter(getter):

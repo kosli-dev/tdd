@@ -9,7 +9,6 @@ def test_011110():
     class Diff:
         def __init__(self):
             self.old = Eq(lambda: True)
-            self.new = None
     d = Diff()
 
     assert d == d
@@ -17,8 +16,8 @@ def test_011110():
 
 
 def test_011111():
-    """NEW_TEST On Same"""
-    @strangled_method('__eq__', use=NEW_TEST)
+    """OLD_MAIN"""
+    @strangled_method('__eq__', use=OLD_MAIN)
     class Same:
         def __init__(self):
             self.old = Eq(lambda: True)
@@ -28,10 +27,7 @@ def test_011111():
     assert s == s
     assert no_strangler_logging()
 
-
-def test_011112():
-    """NEW_TEST On Different"""
-    @strangled_method('__eq__', use=NEW_TEST)
+    @strangled_method('__eq__', use=OLD_MAIN)
     class Diff:
         def __init__(self):
             self.old = Eq(lambda: True)
@@ -40,26 +36,12 @@ def test_011112():
 
     with pytest.raises(StrangledDifference) as exc:
         d == d
-    check_exc_log(exc.value, "Diff", '__eq__', 'True', 'False')
-    assert no_strangler_logging()
-
-
-def test_011113():
-    """NEW_TEST Off Different"""
-    @strangled_method('__eq__', use=NEW_TEST)
-    class Diff:
-        def __init__(self):
-            self.old = Eq(lambda: True)
-            self.new = None
-    d = Diff()
-
-    with ScopedEnvVar('TEST_MODE', 'not-unit'):
-        assert d == d
+    check_exc(exc, 'True', 'False')
     assert no_strangler_logging()
 
 
 def test_011114():
-    """NEW_MAIN Same"""
+    """NEW_MAIN"""
     @strangled_method('__eq__', use=NEW_MAIN)
     class Same:
         def __init__(self):
@@ -70,9 +52,6 @@ def test_011114():
     assert s == s
     assert no_strangler_logging()
 
-
-def test_011115():
-    """NEW_MAIN Different"""
     @strangled_method('__eq__', use=NEW_MAIN)
     class Diff:
         def __init__(self):
@@ -80,33 +59,9 @@ def test_011115():
             self.new = Eq(lambda: False)
     d = Diff()
 
-    assert d != d
-    check_log('True', 'False')
-
-
-def test_011116():
-    """NEW_MAIN Different"""
-    @strangled_method('__eq__', use=NEW_MAIN)
-    class Diff:
-        def __init__(self):
-            self.old = Eq(lambda: True)
-            self.new = Eq(lambda: False)
-    d = Diff()
-
-    assert d != d
-    check_log('True', 'False')
-
-
-def test_011117():
-    """NEW_MAIN Same"""
-    @strangled_method('__eq__', use=NEW_MAIN)
-    class Diff:
-        def __init__(self):
-            self.old = Eq(lambda: False)
-            self.new = Eq(lambda: False)
-    d = Diff()
-
-    assert d != d
+    with pytest.raises(StrangledDifference) as exc:
+        d == d
+    check_exc(exc, 'True', 'False')
     assert no_strangler_logging()
 
 
@@ -115,16 +70,15 @@ def test_011118():
     @strangled_method('__eq__', use=NEW_ONLY)
     class Diff:
         def __init__(self):
-            self.old = None
-            self.new = Eq(lambda: True)
+            self.new = Eq(lambda: False)
     d = Diff()
 
-    assert d == d
+    assert (d == d) is False
     assert no_strangler_logging()
 
 
-def check_log(old, new):
-    check_strangler_log('Diff', '__eq__', old, new)
+def check_exc(exc, old, new):
+    check_strangler_exc(exc, "Diff", '__eq__', old, new)
 
 
 class Eq:
