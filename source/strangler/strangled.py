@@ -90,21 +90,15 @@ def strangled_check(class_name, name, old, new):
             return "raised" if ex is not None else "did not raise"
         summary = f"old {raised(o_exc)}, new {raised(n_exc)}"
 
-    old = deepcopy(old)
-    if old["exception"] is not None:
-        old["exception"] = type(old["exception"]).__name__
-    try:
-        old["result"] = f"{repr(old['result'])}"
-    except Exception as exc:
-        old["result"] = [str(exc)] + traceback.format_exc().split("\n")
-
-    new = deepcopy(new)
-    if new["exception"] is not None:
-        new["exception"] = type(new["exception"]).__name__
-    try:
-        new["result"] = f"{repr(new['result'])}"
-    except Exception as exc:
-        new["result"] = [str(exc)] + traceback.format_exc().split("\n")
+    def enhanced(h):
+        h = deepcopy(h)
+        if h["exception"] is not None:
+            h["exception"] = type(h["exception"]).__name__
+        try:
+            h["result"] = f"{repr(h['result'])}"
+        except Exception as exc:
+            h["result"] = [str(exc)] + traceback.format_exc().split("\n")
+        return h
 
     diff = {
         "summary": summary,
@@ -112,10 +106,9 @@ def strangled_check(class_name, name, old, new):
         "class": class_name,
         "name": name,
         # "diff": diff_only(old_res, new_res)
-        "old": old,
-        "new": new,
+        "old": enhanced(old),
+        "new": enhanced(new),
     }
-
     if in_unit_tests():
         raise StrangledDifference(diff)
     else:
