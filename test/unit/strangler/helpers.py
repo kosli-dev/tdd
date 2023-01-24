@@ -22,11 +22,8 @@ class ScopedEnvVar(object):
             os.environ[self.name] = self.old_value
 
 
-def raiser(exc=None):
-    if exc is None:
-        raise RuntimeError()
-    else:
-        raise exc
+def raiser(exc):
+    raise exc
 
 
 def strangler_log_file_delete():
@@ -42,8 +39,8 @@ def no_strangler_logging():
     return get_strangler_log() is None
 
 
-def check_strangler_log(class_name, name, old_result, new_result):
-    _check_log(get_strangler_log(), class_name, name, old_result, new_result)
+#def check_strangler_log(class_name, name, old_result, new_result):
+#    _check_log(get_strangler_log(), class_name, name, old_result, new_result)
 
 
 def check_strangler_exc(exc, class_name, name, old_result, new_result):
