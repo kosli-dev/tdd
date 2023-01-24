@@ -9,8 +9,8 @@ def test_011500():
     class Diff:
         def __init__(self):
             self.old = Func(lambda: 11)
-    d = Diff()
 
+    d = Diff()
     assert d.f() == 11
     assert no_strangler_logging()
 
@@ -22,8 +22,8 @@ def test_011504():
         def __init__(self):
             self.old = Func(lambda: 42)
             self.new = Func(lambda: 42)
-    s = Same()
 
+    s = Same()
     assert s.f() == 42
     assert no_strangler_logging()
 
@@ -32,11 +32,11 @@ def test_011504():
         def __init__(self):
             self.old = Func(lambda: 17)
             self.new = Func(lambda: 18)
-    d = Diff()
 
+    d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.f()
-    check_exc(exc, '17', '18')
+    check_exc(exc, 17, 18)
 
 
 def test_011506():
@@ -46,6 +46,7 @@ def test_011506():
         def __init__(self):
             self.old = Func(lambda: 33)
             self.new = Func(lambda: 33)
+
     s = Same()
     assert s.f() == 33
     assert no_strangler_logging()
@@ -55,11 +56,11 @@ def test_011506():
         def __init__(self):
             self.old = Func(lambda: 17)
             self.new = Func(lambda: 18)
-    d = Diff()
 
+    d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.f()
-    check_exc(exc, '17', '18')
+    check_exc(exc, 17, 18)
 
 
 def test_011507():
@@ -74,7 +75,7 @@ def test_011507():
 
 
 def check_exc(exc, old, new):
-    check_strangler_exc(exc, 'Diff', 'f', old, new)
+    check_strangler_exc(exc, 'Diff', 'f', f"{old}", f"{new}")
 
 
 class Func:

@@ -9,11 +9,12 @@ def test_011600():
     class Diff:
         def __init__(self):
             self.old = Prop(42)
-    d = Diff()
 
+    d = Diff()
     assert d.p == 42
     assert no_strangler_logging()
 
+    d = Diff()
     d.p = 11
     assert no_strangler_logging()
     assert d.p == 11
@@ -24,31 +25,33 @@ def test_011604():
     @strangled_property("p", getter=OLD_MAIN, setter=OLD_MAIN)
     class Same:
         def __init__(self):
-            self.old = Prop("ccc")
-            self.new = Prop("ccc")
+            self.old = Prop(12)
+            self.new = Prop(12)
+
     s = Same()
-
-    assert s.p == "ccc"
+    assert s.p == 12
     assert no_strangler_logging()
 
-    s.p = "anything"
+    s = Same()
+    s.p = 13
     assert no_strangler_logging()
-    assert s.p == "anything"
+    assert s.p == 13
 
     @strangled_property("p", getter=OLD_MAIN, setter=OLD_MAIN)
     class Diff:
         def __init__(self):
-            self.old = Prop("ccc")
+            self.old = Prop(4)
             self.new = PropRaiser()
-    d = Diff()
 
+    d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.p
-    check_exc(exc, 'ccc', 'not-set')
+    check_exc(exc, '4', "'not-set'")
 
+    d = Diff()
     with pytest.raises(StrangledDifference) as exc:
-        d.p = "anything"
-    check_exc(exc, 'None', 'not-set')
+        d.p = 42
+    check_exc(exc, 'None', "'not-set'")
 
 
 def test_011606():
@@ -58,11 +61,12 @@ def test_011606():
         def __init__(self):
             self.old = Prop(123)
             self.new = Prop(123)
-    s = Same()
 
+    s = Same()
     assert s.p == 123
     assert no_strangler_logging()
 
+    s = Same()
     s.p = "foobar"
     assert no_strangler_logging()
     assert s.p == "foobar"
@@ -72,15 +76,16 @@ def test_011606():
         def __init__(self):
             self.old = PropRaiser()
             self.new = Prop(45)
-    d = Diff()
 
+    d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.p
-    check_exc(exc, 'not-set', '45')
+    check_exc(exc, "'not-set'", '45')
 
+    d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.p = "anything"
-    check_exc(exc, 'not-set', 'None')
+    check_exc(exc, "'not-set'", 'None')
 
 
 def test_011608():
@@ -89,14 +94,15 @@ def test_011608():
     class Diff:
         def __init__(self):
             self.new = Prop(99)
-    d = Diff()
 
+    d = Diff()
     assert d.p == 99
     assert no_strangler_logging()
 
-    d.p = "anything"
+    d = Diff()
+    d.p = 42
     assert no_strangler_logging()
-    assert d.p == "anything"
+    assert d.p == 42
 
 
 def check_exc(exc, old, new):

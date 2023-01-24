@@ -1,3 +1,4 @@
+from copy import deepcopy
 from datetime import datetime
 import json
 import threading
@@ -5,7 +6,6 @@ import time
 import traceback
 from .in_unit_tests import in_unit_tests
 # from lib.diff import diff_only
-from .switch import *
 from .log import set_strangler_log
 
 
@@ -15,127 +15,115 @@ def strangled(cls, name, use, old, new):
     name: eg "login_id"
     use: eg OLD_MAIN
     """
-    class_name = cls.__name__
-    primary, secondary = ps(use, old, new)
-    p_res, p_exc, p_trace, p_repr, p_args, p_kwargs = call(primary)
-    if secondary is not None:
-        s_res, s_exc, s_trace, s_repr, s_args, s_kwargs = call(secondary)
-        strangled_check(class_name, name, use,
-                        p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
-                        s_res, s_exc, s_trace, s_repr, s_args, s_kwargs)
-    if p_exc is None:
-        return p_res
+    if use[0]:
+        o = call(old)
+        o["is"] = "primary" if old_is_primary(use) else "secondary"
+    if use[1]:
+        n = call(new)
+        n["is"] = "primary" if new_is_primary(use) else "secondary"
+
+    if use[0] and use[1]:
+        strangled_check(cls.__name__, name, o, n)
+
+    c = o if old_is_primary(use) else n
+    if c["exception"] is None:
+        return c["result"]
     else:
-        raise p_exc
-
-
-def ps(use, old, new):
-    # Select primary and/or secondary
-    d = {
-        OLD_ONLY: (old, None),
-        OLD_MAIN: (old, new),
-        NEW_MAIN: (new, old),
-        NEW_ONLY: (new, None)
-    }
-    return d[use]
+        raise c["exception"]
 
 
 def call(func):
     try:
-        f_exc = None
-        f_trace = ""
-        f_res = func()
+        exception = None
+        trace = ""
+        result = func()
     except Exception as exc:
-        f_exc = exc
-        f_trace = traceback.format_exc()
-        f_res = "not-set"
+        exception = exc
+        trace = traceback.format_exc()
+        result = "not-set"
 
-    f_args = func.args
-    f_kwargs = func.kwargs
+    args = func.args
+    kwargs = func.kwargs
     try:
-        f_repr = repr(func)
+        rep = repr(func)
     except Exception as exc:
-        f_repr = str(exc)
+        rep = str(exc)
 
-    return f_res, f_exc, f_trace, f_repr, f_args, f_kwargs
+    return {
+        "result": result,
+        "exception": exception,
+        "trace": trace.split("\n"),
+        "repr": rep,
+        "args": args,
+        "kwargs": kwargs
+    }
 
 
-def strangled_check(class_name, name, use,
-                    p_res, p_exc, p_trace, p_repr, p_args, p_kwargs,
-                    s_res, s_exc, s_trace, s_repr, s_args, s_kwargs):
-
-    if old_is_primary(use):
-        primary, secondary = "old", "new"
-    else:
-        primary, secondary = "new", "old"
-
-    neither_raised = p_exc is None and s_exc is None
-    both_raised = p_exc is not None and s_exc is not None
+def strangled_check(class_name, name, old, new):
+    o_exc = old["exception"]
+    n_exc = new["exception"]
+    neither_raised = all(exc is None for exc in [o_exc, n_exc])
+    both_raised = all(exc is not None for exc in [o_exc, n_exc])
 
     if neither_raised:
         try:
-            if p_res == s_res:
+            if old["result"] == new["result"]:
                 return
             else:
-                summary = f"{primary}(p_res) == {secondary}(s_res) --> False"
+                summary = f"old_result == new_result --> False"
         except Exception as exc:
             summary = "\n".join([
-                f"{primary}(p_res) == {secondary}(s_res) --> raised",
+                f"old_result == new_result --> raised",
                 str(exc)
             ])
     elif both_raised:
-        if type(p_exc) is type(s_exc):
+        if type(o_exc) is type(n_exc):
             return
         else:
             summary = "\n".join([
-                f"type({primary}(p_exc)) != type({secondary}(s_exc))",
-                f"type(p_exc) is {type(p_exc).__name__}",
-                f"type(s_exc) is {type(s_exc).__name__}"
+                f"type(old_exc) != type(new_exc)",
+                f"type(old_exc) is {type(o_exc).__name__}",
+                f"type(new_exc) is {type(n_exc).__name__}"
             ])
     else:
         def raised(ex):
             return "raised" if ex is not None else "did not raise"
-        summary = f"{primary} {raised(p_exc)}, {secondary} {raised(s_exc)}"
+        summary = f"old {raised(o_exc)}, new {raised(n_exc)}"
 
-    def old(p, s):
-        return p if old_is_primary(use) else s
+    old = deepcopy(old)
+    if old["exception"] is not None:
+        old["exception"] = type(old["exception"]).__name__
+    try:
+        old["result"] = f"{repr(old['result'])}"
+    except Exception as exc:
+        old["result"] = [str(exc)] + traceback.format_exc().split("\n")
 
-    def new(p, s):
-        return p if new_is_primary(use) else s
+    new = deepcopy(new)
+    if new["exception"] is not None:
+        new["exception"] = type(new["exception"]).__name__
+    try:
+        new["result"] = f"{repr(new['result'])}"
+    except Exception as exc:
+        new["result"] = [str(exc)] + traceback.format_exc().split("\n")
 
-    now = datetime.utcfromtimestamp(time.time())
-    # old_res = old(p_res, s_res)
-    # new_res = new(p_res, s_res)
     diff = {
         "summary": summary,
-        "time": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "time": now().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "class": class_name,
         "name": name,
         # "diff": diff_only(old_res, new_res)
-        "old": {
-            "is": old("primary", "secondary"),
-            "repr": old(p_repr, s_repr),
-            "args": old(p_args, s_args),
-            "kwargs": old(p_kwargs, s_kwargs),
-            "result": f"{old(p_res, s_res)}",
-            "exception": f"{old(p_exc, s_exc)}",
-            "trace": old(p_trace, s_trace).split("\n")
-        },
-        "new": {
-            "is": new("primary", "secondary"),
-            "repr": new(p_repr, s_repr),
-            "args": new(p_args, s_args),
-            "kwargs": new(p_kwargs, s_kwargs),
-            "result": f"{new(p_res, s_res)}",
-            "exception": f"{new(p_exc, s_exc)}",
-            "trace": new(p_trace, s_trace).split("\n")
-        }
+        "old": old,
+        "new": new,
     }
 
     if in_unit_tests():
         raise StrangledDifference(diff)
     else:
         log_difference(diff)
+
+
+def now():
+    return datetime.utcfromtimestamp(time.time())
 
 
 def old_is_primary(use):

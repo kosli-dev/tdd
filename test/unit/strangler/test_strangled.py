@@ -47,10 +47,10 @@ def test_bba0d3():
     s = f"{exc.value}"
     info = json.loads(s)
     assert info["old"]["result"] == '42'
-    assert info["old"]["exception"] == "None"
+    assert info["old"]["exception"] is None
 
     assert info["new"]["result"] == '43'
-    assert info["new"]["exception"] == "None"
+    assert info["new"]["exception"] is None
 
 
 def test_bba0d4():
@@ -70,7 +70,7 @@ def test_bba0d4():
         d.f()
 
     expected = "\n".join([
-        "old(p_res) == new(s_res) --> raised",
+        "old_result == new_result --> raised",
         'oops'
     ])
     assert exc.value.diff["summary"] == expected
@@ -93,9 +93,9 @@ def test_bba0d5():
         d.f()
 
     expected = "\n".join([
-        "type(old(p_exc)) != type(new(s_exc))",
-        "type(p_exc) is NameError",
-        "type(s_exc) is RuntimeError"
+        "type(old_exc) != type(new_exc)",
+        "type(old_exc) is NameError",
+        "type(new_exc) is RuntimeError"
     ])
     assert str(exc.value.diff["summary"]) == expected
 

@@ -5,8 +5,8 @@ individual method/property level via keyword arguments:
   Properties: (..., *, getter, setter)
 
 use/getter/setter are Tuples with 3 elements
-  [0] controls if the New call is made
-  [1] controls if the Old call is made
+  [0] controls if the Old call is made
+  [1] controls if the New call is made
   [2] controls which is 'main' if Old and New calls are being made:
       if Old/New calls exhibit different behaviour
           if running-unit-tests:

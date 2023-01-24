@@ -27,7 +27,7 @@ def test_d96700():
         assert log["new"]["result"] == '18'
 
 
-@pytest.mark.skip(reason="WIP")
+#@pytest.mark.skip(reason="WIP")
 def test_d96701():
     """
     Handle repr() raising an exception
@@ -86,8 +86,8 @@ def test_d96704():
         d.f()
     diff = exc.value.diff
     expected = "\n".join([
-        "new(p_res) == old(s_res) --> raised",
-        '5, 4'
+        "old_result == new_result --> raised",
+        '4, 5'
     ])
     assert diff["summary"] == expected
 
@@ -107,7 +107,7 @@ def test_d96705():
     with pytest.raises(StrangledDifference) as exc:
         d.f()
     diff = exc.value.diff
-    assert diff["summary"] == "new(p_res) == old(s_res) --> False"
+    assert diff["summary"] == "old_result == new_result --> False"
 
 
 def test_d96706():
@@ -126,9 +126,9 @@ def test_d96706():
         d.f()
     diff = exc.value.diff
     expected = "\n".join([
-        "type(new(p_exc)) != type(old(s_exc))",
-        f"type(p_exc) is NameError",
-        f"type(s_exc) is KeyError"
+        "type(old_exc) != type(new_exc)",
+        f"type(old_exc) is KeyError",
+        f"type(new_exc) is NameError"
     ])
     assert diff["summary"] == expected
 

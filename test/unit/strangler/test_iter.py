@@ -9,8 +9,8 @@ def test_011300():
     class Diff:
         def __init__(self):
             self.old = Iter([4, 6, 7])
-    d = Diff()
 
+    d = Diff()
     assert ids(d) == [4, 6, 7]
     assert no_strangler_logging()
 
@@ -22,8 +22,8 @@ def test_011304():
         def __init__(self):
             self.old = Iter([1, 60])
             self.new = Iter([1, 60])
-    s = Same()
 
+    s = Same()
     assert ids(s) == [1, 60]
     assert no_strangler_logging()
 
@@ -32,11 +32,11 @@ def test_011304():
         def __init__(self):
             self.old = Iter([10, 3])
             self.new = Iter([3, 10])
-    d = Diff()
 
+    d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         ids(d)
-    check_exc(exc, '[10, 3]', '[3, 10]')
+    check_exc(exc, [10, 3], [3, 10])
     assert no_strangler_logging()
 
     @strangled_method('__iter__', use=OLD_MAIN)
@@ -44,11 +44,11 @@ def test_011304():
         def __init__(self):
             self.old = Iter([1, 30, 9])
             self.new = Iter([1, 30])
-    d = Diff()
 
+    d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         ids(d)
-    check_exc(exc, '[1, 30, 9]', '[1, 30]')
+    check_exc(exc, [1, 30, 9], [1, 30])
     assert no_strangler_logging()
 
 
@@ -59,8 +59,8 @@ def test_011307():
         def __init__(self):
             self.old = Iter([1, 9])
             self.new = Iter([1, 9])
-    d = Diff()
 
+    d = Diff()
     assert ids(d) == [1, 9]
     assert no_strangler_logging()
 
@@ -69,11 +69,11 @@ def test_011307():
         def __init__(self):
             self.old = Iter([0])
             self.new = Iter([0, 3])
-    d = Diff()
 
+    d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         ids(d)
-    check_exc(exc, '[0]', '[0, 3]')
+    check_exc(exc, [0], [0, 3])
     assert no_strangler_logging()
 
 
@@ -83,14 +83,14 @@ def test_011309():
     class Diff:
         def __init__(self):
             self.new = Iter([14, 26, 4])
-    d = Diff()
 
+    d = Diff()
     assert ids(d) == [14, 26, 4]
     assert no_strangler_logging()
 
 
 def check_exc(exc, old, new):
-    check_strangler_exc(exc, "Diff", '__iter__', old, new)
+    check_strangler_exc(exc, "Diff", '__iter__', f"{old}", f"{new}")
 
 
 def ids(c):
