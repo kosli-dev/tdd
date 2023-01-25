@@ -4,20 +4,27 @@ from .helpers import *
 
 
 def test_011500():
-    """OLD_ONLY"""
-    @strangled_method("f", use=OLD_ONLY)
-    class Diff:
-        def __init__(self):
-            self.old = Func(lambda: 11)
-
-    d = Diff()
-    assert d.f() == 11
-    assert no_strangler_logging()
+    same(OLD_ONLY)
+    diff(OLD_ONLY)
 
 
 def test_011504():
-    """OLD_MAIN"""
-    @strangled_method("f", use=OLD_MAIN)
+    same(OLD_MAIN)
+    diff(OLD_MAIN)
+
+
+def test_011506():
+    same(NEW_MAIN)
+    diff(NEW_MAIN)
+
+
+def test_011507():
+    same(NEW_ONLY)
+    diff(NEW_ONLY)
+
+
+def same(use):
+    @strangled_method("f", use=use)
     class Same:
         def __init__(self):
             self.old = Func(lambda: 42)
@@ -27,55 +34,26 @@ def test_011504():
     assert s.f() == 42
     assert no_strangler_logging()
 
-    @strangled_method("f", use=OLD_MAIN)
+
+def diff(use):
+    @strangled_method("f", use=use)
     class Diff:
         def __init__(self):
-            self.old = Func(lambda: 17)
-            self.new = Func(lambda: 18)
+            if use is not NEW_ONLY:
+                self.old = Func(lambda: 17)
+            if use is not OLD_ONLY:
+                self.new = Func(lambda: 18)
 
     d = Diff()
-    with pytest.raises(StrangledDifference) as exc:
-        d.f()
-    check_exc(exc, 17, 18)
-
-
-def test_011506():
-    """NEW_MAIN"""
-    @strangled_method("f", use=NEW_MAIN)
-    class Same:
-        def __init__(self):
-            self.old = Func(lambda: 33)
-            self.new = Func(lambda: 33)
-
-    s = Same()
-    assert s.f() == 33
+    if use is OLD_ONLY:
+        assert d.f() == 17
+    elif use is NEW_ONLY:
+        assert d.f() == 18
+    else:
+        with pytest.raises(StrangledDifference) as exc:
+            d.f()
+        check_strangler_exc(exc, 'Diff.f', "17", "18")
     assert no_strangler_logging()
-
-    @strangled_method("f", use=NEW_MAIN)
-    class Diff:
-        def __init__(self):
-            self.old = Func(lambda: 17)
-            self.new = Func(lambda: 18)
-
-    d = Diff()
-    with pytest.raises(StrangledDifference) as exc:
-        d.f()
-    check_exc(exc, 17, 18)
-
-
-def test_011507():
-    """NEW_ONLY"""
-    @strangled_method("f", use=NEW_ONLY)
-    class Diff:
-        def __init__(self):
-            self.new = Func(lambda: "a")
-    d = Diff()
-    assert d.f() == "a"
-    assert no_strangler_logging()
-
-
-def check_exc(exc, old, new):
-    check_strangler_exc(exc, 'Diff.f', f"{old}", f"{new}")
 
 
 class Func:
