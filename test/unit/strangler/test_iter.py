@@ -4,29 +4,32 @@ from .helpers import *
 
 
 def test_011300():
-    same(OLD_ONLY, [4, 5])
+    same(OLD_ONLY)
+    diff(OLD_ONLY, [], False)
     diff(OLD_ONLY, [3], False)
 
 
 def test_011304():
-    same(OLD_MAIN, [1, 60])
+    same(OLD_MAIN)
     diff(OLD_MAIN, [10, 3], [3, 10])
     diff(OLD_MAIN, [1, 30, 9], [1, 30])
 
 
 def test_011307():
-    same(NEW_MAIN, [1, 9])
+    same(NEW_MAIN)
     diff(NEW_MAIN, [0, 3], [3, 0])
     diff(NEW_MAIN, [0], [0, 3])
 
 
 def test_011309():
-    same(NEW_ONLY, [5, 6])
+    same(NEW_ONLY)
     diff(NEW_ONLY, False, [7])
 
 
-def same(use, nos):
-    cmp(use, nos, nos)
+def same(use):
+    cmp(use, [], [])
+    cmp(use, [1], [1])
+    cmp(use, [1, 2], [1, 2])
 
 
 def diff(use, old, new):

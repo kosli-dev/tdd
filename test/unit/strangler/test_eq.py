@@ -24,37 +24,35 @@ def test_011118():
 
 
 def same(use):
-    @strangled_method('__eq__', use=use)
-    class Same:
-        def __init__(self):
-            if use is not NEW_ONLY:
-                self.old = Eq(True)
-            if use is not OLD_ONLY:
-                self.new = Eq(True)
-
-    s = Same()
-    assert s == s
-    assert no_strangler_logging()
+    cmp(use, True, True)
+    cmp(use, False, False)
 
 
 def diff(use):
+    cmp(use, True, False)
+    cmp(use, False, True)
+
+
+def cmp(use, old, new):
     @strangled_method('__eq__', use=use)
-    class Diff:
+    class Cmp:
         def __init__(self):
             if use is not NEW_ONLY:
-                self.old = Eq(True)
+                self.old = Eq(old)
             if use is not OLD_ONLY:
-                self.new = Eq(False)
+                self.new = Eq(new)
 
-    d = Diff()
+    c = Cmp()
     if use is OLD_ONLY:
-        assert (d == d) is True
+        assert (c == c) is old
     elif use is NEW_ONLY:
-        assert (d == d) is False
+        assert (c == c) is new
+    elif old == new:
+        assert (c == c) is old
     else:
         with pytest.raises(StrangledDifference) as exc:
-            d == d
-        check_strangler_exc(exc, "Diff.__eq__", "True", "False")
+            c == c
+        check_strangler_exc(exc, "Cmp.__eq__", f"{old}", f"{new}")
     assert no_strangler_logging()
 
 
