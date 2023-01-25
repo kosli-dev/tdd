@@ -38,6 +38,10 @@ def call_new(use):
     return use[1]
 
 
+def call_both(use):
+    return call_old(use) and call_new(use)
+
+
 def old_is_primary(use):
     return use[2] == "old"
 

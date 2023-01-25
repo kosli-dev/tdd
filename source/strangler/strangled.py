@@ -7,7 +7,7 @@ import traceback
 from .in_unit_tests import in_unit_tests
 # from lib.diff import diff_only
 from .log import set_strangler_log
-from .switch import call_old, call_new, old_is_primary, new_is_primary
+from .switch import *
 
 
 def strangled(cls, name, use, old, new):
@@ -17,13 +17,11 @@ def strangled(cls, name, use, old, new):
     use: eg OLD_MAIN
     """
     if call_old(use):
-        o = wrapped_call(old)
-        o["is"] = "primary" if old_is_primary(use) else "secondary"
+        o = wrapped_call(old, old_is_primary(use))
     if call_new(use):
-        n = wrapped_call(new)
-        n["is"] = "primary" if new_is_primary(use) else "secondary"
+        n = wrapped_call(new, new_is_primary(use))
 
-    if call_old(use) and call_new(use):
+    if call_both(use):
         strangled_check(cls, name, o, n)
 
     c = o if old_is_primary(use) else n
@@ -33,7 +31,7 @@ def strangled(cls, name, use, old, new):
         raise c["exception"]
 
 
-def wrapped_call(func):
+def wrapped_call(func, is_primary):
     try:
         exception = None
         trace = ""
@@ -52,6 +50,7 @@ def wrapped_call(func):
         rep = "Exception: " + str(exc)
 
     return {
+        "is": "primary" if is_primary else "secondary",
         "result": result,
         "exception": exception,
         "trace": trace.split("\n"),
