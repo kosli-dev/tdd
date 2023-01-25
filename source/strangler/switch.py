@@ -15,19 +15,17 @@ if Old/New calls exhibit _different_ behaviour
   else:
       log difference to a file
 
-Makes unit-testing the strangler-checking code much easier.
-On staging and production, we want differences to be ignored;
-we don't want New work-in-progress differences mixed with genuine
-differences. Particularly when they relate to Old data that has
-not yet been migrated to New.
+On staging and production, while strangling is in progress
+differences are logged to a file, they do NOT raise an exception.
+However, inside unit-tests, differences do raise an exception.
 """
 
 # Steps in moving from Old to New...
 
-OLD_ONLY = (True, None, "old")  # 1st - Old call only, returns Old
-OLD_MAIN = (True, True, "old")  # 2nd - both called, returns Old
-NEW_MAIN = (True, True, "new")  # 3rd - both called, returns New
-NEW_ONLY = (None, True, "new")  # 4th - New call only, returns New
+OLD_ONLY = (True, False, "old")  # 1st - Old call only, returns Old
+OLD_MAIN = (True, True, "old")   # 2nd - both called, returns Old
+NEW_MAIN = (True, True, "new")   # 3rd - both called, returns New
+NEW_ONLY = (False, True, "new")  # 4th - New call only, returns New
 
 
 def call_old(use):
@@ -43,18 +41,12 @@ def call_both(use):
 
 
 def old_is_primary(use):
-    return use[2] == "old"
+    return _primary_is(use, 'old')
 
 
 def new_is_primary(use):
-    return use[2] == "new"
+    return _primary_is(use, 'new')
 
 
-def old_is_on(obj, use):
-    """Returns True if Old call is made."""
-    return hasattr(obj, 'old') and obj.old is not None and use[0] is not None
-
-
-def new_is_on(obj, use):
-    """Returns True if New call is made."""
-    return hasattr(obj, 'new') and obj.new is not None and use[1] is not None
+def _primary_is(use, age):
+    return use[2] == age

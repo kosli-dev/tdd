@@ -166,9 +166,9 @@ class IterFor:
 class IterData:
 
     def __init__(self, target, use):
-        if old_is_on(target, use):
+        if call_old(use):
             self.old = [obj for obj in target.old]
-        if new_is_on(target, use):
+        if call_new(use):
             self.new = [obj for obj in target.new]
 
 

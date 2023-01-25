@@ -1,27 +1,25 @@
-from strangler import old_is_on, new_is_on
+from strangler import call_old, call_new
 from strangler import OLD_ONLY, OLD_MAIN, NEW_MAIN, NEW_ONLY
 
 
 def test_760e00():
     """
-    old_is_on() is False only for NEW_ONLY
+    call_old() is False only for NEW_ONLY
     """
-    eg = Eg(True, None)
-    assert old_is_on(eg, OLD_ONLY)
-    assert old_is_on(eg, OLD_MAIN)
-    assert old_is_on(eg, NEW_MAIN)
-    assert old_is_on(eg, NEW_ONLY) is False
+    assert call_old(OLD_ONLY)
+    assert call_old(OLD_MAIN)
+    assert call_old(NEW_MAIN)
+    assert call_old(NEW_ONLY) is False
 
 
 def test_760e01():
     """
-    new_is_on() is False only for OLD_ONLY
+    call_new() is False only for OLD_ONLY
     """
-    eg = Eg(None, True)
-    assert new_is_on(eg, OLD_ONLY) is False
-    assert new_is_on(eg, OLD_MAIN)
-    assert new_is_on(eg, NEW_MAIN)
-    assert new_is_on(eg, NEW_ONLY)
+    assert call_new(OLD_ONLY) is False
+    assert call_new(OLD_MAIN)
+    assert call_new(NEW_MAIN)
+    assert call_new(NEW_ONLY)
 
 
 def test_760e02():
@@ -32,9 +30,3 @@ def test_760e02():
     for s in [OLD_ONLY, OLD_MAIN, NEW_MAIN, NEW_ONLY]:
         unique.add(s)
     assert len(unique) == 4
-
-
-class Eg:
-    def __init__(self, o, n):
-        self.old = o
-        self.new = n
