@@ -23,6 +23,7 @@ def test_011307():
 
 def test_011309():
     same(NEW_ONLY)
+    diff(NEW_ONLY, False, [])
     diff(NEW_ONLY, False, [7])
 
 
@@ -41,9 +42,9 @@ def cmp(use, old, new):
     class Cmp:
         def __init__(self):
             if use is not NEW_ONLY:
-                self.old = Iter(old)
+                self.old = iter(old)
             if use is not OLD_ONLY:
-                self.new = Iter(new)
+                self.new = iter(new)
 
     c = Cmp()
     if use is OLD_ONLY:
@@ -61,19 +62,3 @@ def cmp(use, old, new):
 
 def seq(numbers):
     return [number for number in numbers]
-
-
-class Iter:
-    def __init__(self, seq):
-        self.seq = [n for n in seq]
-        self.index = -1
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        self.index += 1
-        if self.index < len(self.seq):
-            return self.seq[self.index]
-        else:
-            raise StopIteration
