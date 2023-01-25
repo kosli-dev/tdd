@@ -5,7 +5,6 @@ import threading
 import time
 import traceback
 from .in_unit_tests import in_unit_tests
-# from lib.diff import diff_only
 from .switch import *
 
 
@@ -104,7 +103,6 @@ def strangled_check(cls, name, old, new):
         "summary": summary,
         "time": now().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "call": f"{cls.__name__}.{name}",
-        # "diff": diff_only(old_res, new_res)
         "old": loggable(old),
         "new": loggable(new),
     }
