@@ -106,7 +106,7 @@ def test_011608():
 
 
 def check_exc(exc, old, new):
-    check_strangler_exc(exc, 'Diff', 'p', old, new)
+    check_strangler_exc(exc, 'Diff.p', old, new)
 
 
 class Prop:

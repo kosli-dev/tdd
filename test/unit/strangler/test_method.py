@@ -75,7 +75,7 @@ def test_011507():
 
 
 def check_exc(exc, old, new):
-    check_strangler_exc(exc, 'Diff', 'f', f"{old}", f"{new}")
+    check_strangler_exc(exc, 'Diff.f', f"{old}", f"{new}")
 
 
 class Func:

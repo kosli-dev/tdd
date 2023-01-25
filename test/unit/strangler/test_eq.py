@@ -78,7 +78,7 @@ def test_011118():
 
 
 def check_exc(exc, old, new):
-    check_strangler_exc(exc, "Diff", '__eq__', f"{old}", f"{new}")
+    check_strangler_exc(exc, "Diff.__eq__", f"{old}", f"{new}")
 
 
 class Eq:

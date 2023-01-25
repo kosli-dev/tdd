@@ -90,7 +90,7 @@ def test_011309():
 
 
 def check_exc(exc, old, new):
-    check_strangler_exc(exc, "Diff", '__iter__', f"{old}", f"{new}")
+    check_strangler_exc(exc, "Diff.__iter__", f"{old}", f"{new}")
 
 
 def ids(c):

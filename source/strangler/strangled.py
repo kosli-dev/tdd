@@ -103,8 +103,7 @@ def strangled_check(cls, name, old, new):
     diff = {
         "summary": summary,
         "time": now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "class": cls.__name__,
-        "name": name,
+        "call": f"{cls.__name__}.{name}",
         # "diff": diff_only(old_res, new_res)
         "old": loggable(old),
         "new": loggable(new),

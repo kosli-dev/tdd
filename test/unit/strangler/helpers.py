@@ -38,11 +38,10 @@ def no_strangler_logging():
     return not strangler_log_file_exists()
 
 
-def check_strangler_exc(exc, class_name, name, old_result, new_result):
+def check_strangler_exc(exc, call, old_result, new_result):
     log = exc.value.diff
     diagnostic = json.dumps(log, indent=2)
-    assert log["class"] == class_name, diagnostic
-    assert log["name"] == name, diagnostic
+    assert log["call"] == call, diagnostic
     assert log["old"]["result"] == old_result, diagnostic
     assert log["new"]["result"] == new_result, diagnostic
 
