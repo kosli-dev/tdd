@@ -4,33 +4,11 @@ from .helpers import *
 
 
 def test_011110():
-    same(OLD_ONLY)
-    diff(OLD_ONLY)
-
-
-def test_011111():
-    same(OLD_MAIN)
-    diff(OLD_MAIN)
-
-
-def test_011114():
-    same(NEW_MAIN)
-    diff(NEW_MAIN)
-
-
-def test_011118():
-    same(NEW_ONLY)
-    diff(NEW_ONLY)
-
-
-def same(use):
-    cmp(use, True, True)
-    cmp(use, False, False)
-
-
-def diff(use):
-    cmp(use, True, False)
-    cmp(use, False, True)
+    for use in switches():
+        cmp(use, True, True)
+        cmp(use, False, False)
+        cmp(use, True, False)
+        cmp(use, False, True)
 
 
 def cmp(use, old, new):

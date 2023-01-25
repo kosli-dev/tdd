@@ -28,6 +28,10 @@ NEW_MAIN = (True, True, "new")   # 3rd - both called, returns New
 NEW_ONLY = (False, True, "new")  # 4th - New call only, returns New
 
 
+def switches():
+    return [OLD_ONLY, OLD_MAIN, NEW_ONLY, NEW_MAIN]
+
+
 def call_old(use):
     return use[0]
 

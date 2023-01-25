@@ -1,7 +1,7 @@
 import contextlib
 import json
 import os
-from strangler import strangler_log_filename
+from strangler import strangler_log_filename, OLD_ONLY, OLD_MAIN, NEW_ONLY, NEW_MAIN
 
 
 class ScopedEnvVar(object):
