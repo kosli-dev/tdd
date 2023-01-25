@@ -47,7 +47,7 @@ def call(func):
     try:
         rep = repr(func)
     except Exception as exc:
-        rep = str(exc)
+        rep = "Exception: " + str(exc)
 
     return {
         "result": result,

@@ -66,29 +66,22 @@ def strangled_property(name, *, getter, setter):
 
 def strangled_f(cls, name, use, obj, f):
 
-    class Old:
-        def __init__(self):
+    class Caller:
+        def __init__(self, age):
+            self.age = age
             self.args = f.args
             self.kwargs = f.kwargs
 
         def __repr__(self):
-            return repr(obj.old)
+            return repr(self._target())
 
         def __call__(self):
-            return f(obj.old)
+            return f(self._target())
 
-    class New:
-        def __init__(self):
-            self.args = f.args
-            self.kwargs = f.kwargs
+        def _target(self):
+            return getattr(obj, self.age)
 
-        def __repr__(self):
-            return repr(obj.new)
-
-        def __call__(self):
-            return f(obj.new)
-
-    return strangled(cls, name, use, Old(), New())
+    return strangled(cls, name, use, Caller('old'), Caller('new'))
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -97,29 +90,23 @@ def _strangled_eq(*, use):
 
     def decorator(cls):
         def checked_eq(lhs, rhs):
-            class Old:
-                def __init__(self):
+
+            class Caller:
+                def __init__(self, age):
+                    self.age = age
                     self.args = []
                     self.kwargs = {}
 
                 def __repr__(self):
-                    return repr(lhs.old)
+                    return repr(self._target(lhs))
 
                 def __call__(self):
-                    return lhs.old == rhs.old
+                    return self._target(lhs) == self._target(rhs)
 
-            class New:
-                def __init__(self):
-                    self.args = []
-                    self.kwargs = {}
+                def _target(self, side):
+                    return getattr(side, self.age)
 
-                def __repr__(self):
-                    return repr(lhs.new)
-
-                def __call__(self):
-                    return lhs.new == rhs.new
-
-            return strangled(cls, '__eq__', use, Old(), New())
+            return strangled(cls, '__eq__', use, Caller('old'), Caller('new'))
 
         setattr(cls, '__eq__', checked_eq)
         return cls
@@ -135,29 +122,19 @@ def _strangled_iter(*, use):
         def checked_iter(target):
             data = IterData(target, use)
 
-            class Old:
-                def __init__(self):
+            class Caller:
+                def __init__(self, age):
+                    self.age = age
                     self.args = []
                     self.kwargs = {}
 
                 def __repr__(self):
-                    return repr(target.old)
+                    return repr(getattr(target, self.age))
 
                 def __call__(self):
-                    return IterFor(data, data.old)
+                    return IterFor(data, getattr(data, self.age))
 
-            class New:
-                def __init__(self):
-                    self.args = []
-                    self.kwargs = {}
-
-                def __repr__(self):
-                    return repr(target.new)
-
-                def __call__(self):
-                    return IterFor(data, data.new)
-
-            return strangled(cls, '__iter__', use, Old(), New())
+            return strangled(cls, '__iter__', use, Caller('old'), Caller('new'))
 
         setattr(cls, '__iter__', checked_iter)
         return cls

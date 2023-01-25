@@ -104,8 +104,8 @@ def test_bba0d6():
     """
     When Old and New both raise
     and the exceptions are of the same type
-    then don't raise a custom StranglingException
-    then do propagate the raised exception based on use=
+    don't raise a custom StranglingException
+    do propagate the raised exception based on use=
     """
     @strangled_method("f", use=NEW_MAIN)
     class Different:
