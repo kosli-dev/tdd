@@ -93,9 +93,9 @@ def test_bba0d5():
         d.f()
 
     expected = "\n".join([
-        "type(old_exc) != type(new_exc)",
-        "type(old_exc) is NameError",
-        "type(new_exc) is RuntimeError"
+        "type(old_exception) != type(new_exception)",
+        "type(old_exception) is NameError",
+        "type(new_exception) is RuntimeError"
     ])
     assert str(exc.value.diff["summary"]) == expected
 

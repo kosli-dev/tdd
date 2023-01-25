@@ -30,6 +30,22 @@ NEW_MAIN = (True, True, "new")  # 3rd - both called, returns New
 NEW_ONLY = (None, True, "new")  # 4th - New call only, returns New
 
 
+def call_old(use):
+    return use[0]
+
+
+def call_new(use):
+    return use[1]
+
+
+def old_is_primary(use):
+    return use[2] == "old"
+
+
+def new_is_primary(use):
+    return use[2] == "new"
+
+
 def old_is_on(obj, use):
     """Returns True if Old call is made."""
     return hasattr(obj, 'old') and obj.old is not None and use[0] is not None

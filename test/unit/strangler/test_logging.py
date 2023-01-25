@@ -27,7 +27,6 @@ def test_d96700():
         assert log["new"]["result"] == '18'
 
 
-#@pytest.mark.skip(reason="WIP")
 def test_d96701():
     """
     Handle repr() raising an exception
@@ -126,9 +125,9 @@ def test_d96706():
         d.f()
     diff = exc.value.diff
     expected = "\n".join([
-        "type(old_exc) != type(new_exc)",
-        f"type(old_exc) is KeyError",
-        f"type(new_exc) is NameError"
+        "type(old_exception) != type(new_exception)",
+        f"type(old_exception) is KeyError",
+        f"type(new_exception) is NameError"
     ])
     assert diff["summary"] == expected
 

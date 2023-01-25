@@ -7,6 +7,7 @@ import traceback
 from .in_unit_tests import in_unit_tests
 # from lib.diff import diff_only
 from .log import set_strangler_log
+from .switch import call_old, call_new, old_is_primary, new_is_primary
 
 
 def strangled(cls, name, use, old, new):
@@ -15,14 +16,14 @@ def strangled(cls, name, use, old, new):
     name: eg "login_id"
     use: eg OLD_MAIN
     """
-    if use[0]:
-        o = call(old)
+    if call_old(use):
+        o = wrapped_call(old)
         o["is"] = "primary" if old_is_primary(use) else "secondary"
-    if use[1]:
-        n = call(new)
+    if call_new(use):
+        n = wrapped_call(new)
         n["is"] = "primary" if new_is_primary(use) else "secondary"
 
-    if use[0] and use[1]:
+    if call_old(use) and call_new(use):
         strangled_check(cls, name, o, n)
 
     c = o if old_is_primary(use) else n
@@ -32,7 +33,7 @@ def strangled(cls, name, use, old, new):
         raise c["exception"]
 
 
-def call(func):
+def wrapped_call(func):
     try:
         exception = None
         trace = ""
@@ -44,6 +45,7 @@ def call(func):
 
     args = func.args
     kwargs = func.kwargs
+
     try:
         rep = repr(func)
     except Exception as exc:
@@ -81,24 +83,24 @@ def strangled_check(cls, name, old, new):
             return
         else:
             summary = "\n".join([
-                f"type(old_exc) != type(new_exc)",
-                f"type(old_exc) is {type(o_exc).__name__}",
-                f"type(new_exc) is {type(n_exc).__name__}"
+                f"type(old_exception) != type(new_exception)",
+                f"type(old_exception) is {type(o_exc).__name__}",
+                f"type(new_exception) is {type(n_exc).__name__}"
             ])
     else:
         def raised(ex):
             return "raised" if ex is not None else "did not raise"
         summary = f"old {raised(o_exc)}, new {raised(n_exc)}"
 
-    def enhanced(h):
-        h = deepcopy(h)
-        if h["exception"] is not None:
-            h["exception"] = type(h["exception"]).__name__
+    def loggable(d):
+        d = deepcopy(d)
+        if d["exception"] is not None:
+            d["exception"] = type(d["exception"]).__name__
         try:
-            h["result"] = f"{repr(h['result'])}"
+            d["result"] = f"{repr(d['result'])}"
         except Exception as exc:
-            h["result"] = [str(exc)] + traceback.format_exc().split("\n")
-        return h
+            d["result"] = [str(exc)] + traceback.format_exc().split("\n")
+        return d
 
     diff = {
         "summary": summary,
@@ -106,8 +108,8 @@ def strangled_check(cls, name, old, new):
         "class": cls.__name__,
         "name": name,
         # "diff": diff_only(old_res, new_res)
-        "old": enhanced(old),
-        "new": enhanced(new),
+        "old": loggable(old),
+        "new": loggable(new),
     }
     if in_unit_tests():
         raise StrangledDifference(diff)
@@ -117,14 +119,6 @@ def strangled_check(cls, name, old, new):
 
 def now():
     return datetime.utcfromtimestamp(time.time())
-
-
-def old_is_primary(use):
-    return use[2] == "old"
-
-
-def new_is_primary(use):
-    return use[2] == "new"
 
 
 def log_difference(diff):
