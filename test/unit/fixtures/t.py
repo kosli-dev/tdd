@@ -1,6 +1,5 @@
 import pytest
 import re
-from strangler.log import set_strangler_log
 from test.unit.strangler.helpers import strangler_log_file_delete
 
 
@@ -28,7 +27,6 @@ class T:
         self.n = tally(prefix)  # eg 0
 
     def __enter__(self):
-        set_strangler_log(None)
         strangler_log_file_delete()
         return self
 

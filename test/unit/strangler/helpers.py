@@ -1,8 +1,7 @@
 import contextlib
 import json
 import os
-from strangler import get_strangler_log
-from strangler.strangled import strangler_log_filename
+from strangler import strangler_log_filename
 
 
 class ScopedEnvVar(object):
@@ -36,18 +35,11 @@ def strangler_log_file_exists():
 
 
 def no_strangler_logging():
-    return get_strangler_log() is None
-
-
-#def check_strangler_log(class_name, name, old_result, new_result):
-#    _check_log(get_strangler_log(), class_name, name, old_result, new_result)
+    return not strangler_log_file_exists()
 
 
 def check_strangler_exc(exc, class_name, name, old_result, new_result):
-    _check_log(exc.value.diff, class_name, name, old_result, new_result)
-
-
-def _check_log(log, class_name, name, old_result, new_result):
+    log = exc.value.diff
     diagnostic = json.dumps(log, indent=2)
     assert log["class"] == class_name, diagnostic
     assert log["name"] == name, diagnostic

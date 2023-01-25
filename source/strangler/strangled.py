@@ -6,7 +6,6 @@ import time
 import traceback
 from .in_unit_tests import in_unit_tests
 # from lib.diff import diff_only
-from .log import set_strangler_log
 from .switch import *
 
 
@@ -121,7 +120,6 @@ def now():
 
 
 def log_difference(diff):
-    set_strangler_log(diff)
     with open(strangler_log_filename(), "a") as f:
         f.write(json.dumps(diff, indent=2))
 
