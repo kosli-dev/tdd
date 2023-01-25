@@ -46,12 +46,12 @@ def test_011604():
     d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.p
-    check_exc(exc, '4', "'not-set'")
+    check_exc(exc, '4', "NotSet()")
 
     d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.p = 42
-    check_exc(exc, 'None', "'not-set'")
+    check_exc(exc, 'None', "NotSet()")
 
 
 def test_011606():
@@ -80,12 +80,12 @@ def test_011606():
     d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.p
-    check_exc(exc, "'not-set'", '45')
+    check_exc(exc, "NotSet()", '45')
 
     d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.p = "anything"
-    check_exc(exc, "'not-set'", 'None')
+    check_exc(exc, "NotSet()", 'None')
 
 
 def test_011608():

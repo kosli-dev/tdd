@@ -15,18 +15,18 @@ def strangled(cls, name, use, old, new):
     use: eg OLD_MAIN
     """
     if call_old(use):
-        o = wrapped_call(old, old_is_primary(use))
+        old_call = wrapped_call(old, old_is_primary(use))
     if call_new(use):
-        n = wrapped_call(new, new_is_primary(use))
+        new_call = wrapped_call(new, new_is_primary(use))
 
     if call_both(use):
-        strangled_check(cls, name, o, n)
+        strangled_check(cls, name, old_call, new_call)
 
-    c = o if old_is_primary(use) else n
-    if c["exception"] is None:
-        return c["result"]
+    call = old_call if old_is_primary(use) else new_call
+    if call["exception"] is None:
+        return call["result"]
     else:
-        raise c["exception"]
+        raise call["exception"]
 
 
 def wrapped_call(func, is_primary):
@@ -37,22 +37,23 @@ def wrapped_call(func, is_primary):
     except Exception as exc:
         exception = exc
         trace = traceback.format_exc()
-        result = "not-set"
+        result = NOT_SET
 
     args = func.args
     kwargs = func.kwargs
 
-    try:
-        rep = repr(func)
-    except Exception as exc:
-        rep = "Exception: " + str(exc)
+    def safe_repr():
+        try:
+            return repr(func)
+        except Exception as exc:
+            return f"Exception: {exc}"
 
     return {
         "is": "primary" if is_primary else "secondary",
         "result": result,
         "exception": exception,
         "trace": trace.split("\n"),
-        "repr": rep,
+        "repr": safe_repr(),
         "args": args,
         "kwargs": kwargs
     }
@@ -124,6 +125,14 @@ def log_difference(diff):
 def strangler_log_filename():
     tid = threading.get_ident()
     return f"/tmp/strangler_logs/log.{tid}"
+
+
+class NotSet:
+    def __repr__(self):
+        return 'NotSet()'
+
+
+NOT_SET = NotSet()
 
 
 class StrangledDifference(RuntimeError):

@@ -32,8 +32,8 @@ def strangled_method(name, *, use):
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def strangled_property(name, *, getter, setter):
-    check_getter(getter)
-    check_setter(setter)
+    check_prop(getter)
+    check_prop(setter)
 
     def decorator(cls):
         def get_value(target):
@@ -66,7 +66,7 @@ def strangled_property(name, *, getter, setter):
 
 def strangled_f(cls, name, use, obj, f):
 
-    class Caller:
+    class Call:
         def __init__(self, age):
             self.age = age
             self.args = f.args
@@ -81,7 +81,7 @@ def strangled_f(cls, name, use, obj, f):
         def _target(self):
             return getattr(obj, self.age)
 
-    return strangled(cls, name, use, Caller('old'), Caller('new'))
+    return strangled(cls, name, use, Call('old'), Call('new'))
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -91,7 +91,7 @@ def _strangled_eq(*, use):
     def decorator(cls):
         def checked_eq(lhs, rhs):
 
-            class Caller:
+            class Call:
                 def __init__(self, age):
                     self.age = age
                     self.args = []
@@ -106,7 +106,7 @@ def _strangled_eq(*, use):
                 def _target(self, side):
                     return getattr(side, self.age)
 
-            return strangled(cls, '__eq__', use, Caller('old'), Caller('new'))
+            return strangled(cls, '__eq__', use, Call('old'), Call('new'))
 
         setattr(cls, '__eq__', checked_eq)
         return cls
@@ -122,7 +122,7 @@ def _strangled_iter(*, use):
         def checked_iter(target):
             data = IterData(target, use)
 
-            class Caller:
+            class Call:
                 def __init__(self, age):
                     self.age = age
                     self.args = []
@@ -134,7 +134,7 @@ def _strangled_iter(*, use):
                 def __call__(self):
                     return IterFor(data, getattr(data, self.age))
 
-            return strangled(cls, '__iter__', use, Caller('old'), Caller('new'))
+            return strangled(cls, '__iter__', use, Call('old'), Call('new'))
 
         setattr(cls, '__iter__', checked_iter)
         return cls
@@ -176,9 +176,5 @@ def check_use(use):
     assert use in [OLD_ONLY, OLD_MAIN, NEW_MAIN, NEW_ONLY]
 
 
-def check_getter(getter):
-    getter is None or check_use(getter)
-
-
-def check_setter(setter):
-    setter is None or check_use(setter)
+def check_prop(prop):
+    prop is None or check_use(prop)
