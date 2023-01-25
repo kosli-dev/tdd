@@ -24,35 +24,33 @@ def test_011507():
 
 
 def same(use):
-    @strangled_method("f", use=use)
-    class Same:
-        def __init__(self):
-            self.old = Func(lambda: 42)
-            self.new = Func(lambda: 42)
-
-    s = Same()
-    assert s.f() == 42
-    assert no_strangler_logging()
+    cmp(use, 45, 45)
 
 
 def diff(use):
+    cmp(use, 23, 24)
+
+
+def cmp(use, old, new):
     @strangled_method("f", use=use)
-    class Diff:
+    class Cmp:
         def __init__(self):
             if use is not NEW_ONLY:
-                self.old = Func(lambda: 17)
+                self.old = Func(old)
             if use is not OLD_ONLY:
-                self.new = Func(lambda: 18)
+                self.new = Func(new)
 
-    d = Diff()
+    c = Cmp()
     if use is OLD_ONLY:
-        assert d.f() == 17
+        assert c.f() == old
     elif use is NEW_ONLY:
-        assert d.f() == 18
+        assert c.f() == new
+    elif old == new:
+        assert c.f() == old
     else:
         with pytest.raises(StrangledDifference) as exc:
-            d.f()
-        check_strangler_exc(exc, 'Diff.f', "17", "18")
+            c.f()
+        check_strangler_exc(exc, 'Cmp.f', f"{old}", f"{new}")
     assert no_strangler_logging()
 
 
@@ -61,4 +59,4 @@ class Func:
         self.v = v
 
     def f(self):
-        return self.v()
+        return self.v

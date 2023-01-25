@@ -26,42 +26,34 @@ def test_011309():
 
 
 def same(use, nos):
-    @strangled_method('__iter__', use=use)
-    class Same:
-        def __init__(self):
-            if use is not NEW_ONLY:
-                self.old = Iter(nos)
-            if use is not OLD_ONLY:
-                self.new = Iter(nos)
-
-    s = Same()
-    assert seq(s) == nos
-    assert no_strangler_logging()
+    cmp(use, nos, nos)
 
 
 def diff(use, old, new):
+    cmp(use, old, new)
+
+
+def cmp(use, old, new):
     @strangled_method('__iter__', use=use)
-    class Diff:
+    class Cmp:
         def __init__(self):
             if use is not NEW_ONLY:
                 self.old = Iter(old)
             if use is not OLD_ONLY:
                 self.new = Iter(new)
 
-    d = Diff()
+    c = Cmp()
     if use is OLD_ONLY:
-        assert seq(d) == old
+        assert seq(c) == old
     elif use is NEW_ONLY:
-        assert seq(d) == new
+        assert seq(c) == new
+    elif old == new:
+        assert seq(c) == old
     else:
         with pytest.raises(StrangledDifference) as exc:
-            seq(d)
-        check_exc(exc, old, new)
+            seq(c)
+        check_strangler_exc(exc, "Cmp.__iter__", f"{old}", f"{new}")
     assert no_strangler_logging()
-
-
-def check_exc(exc, old, new):
-    check_strangler_exc(exc, "Diff.__iter__", f"{old}", f"{new}")
 
 
 def seq(numbers):
