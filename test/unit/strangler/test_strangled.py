@@ -6,13 +6,12 @@ from .helpers import *
 def test_bba0d0():
     """
     When old or new is primary and it raises
-    the exception is propagated.
+    the exception is propagated in unit-tests.
     """
     @strangled_method("f", use=OLD_ONLY)
     class OldRaiser:
         def __init__(self):
             self.old = FuncF(lambda: raiser(KeyError('x')))
-            self.new = None
 
     o = OldRaiser()
     with pytest.raises(KeyError) as exc:
@@ -22,7 +21,6 @@ def test_bba0d0():
     @strangled_method("f", use=NEW_ONLY)
     class NewRaiser:
         def __init__(self):
-            self.old = None
             self.new = FuncF(lambda: raiser(BufferError('shine')))
 
     r = NewRaiser()
@@ -56,8 +54,8 @@ def test_bba0d3():
 def test_bba0d4():
     """
     When neither Old nor New raise
-    but the (p_res == s_res) comparison raises an exception
-    then map that exception to a custom StranglingException.
+    but the (old_result == new_result) comparison raises an exception
+    then map that exception to a StranglingDifference.
     """
     @strangled_method("f", use=OLD_MAIN)
     class Different:
@@ -80,7 +78,7 @@ def test_bba0d5():
     """
     When Old and New both raise
     but the exceptions are of different types
-    then raise a custom StranglingException.
+    then raise a StranglingDifference.
     """
     @strangled_method("f", use=OLD_MAIN)
     class Different:
@@ -104,8 +102,8 @@ def test_bba0d6():
     """
     When Old and New both raise
     and the exceptions are of the same type
-    don't raise a custom StranglingException
-    do propagate the raised exception based on use=
+    don't raise a custom StrangledException
+    do propagate the raised exception based on use.
     """
     @strangled_method("f", use=NEW_MAIN)
     class Different:

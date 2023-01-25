@@ -52,7 +52,8 @@ def test_d96701():
 
 def test_d96703():
     """
-    Log's "is" key tells you whether old or new is primary.
+    Log's "is" key tells you whether
+    old or new is primary.
     """
     @strangled_method("f", use=OLD_MAIN)
     @strangled_method("g", use=NEW_MAIN)
