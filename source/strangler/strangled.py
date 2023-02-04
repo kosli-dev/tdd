@@ -62,26 +62,30 @@ def wrapped_call(func, is_primary):
 def strangled_check(cls, name, old, new):
     o_exc = old["exception"]
     n_exc = new["exception"]
-    neither_raised = all(exc is None for exc in [o_exc, n_exc])
-    both_raised = all(exc is not None for exc in [o_exc, n_exc])
+    neither_raised = o_exc is None and n_exc is None
+    both_raised = not(o_exc is None or n_exc is None)
 
     if neither_raised:
         try:
             if old["result"] == new["result"]:
                 return
             else:
-                summary = f"old_result == new_result --> False"
+                summary = "old_result == new_result --> False"
         except Exception as exc:
             summary = "\n".join([
-                f"old_result == new_result --> raised",
+                "old_result == new_result --> raised",
                 str(exc)
             ])
     elif both_raised:
         if type(o_exc) is type(n_exc):
+            # If you have a typo in your program so that both raise AttributeError
+            # for instance, the strangler will swallow that and everything looks OK.
+            # So this is the place to put in a print if you don't understand why
+            # your code does not give a strangler failure when you expect one.
             return
         else:
             summary = "\n".join([
-                f"type(old_exception) != type(new_exception)",
+                "type(old_exception) != type(new_exception)",
                 f"type(old_exception) is {type(o_exc).__name__}",
                 f"type(new_exception) is {type(n_exc).__name__}"
             ])
