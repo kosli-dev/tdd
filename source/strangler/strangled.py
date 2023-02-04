@@ -37,7 +37,7 @@ def wrapped_call(func, is_primary):
     except Exception as exc:
         exception = exc
         trace = traceback.format_exc()
-        result = NOT_SET
+        result = NotSet()
 
     args = func.args
     kwargs = func.kwargs
@@ -130,9 +130,6 @@ def strangler_log_filename():
 class NotSet:
     def __repr__(self):
         return 'NotSet()'
-
-
-NOT_SET = NotSet()
 
 
 class StrangledDifference(RuntimeError):
