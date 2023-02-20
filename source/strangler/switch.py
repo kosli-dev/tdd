@@ -44,13 +44,13 @@ def call_both(use):
     return call_old(use) and call_new(use)
 
 
-def old_is_primary(use):
-    return _primary_is(use, 'old')
+def old_is_main(use):
+    return _main_is(use, 'old')
 
 
-def new_is_primary(use):
-    return _primary_is(use, 'new')
+def new_is_main(use):
+    return _main_is(use, 'new')
 
 
-def _primary_is(use, age):
+def _main_is(use, age):
     return use[2] == age

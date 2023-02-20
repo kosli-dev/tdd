@@ -15,21 +15,21 @@ def strangled(cls, name, use, old, new):
     use: eg OLD_MAIN
     """
     if call_old(use):
-        old_call = wrapped_call(old, old_is_primary(use))
+        old_call = wrapped_call(old, old_is_main(use))
     if call_new(use):
-        new_call = wrapped_call(new, new_is_primary(use))
+        new_call = wrapped_call(new, new_is_main(use))
 
     if call_both(use):
         strangled_check(cls, name, old_call, new_call)
 
-    call = old_call if old_is_primary(use) else new_call
+    call = old_call if old_is_main(use) else new_call
     if call["exception"] is None:
         return call["result"]
     else:
         raise call["exception"]
 
 
-def wrapped_call(func, is_primary):
+def wrapped_call(func, is_main):
     try:
         exception = None
         trace = ""
@@ -39,9 +39,6 @@ def wrapped_call(func, is_primary):
         trace = traceback.format_exc()
         result = NotSet()
 
-    args = func.args
-    kwargs = func.kwargs
-
     def safe_repr():
         try:
             return repr(func)
@@ -49,13 +46,13 @@ def wrapped_call(func, is_primary):
             return f"Exception: {exc}"
 
     return {
-        "is": "primary" if is_primary else "secondary",
+        "is": "primary" if is_main else "secondary",
         "result": result,
         "exception": exception,
         "trace": trace.split("\n"),
         "repr": safe_repr(),
-        "args": args,
-        "kwargs": kwargs
+        "args": func.args,
+        "kwargs": func.kwargs
     }
 
 
