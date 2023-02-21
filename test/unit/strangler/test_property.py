@@ -4,39 +4,36 @@ from .helpers import *
 
 
 def test_011600():
-    """OLD_ONLY"""
-    @strangled_property("p", getter=OLD_ONLY, setter=OLD_ONLY)
-    class Diff:
+    for use in switches():
+        cmp(use, 45, 45)
+        cmp(use, 23, 24)
+
+
+def cmp(use, old, new):
+    @strangled_property("p", getter=use, setter=None)
+    class Cmp:
         def __init__(self):
-            self.old = Prop(42)
+            if use is not NEW_ONLY:
+                self.old = Prop(old)
+            if use is not OLD_ONLY:
+                self.new = Prop(new)
 
-    d = Diff()
-    assert d.p == 42
+    g = Cmp()
+    if use is OLD_ONLY:
+        assert g.p == old
+    elif use is NEW_ONLY:
+        assert g.p == new
+    elif old == new:
+        assert g.p == old
+    else:
+        with pytest.raises(StrangledDifference) as exc:
+            g.p
+        check_strangler_exc(exc, 'Cmp.p', f"{old}", f"{new}")
     assert no_strangler_logging()
-
-    d = Diff()
-    d.p = 11
-    assert no_strangler_logging()
-    assert d.p == 11
 
 
 def test_011604():
-    """OLD_MAIN"""
-    @strangled_property("p", getter=OLD_MAIN, setter=OLD_MAIN)
-    class Same:
-        def __init__(self):
-            self.old = Prop(12)
-            self.new = Prop(12)
-
-    s = Same()
-    assert s.p == 12
-    assert no_strangler_logging()
-
-    s = Same()
-    s.p = 13
-    assert no_strangler_logging()
-    assert s.p == 13
-
+    """OLD_MAIN old returns, new raises"""
     @strangled_property("p", getter=OLD_MAIN, setter=OLD_MAIN)
     class Diff:
         def __init__(self):
@@ -46,31 +43,16 @@ def test_011604():
     d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.p
-    check_exc(exc, '4', "NotSet()")
+    check_exc(exc, '4', "Raised()")
 
     d = Diff()
     with pytest.raises(StrangledDifference) as exc:
-        d.p = 42
-    check_exc(exc, 'None', "NotSet()")
+        d.p = "anything"
+    check_exc(exc, 'None', "Raised()")
 
 
 def test_011606():
-    """NEW_MAIN"""
-    @strangled_property("p", getter=NEW_MAIN, setter=NEW_MAIN)
-    class Same:
-        def __init__(self):
-            self.old = Prop(123)
-            self.new = Prop(123)
-
-    s = Same()
-    assert s.p == 123
-    assert no_strangler_logging()
-
-    s = Same()
-    s.p = "foobar"
-    assert no_strangler_logging()
-    assert s.p == "foobar"
-
+    """NEW_MAIN old raises, new returns"""
     @strangled_property("p", getter=NEW_MAIN, setter=NEW_MAIN)
     class Diff:
         def __init__(self):
@@ -80,29 +62,12 @@ def test_011606():
     d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.p
-    check_exc(exc, "NotSet()", '45')
+    check_exc(exc, "Raised()", '45')
 
     d = Diff()
     with pytest.raises(StrangledDifference) as exc:
         d.p = "anything"
-    check_exc(exc, "NotSet()", 'None')
-
-
-def test_011608():
-    """NEW_ONLY"""
-    @strangled_property("p", getter=NEW_ONLY, setter=NEW_ONLY)
-    class Diff:
-        def __init__(self):
-            self.new = Prop(99)
-
-    d = Diff()
-    assert d.p == 99
-    assert no_strangler_logging()
-
-    d = Diff()
-    d.p = 42
-    assert no_strangler_logging()
-    assert d.p == 42
+    check_exc(exc, "Raised()", 'None')
 
 
 def check_exc(exc, old, new):

@@ -37,7 +37,7 @@ def wrapped_call(func, is_main):
     except Exception as exc:
         exception = exc
         trace = traceback.format_exc()
-        result = NotSet()
+        result = Raised()
 
     def safe_repr():
         try:
@@ -128,9 +128,9 @@ def strangler_log_filename():
     return f"/tmp/strangler_logs/log.{tid}"
 
 
-class NotSet:
+class Raised:
     def __repr__(self):
-        return 'NotSet()'
+        return 'Raised()'
 
 
 class StrangledDifference(RuntimeError):
