@@ -75,10 +75,11 @@ def strangled_check(cls, name, old, new):
             ])
     elif both_raised:
         if type(o_exc) is type(n_exc):
-            # If you have a typo in your program so that both raise AttributeError
-            # for instance, the strangler will swallow that and everything looks OK.
-            # So this is the place to put in a print if you don't understand why
-            # your code does not give a strangler failure when you expect one.
+            # NOTE: If the old and new code both use a common library then
+            # any error in that library (eg a syntax error) could easily
+            # be identical in both the old and new code.
+            # Put in a print/breakpoint here if you don't understand why
+            # you're expecting a strangler failure but not getting one.
             return
         else:
             summary = "\n".join([
