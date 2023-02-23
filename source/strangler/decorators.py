@@ -6,9 +6,9 @@ def strangled_method(name, *, use):
     check_use(use)
 
     if name == "__eq__":
-        return _strangled_eq(use=use)
+        return strangled_eq(use=use)
     elif name == "__iter__":
-        return _strangled_iter(use=use)
+        return strangled_iter(use=use)
     else:
         def decorator(cls):
             def func(target, *args, **kwargs):
@@ -44,6 +44,7 @@ def strangled_property(name, *, getter, setter):
 
                 def __call__(self, obj):
                     return getattr(obj, name)
+
             return strangled_f(cls, name, getter, target, Functor())
 
         def set_value(target, value):
@@ -54,6 +55,7 @@ def strangled_property(name, *, getter, setter):
 
                 def __call__(self, obj):
                     setattr(obj, name, value)
+
             return strangled_f(cls, name, setter, target, Functor())
 
         setattr(cls, name, property(fget=get_value, fset=set_value if setter else None))
@@ -86,7 +88,7 @@ def strangled_f(cls, name, use, obj, f):
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-def _strangled_eq(*, use):
+def strangled_eq(*, use):
 
     def decorator(cls):
         def checked_eq(lhs, rhs):
@@ -116,7 +118,7 @@ def _strangled_eq(*, use):
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def _strangled_iter(*, use):
+def strangled_iter(*, use):
 
     def decorator(cls):
         def checked_iter(target):
