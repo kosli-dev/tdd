@@ -10,6 +10,7 @@ A public demo repo of
 
 The following blog posts link to this repo:
 - [Get Python system-test coverage faster by restarting your server](https://www.kosli.com/blog/getting-python-integration-test-coverage-without-killing-your-gunicorn-server/)
+- [How to strangle old code using Python decorators](https://www.kosli.com/blog/how-to-strangle-old-code-using-python-decorators/)  
 - ...
 - ...
 
