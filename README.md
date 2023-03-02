@@ -11,6 +11,7 @@ A public demo repo of
 - [gunicorn](https://gunicorn.org/) running with multiple workers
 - each worker running a simple [Flask](https://flask.palletsprojects.com/en/2.2.x/) web server (with an API)
 - the web server scores the [XY Business Game](https://leanpub.com/experientiallearning4sampleexercises) by [Jerry Weinberg](http://jonjagger.blogspot.com/p/jerry-weinberg.html)  
+- the web server runs inside a read-only Docker container
 - system tests with full branch coverage
 - unit tests with full branch coverage
 
