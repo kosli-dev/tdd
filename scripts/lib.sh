@@ -63,7 +63,7 @@ refresh_static_assets()
     --env XY_GIT_COMMIT_SHA \
     $(assets_builder_name) \
     bash -c "npm run build" \
-      || die "refresh_assets.sh failed. Your docker image might be outdated. "
+      || die "refresh_static_assets failed. Your docker image might be outdated. "
 }
 
 assets_builder_name()
