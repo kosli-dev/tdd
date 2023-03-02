@@ -1,0 +1,5 @@
+# See scripts/lib.sh create_assets_builder()
+FROM node
+WORKDIR /app
+RUN npm i sass postcss postcss-cli autoprefixer npm-run-all bundle-js --save-dev
+

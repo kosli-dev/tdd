@@ -48,6 +48,12 @@ die()
   exit 43
 }
 
+create_assets_builder()
+{
+  cd "${XY_HOST_ROOT_DIR}"
+  docker build --tag $(assets_builder_name) -f Dockerfile.assets .
+}
+
 refresh_static_assets()
 {
   docker run --rm \
@@ -55,10 +61,14 @@ refresh_static_assets()
     --volume "${XY_HOST_ROOT_DIR}/source/static/scss:/app/scss:rw" \
     --volume "${XY_HOST_ROOT_DIR}/source/static/js:/app/js:rw" \
     --env XY_GIT_COMMIT_SHA \
-    ghcr.io/kosli-dev/assets-builder:v1 \
+    $(assets_builder_name) \
     bash -c "npm run build" \
-      || die "refresh_assets.sh failed. Your docker image might be outdated. " \
-             "Run 'docker image rm ghcr.io/kosli-dev/assets-builder' and then try again"
+      || die "refresh_assets.sh failed. Your docker image might be outdated. "
+}
+
+assets_builder_name()
+{
+  echo assets-builder:v1
 }
 
 build_image()
