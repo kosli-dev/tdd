@@ -1,18 +1,18 @@
 
 [![Github Action (main)](https://github.com/kosli-dev/tdd-talk/actions/workflows/main.yml/badge.svg)](https://github.com/kosli-dev/tdd-talk/actions)
 
-A public demo repo of
-- [gunicorn](https://gunicorn.org/) running with multiple workers
-- each worker running a simple [Flask](https://flask.palletsprojects.com/en/2.2.x/) web server (with an API)
-- system tests with full branch coverage
-- unit tests with full branch coverage
-- the web server scores the [XY Business Game](https://leanpub.com/experientiallearning4sampleexercises) by [Jerry Weinberg](http://jonjagger.blogspot.com/p/jerry-weinberg.html)  
-
 The following blog posts link to this repo:
 - [Get Python system-test coverage faster by restarting your server](https://www.kosli.com/blog/getting-python-integration-test-coverage-without-killing-your-gunicorn-server/)
 - [How to strangle old code using Python decorators](https://www.kosli.com/blog/how-to-strangle-old-code-using-python-decorators/)  
 - ...
 - ...
+
+A public demo repo of
+- [gunicorn](https://gunicorn.org/) running with multiple workers
+- each worker running a simple [Flask](https://flask.palletsprojects.com/en/2.2.x/) web server (with an API)
+- the web server scores the [XY Business Game](https://leanpub.com/experientiallearning4sampleexercises) by [Jerry Weinberg](http://jonjagger.blogspot.com/p/jerry-weinberg.html)  
+- system tests with full branch coverage
+- unit tests with full branch coverage
 
 ```
 $ source scripts/shortcuts.sh

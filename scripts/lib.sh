@@ -185,6 +185,8 @@ exec_tests_get_coverage()
 
 exec_tests_get_coverage_system()
 {
+  # We do a restart-dance here because its faster than a kill-dance.
+  # See https://www.kosli.com/blog/getting-python-integration-test-coverage-without-killing-your-gunicorn-server/
   restart_server; wait_till_server_ready
   run_tests_system
   restart_server; wait_till_server_ready

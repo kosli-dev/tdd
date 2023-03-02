@@ -2,14 +2,7 @@
 Proposed TDD topics for talks/blogs
 
 o) running the server in a read-only container
-
 o) runner the server as a non root user
-
-o) contract/characterisation migration with decorators
-   and testing of decorators
-
-o) combined system and unit tests coverage
-
 o) gathering coverage stats for code and for _tests_
-
+o) combined system and unit tests coverage
 o) using tests named with a GUID

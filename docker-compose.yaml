@@ -4,8 +4,13 @@ networks:
   xy_net:
     external: true
 
+# There appears to be no way to parameterize service names.
+# We want three identical services;
+# one for a demo, one for unit-testing, one for system-testing
+# and we pass this yaml file through sed to replace {NAME}.
+# Eg see scripts/lib.sh bring_server_up()
 services:
-  xy-{NAME}:  # See scripts/test/lib.py bring_server_up()
+  xy-{NAME}:
     container_name: "${XY_CONTAINER_NAME}"
     env_file: [ "${ENV_FILE}" ]
     image: "${XY_IMAGE_NAME}"
