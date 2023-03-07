@@ -5,6 +5,7 @@ eut() { testing unit exec "$*"; }
 rst() { testing system run "$*"; }
 est() { testing system exec "$*"; }
 
+ctc() { "$(scripts_dir)/combine_test_coverage.sh"; }
 tid() { "$(scripts_dir)/print_test_id.sh"; }
 demo() { "$(scripts_dir)/run_demo.sh"; }
 hup() { "$(scripts_dir)/hup.sh"; }

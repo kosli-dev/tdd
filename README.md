@@ -28,6 +28,7 @@ $ eut          # Exec all Unit Tests in existing server ~1s
 $ rut a2189600 # Run only Unit Test a2189600 in new server
 $ eut a2189600 # Exec only Unit Test a2189600 in existing server
 
+$ ctc          # gather Combined Test Coverage
 $ demo         # run a demo server on localhost:80
 $ hup          # restart the demo server
 $ tid          # generate a test id
