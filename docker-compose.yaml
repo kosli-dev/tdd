@@ -6,8 +6,8 @@ networks:
 
 # There appears to be no way to parameterize service names.
 # We want three identical services;
-# one for a demo, one for unit-testing, one for system-testing
-# and we pass this yaml file through sed to replace {NAME}.
+# one for a demo, one for unit-testing, one for system-testing.
+# So we pass this yaml file through sed to replace {NAME}.
 # Eg see scripts/lib.sh bring_server_up()
 services:
   xy-{NAME}:

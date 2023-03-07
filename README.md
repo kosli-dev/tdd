@@ -2,9 +2,9 @@
 [![Github Action (main)](https://github.com/kosli-dev/tdd-talk/actions/workflows/main.yml/badge.svg)](https://github.com/kosli-dev/tdd-talk/actions)
 
 The following blog posts link to this repo:
-- [Get Python system-test coverage faster by restarting your server](https://www.kosli.com/blog/getting-python-integration-test-coverage-without-killing-your-gunicorn-server/)
 - [How to strangle old code using Python decorators](https://www.kosli.com/blog/how-to-strangle-old-code-using-python-decorators/)  
-- ...
+- [Get Python system-test coverage faster by restarting your server](https://www.kosli.com/blog/getting-python-integration-test-coverage-without-killing-your-gunicorn-server/)
+- [How to run your Python Flask server inside a readonly Docker container](https://www.kosli.com/blog/how-to-run-your-python-flask-server-inside-a-readonly-docker-container/)
 - ...
 
 A public demo repo of

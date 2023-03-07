@@ -1,8 +1,7 @@
 
 Proposed TDD topics for talks/blogs
 
-o) running the server in a read-only container
+o) combined system and unit tests coverage
 o) runner the server as a non root user
 o) gathering coverage stats for code and for _tests_
-o) combined system and unit tests coverage
 o) using tests named with a GUID

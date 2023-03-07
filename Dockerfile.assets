@@ -1,4 +1,5 @@
 # See scripts/lib.sh create_assets_builder()
+# See https://www.kosli.com/blog/how-to-run-your-python-flask-server-inside-a-readonly-docker-container/
 FROM node
 WORKDIR /app
 RUN npm i sass postcss postcss-cli autoprefixer npm-run-all bundle-js --save-dev
