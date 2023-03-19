@@ -26,12 +26,20 @@ run_tests()
   set -e
 }
 
+create_coverage()
+{
+  pushd "${COV_DIR}" > /dev/null
+  coverage combine --keep --quiet
+  create_coverage_json
+  create_coverage_html
+  popd > /dev/null
+}
+
 create_coverage_json()
 {
   local -r filename="${COV_DIR}/coverage.json"
 
   coverage json \
-    --data-file=.coverage.unit \
     -o "${filename}" \
     --pretty-print \
     --quiet
@@ -49,6 +57,4 @@ create_coverage_html()
 }
 
 run_tests
-cd "${COV_DIR}"
-create_coverage_json
-create_coverage_html
+create_coverage

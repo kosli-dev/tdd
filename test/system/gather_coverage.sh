@@ -16,6 +16,15 @@ wait_for_all_coverage_files()
   echo .
 }
 
+gather_coverage()
+{
+  pushd "${COV_DIR}" > /dev/null
+  coverage combine --keep --quiet
+  create_coverage_json
+  create_coverage_html
+  popd > /dev/null
+}
+
 actual_coverage_files_count()
 {
   find "${COV_DIR}" -maxdepth 1 -type f -name ^.coverage | wc -l | xargs
@@ -42,7 +51,4 @@ create_coverage_html()
 }
 
 wait_for_all_coverage_files
-cd "${COV_DIR}"
-coverage combine --keep --quiet
-create_coverage_json
-create_coverage_html
+gather_coverage
