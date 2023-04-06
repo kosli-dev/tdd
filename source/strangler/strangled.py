@@ -19,14 +19,14 @@ def strangled(cls, name, use, old, new):
     if call_new(use):
         new_call = wrapped_call(new, new_is_main(use))
 
-    if call_both(use):
+    if call_old(use) and call_new(use):
         strangled_check(cls, name, old_call, new_call)
 
     call = old_call if old_is_main(use) else new_call
-    if call["exception"] is None:
-        return call["result"]
+    if exc := call["exception"]:
+        raise exc
     else:
-        raise call["exception"]
+        return call["result"]
 
 
 def wrapped_call(func, is_main):
@@ -57,40 +57,40 @@ def wrapped_call(func, is_main):
 
 
 def strangled_check(cls, name, old, new):
-    o_exc = old["exception"]
-    n_exc = new["exception"]
-    neither_raised = o_exc is None and n_exc is None
-    both_raised = not(o_exc is None or n_exc is None)
+    old_exc, new_exc = old["exception"], new["exception"]
+    exceptions = [old_exc, new_exc]
 
-    if neither_raised:
+    # neither_raised = o_exc is None and n_exc is None
+    # both_raised = not(o_exc is None or n_exc is None)
+
+    if not any(exceptions):
         try:
             if old["result"] == new["result"]:
                 return
             else:
-                summary = "old_result == new_result --> False"
+                summary = "old['result'] == new['result'] --> False"
         except Exception as exc:
-            summary = "\n".join([
-                "old_result == new_result --> raised",
+            summary = [
+                "old['result'] == new['result'] --> raised!",
                 str(exc)
-            ])
-    elif both_raised:
-        if type(o_exc) is type(n_exc):
-            # NOTE: If the old and new code both use a common library then
-            # any error in that library (eg a syntax error) could easily
-            # be identical in both the old and new code.
-            # Put in a print/breakpoint here if you don't understand why
-            # you're expecting a strangler failure but not getting one.
+            ]
+    elif all(exceptions):
+        if isinstance(old_exc, type(new_exc)):  # exceptions are the same type
+            # If the real and fake raise the same exception (eg there is a bug in
+            # a library they both use), this will swallow it and everything will
+            # look OK. If you are not getting the expected strangler behaviour
+            # consider putting a print/breakpoint here.
             return
         else:
             summary = "\n".join([
-                "type(old_exception) != type(new_exception)",
-                f"type(old_exception) is {type(o_exc).__name__}",
-                f"type(new_exception) is {type(n_exc).__name__}"
+                "Different exception types",
+                f"type(old['exception']) is {type(old_exc).__name__}",
+                f"type(new['exception']) is {type(new_exc).__name__}"
             ])
     else:
         def raised(ex):
             return "raised" if ex is not None else "did not raise"
-        summary = f"old {raised(o_exc)}, new {raised(n_exc)}"
+        summary = f"old {raised(old_exc)}, new {raised(new_exc)}"
 
     def loggable(d):
         d = deepcopy(d)

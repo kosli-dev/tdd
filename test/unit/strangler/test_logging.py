@@ -85,10 +85,10 @@ def test_d96704():
     with pytest.raises(StrangledDifference) as exc:
         d.f()
     diff = exc.value.diff
-    expected = "\n".join([
-        "old_result == new_result --> raised",
+    expected = [
+        "old['result'] == new['result'] --> raised!",
         '4, 5'
-    ])
+    ]
     assert diff["summary"] == expected
 
 
@@ -107,7 +107,7 @@ def test_d96705():
     with pytest.raises(StrangledDifference) as exc:
         d.f()
     diff = exc.value.diff
-    assert diff["summary"] == "old_result == new_result --> False"
+    assert diff["summary"] == "old['result'] == new['result'] --> False"
 
 
 def test_d96706():
@@ -126,9 +126,9 @@ def test_d96706():
         d.f()
     diff = exc.value.diff
     expected = "\n".join([
-        "type(old_exception) != type(new_exception)",
-        f"type(old_exception) is KeyError",
-        f"type(new_exception) is NameError"
+        "Different exception types",
+        f"type(old['exception']) is KeyError",
+        f"type(new['exception']) is NameError"
     ])
     assert diff["summary"] == expected
 

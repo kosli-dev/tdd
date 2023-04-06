@@ -67,10 +67,10 @@ def test_bba0d4():
     with pytest.raises(StrangledDifference) as exc:
         d.f()
 
-    expected = "\n".join([
-        "old_result == new_result --> raised",
+    expected = [
+        "old['result'] == new['result'] --> raised!",
         'oops'
-    ])
+    ]
     assert exc.value.diff["summary"] == expected
 
 
@@ -91,9 +91,9 @@ def test_bba0d5():
         d.f()
 
     expected = "\n".join([
-        "type(old_exception) != type(new_exception)",
-        "type(old_exception) is NameError",
-        "type(new_exception) is RuntimeError"
+        "Different exception types",
+        "type(old['exception']) is NameError",
+        "type(new['exception']) is RuntimeError"
     ])
     assert str(exc.value.diff["summary"]) == expected
 
