@@ -1,7 +1,6 @@
 import logging
 from flask import Flask, url_for
 from flask_restx import Api as RestXApi
-import os
 from api import get_api_blueprint, init_routes
 from config import Config
 
@@ -55,21 +54,17 @@ def init_app_blueprint(xy):
     xy.register_blueprint(xy_blueprint)
 
 
-def git_commit_sha():
-    return os.environ.get("XY_GIT_COMMIT_SHA")
+def main_css():
+    return url_for('static', filename=f"scss/main.css")
 
 
-def bundle_css():
-    return url_for('static', filename=f"scss/bundle.{git_commit_sha()}.css")
-
-
-def bundle_js():
-    return url_for('static', filename=f"js/bundle.{git_commit_sha()}.js")
+def main_js():
+    return url_for('static', filename=f"js/main.js")
 
 
 def init_jinja_variables(xy):
 
     @xy.context_processor
     def jinja_variables():
-        return dict(bundle_css=bundle_css(),
-                    bundle_js=bundle_js())
+        return dict(main_css=main_css(),
+                    main_js=main_js())

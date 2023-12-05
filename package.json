@@ -7,25 +7,25 @@
     "doc": "docs"
   },
   "scripts": {
-    "remove:assets": "rm -f scss/bundle.*.css js/bundle.*.js",
-    "compile:css": "sass --no-source-map scss/bundle.scss:scss/bundle.css --style expanded",
-    "prefix:css": "postcss scss/bundle.css -u autoprefixer -b \"last 10 versions\" -o scss/bundle.prefixed.css",
-    "compress:css": "sass --no-source-map scss/bundle.prefixed.css:scss/bundle.min.css --style compressed",
-    "cleanup:css": "rm scss/bundle.prefixed.css scss/bundle.css",
-    "rename:css": "mv scss/bundle.min.css scss/bundle.${XY_GIT_COMMIT_SHA}.css",
-    "bundle:js": "bundle-js js/bundle.js -o js/bundle.${XY_GIT_COMMIT_SHA}.js",
-    "build": "npm-run-all remove:assets compile:css prefix:css compress:css cleanup:css rename:css bundle:js"
+    "remove:assets": "rm -f scss/main.css js/main.js",
+    "compile-main:css": "sass --no-source-map scss/main.scss:scss/main.css --style expanded",
+    "prefix-main:css": "postcss scss/main.css -u autoprefixer -b \"last 10 versions\" -o scss/main.prefixed.css",
+    "compress-main:css": "sass --no-source-map scss/main.prefixed.css:scss/main.min.css --style compressed",
+    "cleanup:css": "rm scss/main.css && rm scss/main.prefixed.css",
+    "rename:css": "mv scss/main.min.css scss/main.css",
+    "bundle-js:js": "bundle-js js/all.js -o js/main.js",
+    "build": "npm-run-all remove:assets compile-main:css prefix-main:css compress-main:css cleanup:css rename:css bundle-js:js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kosli-dev/server.git"
+    "url": "git+https://github.com/kosli-dev/tdd.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kosli-dev/server/issues"
+    "url": "https://github.com/kosli-dev/tdd/issues"
   },
-  "homepage": "https://github.com/kosli-dev/server/#readme",
+  "homepage": "https://github.com/kosli-dev/tdd/#readme",
   "devDependencies": {
     "autoprefixer": "^10.4.12",
     "npm-run-all": "^4.1.5",
