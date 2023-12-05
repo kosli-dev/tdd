@@ -92,7 +92,7 @@ bring_network_up()
 
 bring_server_up()
 {
-  # The -p option is to silence warnings about orphan containers.
+  # The --project-name option is to silence warnings about orphan containers.
   sed "s/{NAME}/${XY_KIND}/" "${XY_HOST_ROOT_DIR}/docker-compose.yaml" \
     | docker-compose \
       --env-file="${XY_HOST_ROOT_DIR}/env_vars/test_${XY_KIND}_up.env" \
@@ -117,7 +117,7 @@ wait_till_server_ready()
   local -r max_tries=15
   local -r url="$(ip_address)/api/health/ready"
   echo -n "Waiting for $(ip_address) readiness"
-  for try in $(seq 1 ${max_tries}); do
+  for _ in $(seq 1 ${max_tries}); do
     echo -n .
     if [ $(curl --silent --write-out '%{http_code}' --output /dev/null "${url}") -eq 200 ]; then
       echo
