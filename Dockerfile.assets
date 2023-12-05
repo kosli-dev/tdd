@@ -5,7 +5,7 @@ WORKDIR /app
 RUN npm i sass postcss postcss-cli autoprefixer npm-run-all bundle-js --save-dev
 
 # The FROM like should take node:latest which is currently 21.3.0
-# However, this breaks the bundle-js command from package.json
+# However, this breaks the bundle-js command from package.json (on a Mac)
 #
 #     "bundle-js:js": "bundle-js js/all.js -o js/main.js",
 #
