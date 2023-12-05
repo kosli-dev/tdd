@@ -1,5 +1,40 @@
 # See scripts/lib.sh create_assets_builder()
 # See https://www.kosli.com/blog/how-to-run-your-python-flask-server-inside-a-readonly-docker-container/
-FROM node
+FROM node:21.2.0
 WORKDIR /app
 RUN npm i sass postcss postcss-cli autoprefixer npm-run-all bundle-js --save-dev
+
+# The FROM like should take node:latest which is currently 21.3.0
+# However, this breaks the bundle-js command from package.json
+#
+#     "bundle-js:js": "bundle-js js/all.js -o js/main.js",
+#
+# The error I get is...
+#
+#  node:fs:2352
+#    return binding.writeFileUtf8(
+#                   ^
+#
+#Error: ENOENT: no such file or directory, open '/app/js/main.js'
+#    at Object.writeFileSync (node:fs:2352:20)
+#    at bundle (/app/node_modules/bundle-js/index.js:21:12)
+#    at Object.<anonymous> (/app/node_modules/bundle-js/bin/bundle-js.js:31:1)
+#    at Module._compile (node:internal/modules/cjs/loader:1376:14)
+#    at Module._extensions..js (node:internal/modules/cjs/loader:1435:10)
+#    at Module.load (node:internal/modules/cjs/loader:1207:32)
+#    at Module._load (node:internal/modules/cjs/loader:1023:12)
+#    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:135:12)
+#    at node:internal/main/run_main_module:28:49 {
+#  errno: -2,
+#  code: 'ENOENT',
+#  syscall: 'open',
+#  path: '/app/js/main.js'
+#}
+#
+#Node.js v21.3.0
+#ERROR: "bundle-js:js" exited with 1.
+#
+# This appears to be a known breaking change.
+# https://github.com/nodejs/node/issues/50989
+# Suggests it will be resolved in node v21.4.0
+# (which is not currently released)

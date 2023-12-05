@@ -66,38 +66,6 @@ refresh_static_assets()
     bash -c "npm run build" \
       || die "refresh_assets.sh failed. Your docker image might be outdated. " \
          "Run 'docker image rm $(assets_builder_name)' and then try again"
-
-  # This docker run is currently failing. The breaking command from package.json is
-  #     "bundle-js:js": "bundle-js js/all.js -o js/main.js",
-  # The error I get is...
-  #
-  #  node:fs:2352
-  #    return binding.writeFileUtf8(
-  #                   ^
-  #
-  #Error: ENOENT: no such file or directory, open '/app/js/main.js'
-  #    at Object.writeFileSync (node:fs:2352:20)
-  #    at bundle (/app/node_modules/bundle-js/index.js:21:12)
-  #    at Object.<anonymous> (/app/node_modules/bundle-js/bin/bundle-js.js:31:1)
-  #    at Module._compile (node:internal/modules/cjs/loader:1376:14)
-  #    at Module._extensions..js (node:internal/modules/cjs/loader:1435:10)
-  #    at Module.load (node:internal/modules/cjs/loader:1207:32)
-  #    at Module._load (node:internal/modules/cjs/loader:1023:12)
-  #    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:135:12)
-  #    at node:internal/main/run_main_module:28:49 {
-  #  errno: -2,
-  #  code: 'ENOENT',
-  #  syscall: 'open',
-  #  path: '/app/js/main.js'
-  #}
-  #
-  #Node.js v21.3.0
-  #ERROR: "bundle-js:js" exited with 1.
-  #
-  # This appears to be a known breaking change.
-  # https://github.com/nodejs/node/issues/50989
-  # Suggests it will be resolved in node v21.4.0
-  # which is not currently released
 }
 
 assets_builder_name()
