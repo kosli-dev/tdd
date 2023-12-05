@@ -16,3 +16,4 @@ sed 's/{NAME}/demo/' "${XY_HOST_ROOT_DIR}/docker-compose.yaml" \
       up --build --detach --force-recreate
 
 wait_till_server_ready
+open http://localhost:80

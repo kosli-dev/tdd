@@ -50,8 +50,7 @@ die()
 
 create_assets_builder()
 {
-  cd "${XY_HOST_ROOT_DIR}"
-  docker build --tag $(assets_builder_name) -f Dockerfile.assets .
+  docker build --tag $(assets_builder_name) -f Dockerfile.assets "${XY_HOST_ROOT_DIR}"
 }
 
 refresh_static_assets()
@@ -75,7 +74,6 @@ assets_builder_name()
 
 build_image()
 {
-  cd "${XY_HOST_ROOT_DIR}"
   docker build \
     --build-arg XY_CONTAINER_ROOT_DIR \
     --build-arg XY_CONTAINER_PORT \
@@ -83,7 +81,7 @@ build_image()
     --build-arg XY_GIT_COMMIT_SHA \
     --file Dockerfile \
     --tag "${XY_IMAGE_NAME}" \
-    .
+    "${XY_HOST_ROOT_DIR}"
 }
 
 bring_network_up()
@@ -99,7 +97,7 @@ bring_server_up()
     | docker-compose \
       --env-file="${XY_HOST_ROOT_DIR}/env_vars/test_${XY_KIND}_up.env" \
       --file - \
-      -p "${XY_KIND}" \
+      --project-name "${XY_KIND}" \
       up --no-build --detach
 }
 
