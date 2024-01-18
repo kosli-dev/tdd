@@ -8,6 +8,7 @@ export_env_vars demo
 create_assets_builder
 refresh_static_assets
 build_image
+bring_network_up
 
 sed 's/{NAME}/demo/' "${XY_HOST_ROOT_DIR}/docker-compose.yaml" \
   | docker-compose \
