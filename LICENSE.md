@@ -1,4 +1,4 @@
-Copyright (c) 2023, [Kosli](https://www.kosli.com)
+Copyright (c) 2024, [Kosli](https://www.kosli.com)
 All rights reserved.
 
 
